@@ -1,3 +1,4 @@
+import 'package:flick/features/home_page/screen/HomePage.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flutter/material.dart';
 
@@ -44,9 +45,9 @@ class IntroPage extends StatelessWidget {
 
               // start new button
               GestureDetector(
-                // onTap: () =>
-                //     Navigator.push(
-                //         context, MaterialPageRoute(builder: (context) => HomePage())),
+                onTap: () =>
+                    Navigator.push(
+                        context, MaterialPageRoute(builder: (context) => const HomePage())),
                 child: Container(
                   decoration: BoxDecoration(
                       color: darkGreyButtonBackground,
