@@ -1,9 +1,9 @@
-import 'package:flick/features/home_page/screen/HomePage.dart';
+import 'package:flick/features/home/screen/HomeScreen.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flutter/material.dart';
 
-class IntroPage extends StatelessWidget {
-  const IntroPage({super.key});
+class IntroScreen extends StatelessWidget {
+  const IntroScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +46,9 @@ class IntroPage extends StatelessWidget {
               // start new button
               GestureDetector(
                 onTap: () =>
-                    Navigator.push(
-                        context, MaterialPageRoute(builder: (context) => const HomePage())),
+                    Navigator.pushNamed(context, "/homeScreen"),
+                    // Navigator.push(
+                    //     context, MaterialPageRoute(builder: (context) => const HomeScreen())),
                 child: Container(
                   decoration: BoxDecoration(
                       color: darkGreyButtonBackground,

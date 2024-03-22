@@ -1,14 +1,16 @@
 import 'package:flick/components/user_bottom_navigation.dart';
+import 'package:flick/features/cart/screen/CartScreen.dart';
+import 'package:flick/features/shop/screen/ShopScreen.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomeScreenState extends State<HomeScreen> {
 
   int _bottomNavSelectedIndex = 0;
 
@@ -19,8 +21,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   final List<Widget> _bottomNavPages = [
-    // const ShopPage(),
-    // const CartPage(),
+    const ShopScreen(),
+    const CartScreen(),
   ];
 
   @override

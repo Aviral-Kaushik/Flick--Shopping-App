@@ -1,4 +1,5 @@
-import 'package:flick/features/intro_page/IntroPage.dart';
+import 'package:flick/core/Routers.dart';
+import 'package:flick/features/intro/IntroScreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,7 +13,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: IntroPage(),
+      // home: IntroScreen(),
+      onGenerateRoute: Routers.generateRoute,
+      initialRoute: "/introScreen",
     );
   }
 }
