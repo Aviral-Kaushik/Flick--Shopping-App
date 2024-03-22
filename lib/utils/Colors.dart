@@ -8,7 +8,11 @@ Color? darkGreyButtonBackground = Colors.grey[900];
 // Text Colors
 Color? subTitleTextColor = Colors.grey;
 Color? whiteTextColor = Colors.white;
+Color? quoteTextColor = Colors.grey[600];
+Color linkTextColor = Colors.blue;
 
+// Search Bar
+Color? searchBarBackgroundColor = Colors.grey[200];
 
 // Google Bottom Navigation Bar Colors
 Color? bottomNavUnselectedBackgroundColor = Colors.grey[400];

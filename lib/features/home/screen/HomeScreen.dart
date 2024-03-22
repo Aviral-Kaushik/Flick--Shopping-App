@@ -2,6 +2,7 @@ import 'package:flick/components/UserAppDrawer.dart';
 import 'package:flick/components/user_bottom_navigation.dart';
 import 'package:flick/features/cart/screen/CartScreen.dart';
 import 'package:flick/features/shop/screen/ShopScreen.dart';
+import 'package:flick/utils/Colors.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -28,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: primaryColor,
       bottomNavigationBar: UserBottomNavigation(
         onTabChanged: (index) => navigateBottomNavBar(index),
       ),
