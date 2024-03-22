@@ -10,6 +10,8 @@ class ShopScreen extends StatefulWidget {
 class _ShopScreenState extends State<ShopScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return const Center(
+      child: Text("Shop Screen"),
+    );
   }
 }

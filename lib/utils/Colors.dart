@@ -14,3 +14,5 @@ Color? whiteTextColor = Colors.white;
 Color? bottomNavUnselectedBackgroundColor = Colors.grey[400];
 Color? bottomNavSelectedBackgroundColor = Colors.grey.shade700;
 Color bottomNavBackgroundColor = Colors.grey.shade100;
+
+Color? dividerColor = Colors.grey[800];

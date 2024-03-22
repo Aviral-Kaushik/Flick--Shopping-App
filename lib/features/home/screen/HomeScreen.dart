@@ -1,3 +1,4 @@
+import 'package:flick/components/UserAppDrawer.dart';
 import 'package:flick/components/user_bottom_navigation.dart';
 import 'package:flick/features/cart/screen/CartScreen.dart';
 import 'package:flick/features/shop/screen/ShopScreen.dart';
@@ -11,7 +12,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   int _bottomNavSelectedIndex = 0;
 
   void navigateBottomNavBar(int index) {
@@ -31,6 +31,22 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: UserBottomNavigation(
         onTabChanged: (index) => navigateBottomNavBar(index),
       ),
+      body: _bottomNavPages[_bottomNavSelectedIndex],
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: Builder(
+            builder: (context) => IconButton(
+                  icon: const Padding(
+                    padding: EdgeInsets.only(left: 8.0),
+                    child: Icon(Icons.menu, color: Colors.black),
+                  ),
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                )),
+      ),
+      drawer: const UserAppDrawer(),
     );
   }
 }
