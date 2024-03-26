@@ -1,3 +1,4 @@
+import 'package:flick/components/ItemTile.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flutter/material.dart';
 
@@ -38,16 +39,20 @@ class _ShopScreenState extends State<ShopScreen> {
               ),
               Text(
                 "See all",
-                style:
-                    TextStyle(fontWeight: FontWeight.bold, color: linkTextColor),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, color: linkTextColor),
               )
             ],
           ),
         ),
 
-        const SizedBox(height: 10,),
+        const SizedBox(
+          height: 10,
+        ),
 
-
+        Expanded(child: ListView.builder(itemBuilder: (context, index) {
+          return ItemTile();
+        }))
       ],
     );
   }
