@@ -19,4 +19,9 @@ Color? bottomNavUnselectedBackgroundColor = Colors.grey[400];
 Color? bottomNavSelectedBackgroundColor = Colors.grey.shade700;
 Color bottomNavBackgroundColor = Colors.grey.shade100;
 
+// Shopping Card Colors
+Color? shoppingCardBackground = Colors.grey[100];
+
 Color? dividerColor = Colors.grey[800];
+Color? blackColor = Colors.black;
+Color? whiteColor = Colors.white;

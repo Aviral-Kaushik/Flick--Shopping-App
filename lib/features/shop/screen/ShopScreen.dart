@@ -1,4 +1,5 @@
 import 'package:flick/components/ItemTile.dart';
+import 'package:flick/core/models/ShoppingItem.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flutter/material.dart';
 
@@ -50,9 +51,25 @@ class _ShopScreenState extends State<ShopScreen> {
           height: 10,
         ),
 
-        Expanded(child: ListView.builder(itemBuilder: (context, index) {
-          return ItemTile();
-        }))
+        Expanded(
+            child: ListView.builder(
+                itemCount: 5,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  ShoppingItem shoppingItem = ShoppingItem(
+                      name: "Air Jordan",
+                      price: "240",
+                      imagePath: "lib/images/air_jordan.png",
+                      description: "Cool Shoe");
+                  return ItemTile(
+                    shoppingItem: shoppingItem,
+                  );
+                })),
+
+        Padding(
+          padding: const EdgeInsets.only(top: 25.0, left: 25.0, right: 25.0),
+          child: Divider(color: whiteTextColor,),
+        )
       ],
     );
   }
