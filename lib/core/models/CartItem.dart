@@ -48,7 +48,7 @@ class CartItem extends ChangeNotifier {
   }
 
   // remove item from cart
-  void removeItemToCart(ShoppingItem shoppingItem) {
+  void removeItemInCart(ShoppingItem shoppingItem) {
     cartItems.remove(shoppingItem);
     notifyListeners();
   }

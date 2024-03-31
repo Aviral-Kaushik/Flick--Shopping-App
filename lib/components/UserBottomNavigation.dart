@@ -20,6 +20,7 @@ class UserBottomNavigation extends StatelessWidget {
         tabBackgroundColor: bottomNavBackgroundColor,
         mainAxisAlignment: MainAxisAlignment.center,
         tabBorderRadius: 16,
+        gap: 8,
         onTabChange: (value) => onTabChanged!(value),
         tabs: const [
           GButton(

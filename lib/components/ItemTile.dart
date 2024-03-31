@@ -21,6 +21,7 @@ class ItemTile extends StatelessWidget {
         decoration: BoxDecoration(
             color: shoppingCardBackground,
             borderRadius: BorderRadius.circular(12)),
+
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -85,6 +86,7 @@ class ItemTile extends StatelessWidget {
           ],
         ),
       ),
+
       Positioned(
         bottom: 0,
         right: 0,
