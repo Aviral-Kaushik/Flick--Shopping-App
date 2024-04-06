@@ -1,0 +1,1 @@
+const appPadding = 16.0;
