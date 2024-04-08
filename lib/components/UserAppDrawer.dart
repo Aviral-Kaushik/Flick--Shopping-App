@@ -49,6 +49,20 @@ class _UserAppDrawerState extends State<UserAppDrawer> {
                     style: TextStyle(color: whiteTextColor),
                   ),
                 ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.only(left: 25.0),
+                child: ListTile(
+                  onTap: () => {
+                    Navigator.pushNamed(context, "/adminPanel")
+                  },
+                  leading: Icon(Icons.admin_panel_settings_outlined, color: whiteTextColor),
+                  title: Text(
+                    "Admin Panel",
+                    style: TextStyle(color: whiteTextColor),
+                  ),
+                ),
               )
             ],
           ),

@@ -1,7 +1,10 @@
+import 'package:flick/admin_panel/controllers/AdminPanelController.dart';
+import 'package:flick/admin_panel/features/home/AdminPanelHomeScreen.dart';
 import 'package:flick/features/cart/screen/CartScreen.dart';
 import 'package:flick/features/home/screen/HomeScreen.dart';
 import 'package:flick/features/intro/IntroScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Routers {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -14,6 +17,13 @@ class Routers {
         return MaterialPageRoute(builder: (_) => const CartScreen());
       case "/shopScreen":
         return MaterialPageRoute(builder: (_) => const IntroScreen());
+      case "/adminPanel":
+        return MaterialPageRoute(builder: (_) => MultiProvider(
+            providers: [
+              ChangeNotifierProvider(create: (context) => AdminPanelController(),)
+            ],
+            child: const AdminPanelHomeScreen(),
+          ));
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(
