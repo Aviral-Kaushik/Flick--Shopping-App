@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 import '../utils/Colors.dart';
 
@@ -30,6 +31,10 @@ class UserBottomNavigation extends StatelessWidget {
           GButton(
             icon: Icons.shopping_bag_rounded,
             text: "Cart",
+          ),
+          GButton(
+            icon: LineAwesomeIcons.user_circle,
+            text: "Profile",
           )
         ],
       ),

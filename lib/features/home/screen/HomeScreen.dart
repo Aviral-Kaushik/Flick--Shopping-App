@@ -1,6 +1,7 @@
 import 'package:flick/components/UserAppDrawer.dart';
 import 'package:flick/components/UserBottomNavigation.dart';
 import 'package:flick/features/cart/screen/CartScreen.dart';
+import 'package:flick/features/profile/screens/profile_home/ProfileHome.dart';
 import 'package:flick/features/shop/screen/ShopScreen.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _bottomNavPages = [
     const ShopScreen(),
     const CartScreen(),
+    const ProfileHome()
   ];
 
   @override

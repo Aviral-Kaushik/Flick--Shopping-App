@@ -4,6 +4,7 @@ Color? primaryColor = Colors.grey[300];
 
 // Button Background Colors
 Color? darkGreyButtonBackground = Colors.grey[900];
+const btnYellowBackground = Color.fromRGBO(250, 225, 4, 1);
 
 // Text Colors
 Color? subTitleTextColor = Colors.grey;
@@ -25,6 +26,9 @@ Color? shoppingCardBackground = Colors.grey[100];
 Color? dividerColor = Colors.grey[800];
 Color? blackColor = Colors.black;
 Color? whiteColor = Colors.white;
+
+// Profile Page Color
+Color accentIconColor = const Color(0xff54c0f1);
 
 // Admin Panel Colors
 const adminPanelPrimaryColor = Color.fromRGBO(17, 159, 250, 1);
