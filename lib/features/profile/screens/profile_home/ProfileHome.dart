@@ -21,14 +21,32 @@ class _ProfileHomeState extends State<ProfileHome> {
           child: Column(
             children: [
               // Profile Header
-              SizedBox(
-                width: 120,
-                height: 120,
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: const Image(
-                        image: AssetImage("assets/images/photo1.jpg"))),
-              ),
+              Stack(children: [
+                SizedBox(
+                  width: 120,
+                  height: 120,
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: const Image(
+                          image: AssetImage("assets/images/photo1.jpg"))),
+                ),
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: Container(
+                    width: 35,
+                    height: 35,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100),
+                      color: btnYellowBackground,
+                    ),
+                    child: Icon(
+                      LineAwesomeIcons.alternate_pencil,
+                      color: blackColor,
+                    ),
+                  ),
+                ),
+              ]),
 
               const SizedBox(
                 height: 10,
@@ -57,7 +75,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                       side: BorderSide.none,
                       shape: const StadiumBorder()),
                   child: Text(
-                    "Edit Profile",
+                    "Your Orders",
                     style: TextStyle(color: darkGreyButtonBackground),
                   ),
                 ),
@@ -116,5 +134,3 @@ class _ProfileHomeState extends State<ProfileHome> {
     );
   }
 }
-
-
