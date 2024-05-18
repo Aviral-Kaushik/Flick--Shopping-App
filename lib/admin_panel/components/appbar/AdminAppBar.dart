@@ -51,7 +51,7 @@ class AdminAppBar extends StatelessWidget {
               ]),
 
               Container(
-                margin: const EdgeInsets.only(left: appPadding),
+                margin: const EdgeInsets.only(left: appPadding * 2),
                 child: Row(
                   children: [
                     ClipRRect(

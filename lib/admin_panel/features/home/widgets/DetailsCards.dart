@@ -66,7 +66,12 @@ class DetailsCardLayout extends StatelessWidget {
       padding: const EdgeInsets.symmetric(
           horizontal: appPadding, vertical: appPadding / 2),
       decoration: BoxDecoration(
-          color: secondaryColor, borderRadius: BorderRadius.circular(10)),
+          color: secondaryColor, borderRadius: BorderRadius.circular(10), boxShadow: [BoxShadow(
+        color: Colors.black.withOpacity(0.5),
+        blurRadius: 4.5,
+        blurStyle: BlurStyle.outer,
+        offset: const Offset(0, 5),
+      )]),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

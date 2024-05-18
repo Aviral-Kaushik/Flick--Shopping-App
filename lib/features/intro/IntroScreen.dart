@@ -1,4 +1,3 @@
-import 'package:flick/features/home/screen/HomeScreen.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flutter/material.dart';
 
