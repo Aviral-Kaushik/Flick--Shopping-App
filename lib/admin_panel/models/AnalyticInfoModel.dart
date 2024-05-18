@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class AnalyticInfo {
+class DetailsCardModel {
   final String? svgSrc, title;
   final int? count;
   final Color? color;
 
-  AnalyticInfo({
+  DetailsCardModel({
     this.svgSrc,
     this.title,
     this.count,

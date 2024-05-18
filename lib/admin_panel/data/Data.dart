@@ -3,26 +3,26 @@ import 'package:flick/admin_panel/models/DiscussionsInfoModel.dart';
 import 'package:flick/admin_panel/models/ReferralInfoModel.dart';
 import 'package:flick/utils/Colors.dart';
 
-List analyticData = [
-  AnalyticInfo(
+List detailsCardData = [
+  DetailsCardModel(
     title: "Subscribers",
     count: 720,
     svgSrc: "assets/icons/Subscribers.svg",
     color: adminPanelPrimaryColor,
   ),
-  AnalyticInfo(
+  DetailsCardModel(
     title: "Post",
     count: 820,
     svgSrc: "assets/icons/Post.svg",
     color: purple,
   ),
-  AnalyticInfo(
+  DetailsCardModel(
     title: "Pages",
     count: 920,
     svgSrc: "assets/icons/Pages.svg",
     color: orange,
   ),
-  AnalyticInfo(
+  DetailsCardModel(
     title: "Comments",
     count: 920,
     svgSrc: "assets/icons/Comments.svg",

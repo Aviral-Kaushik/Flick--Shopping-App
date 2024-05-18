@@ -1,3 +1,4 @@
+import 'package:flick/admin_panel/constants/Responsive.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
@@ -63,14 +64,15 @@ class AdminAppBar extends StatelessWidget {
                       ),
                     ),
 
-                    const Padding(
-                      padding: EdgeInsets.only(left: appPadding / 2),
-                      child: Text(
-                        "Hii, Avichal",
-                        style:
-                        TextStyle(color: textColor, fontWeight: FontWeight.w800),
-                      ),
-                    )
+                    if (!Responsive.isMobile(context))
+                      const Padding(
+                        padding: EdgeInsets.only(left: appPadding / 2),
+                        child: Text(
+                          "Hii, Avichal",
+                          style:
+                          TextStyle(color: textColor, fontWeight: FontWeight.w800),
+                        ),
+                      )
                   ],
                 ),
               )
