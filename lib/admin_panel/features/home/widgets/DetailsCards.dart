@@ -1,6 +1,6 @@
 import 'package:flick/admin_panel/constants/Responsive.dart';
 import 'package:flick/admin_panel/data/Data.dart';
-import 'package:flick/admin_panel/models/AnalyticInfoModel.dart';
+import 'package:flick/admin_panel/models/DetailsCardModel.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';

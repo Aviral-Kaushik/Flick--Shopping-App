@@ -1,5 +1,5 @@
-import 'package:flick/admin_panel/models/AnalyticInfoModel.dart';
-import 'package:flick/admin_panel/models/DiscussionsInfoModel.dart';
+import 'package:flick/admin_panel/models/DetailsCardModel.dart';
+import 'package:flick/admin_panel/models/TopSellersModel.dart';
 import 'package:flick/admin_panel/models/ReferralInfoModel.dart';
 import 'package:flick/utils/Colors.dart';
 
@@ -31,32 +31,32 @@ List detailsCardData = [
 ];
 
 List topSellersData = [
-  TopSelletsModel(
+  TopSellersModel(
     imageSrc: "assets/images/photo1.jpg",
     name: "Lutfhi Chan",
     date: "Jan 25,2021",
   ),
-  TopSelletsModel(
+  TopSellersModel(
     imageSrc: "assets/images/photo2.jpg",
     name: "Devi Carlos",
     date: "Jan 25,2021",
   ),
-  TopSelletsModel(
+  TopSellersModel(
     imageSrc: "assets/images/photo3.jpg",
     name: "Danar Comel",
     date: "Jan 25,2021",
   ),
-  TopSelletsModel(
+  TopSellersModel(
     imageSrc: "assets/images/photo4.jpg",
     name: "Karin Lumina",
     date: "Jan 25,2021",
   ),
-  TopSelletsModel(
+  TopSellersModel(
     imageSrc: "assets/images/photo5.jpg",
     name: "Fandid Deadan",
     date: "Jan 25,2021",
   ),
-  TopSelletsModel(
+  TopSellersModel(
     imageSrc: "assets/images/photo1.jpg",
     name: "Lutfhi Chan",
     date: "Jan 25,2021",

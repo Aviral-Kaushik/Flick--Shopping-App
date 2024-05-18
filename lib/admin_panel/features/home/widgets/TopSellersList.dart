@@ -1,5 +1,5 @@
 import 'package:flick/admin_panel/data/Data.dart';
-import 'package:flick/admin_panel/models/DiscussionsInfoModel.dart';
+import 'package:flick/admin_panel/models/TopSellersModel.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +56,7 @@ class TopSellersList extends StatelessWidget {
 class TopSellerLayout extends StatelessWidget {
   const TopSellerLayout({super.key, required this.sellerModel});
 
-  final TopSelletsModel sellerModel;
+  final TopSellersModel sellerModel;
 
   @override
   Widget build(BuildContext context) {

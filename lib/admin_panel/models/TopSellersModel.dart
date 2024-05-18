@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class TopSelletsModel {
+class TopSellersModel {
   final String? imageSrc, name, date;
   final Color? color;
 
-  TopSelletsModel({
+  TopSellersModel({
     this.imageSrc,
     this.name,
     this.date,
