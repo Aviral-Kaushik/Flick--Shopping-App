@@ -1,6 +1,7 @@
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/admin_panel/constants/Responsive.dart';
 import 'package:flick/admin_panel/features/home/widgets/DetailsCards.dart';
+import 'package:flick/admin_panel/features/home/widgets/TopSellersList.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,12 +30,23 @@ class _DashboardContentState extends State<DashboardContent> {
           ),
 
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Expanded(flex: 5, child: DetailsCards()),
-              if (!Responsive.isMobile(context))
-                Expanded(flex: 2, child: Container())
+              Expanded(flex: 5, child: Column(
+                children: [
+                  const DetailsCards(),
+
+                  // TODO This Top User list is not visible in phone we can show
+                  // TODO this in different screen in the drawer or below.
+                  if (Responsive.isMobile(context))
+                    const SizedBox(height: appPadding * 1.7,),
+                    const TopSellersList()
+
+                ],
+              )),
             ],
           ),
+
         ],
       ),
     ));

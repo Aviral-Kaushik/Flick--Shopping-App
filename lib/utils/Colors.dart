@@ -31,7 +31,7 @@ Color? whiteColor = Colors.white;
 Color accentIconColor = const Color(0xff54c0f1);
 
 // Admin Panel Colors
-const adminPanelPrimaryColor = Color.fromRGBO(17, 159, 250, 1);
+const adminPanelPrimaryColor = Color.fromRGBO(17, 159, 250, 1.0);
 const secondaryColor = Colors.white;
 const bgColor = Color.fromRGBO(247, 251, 254, 1);
 const textColor = Colors.black;
