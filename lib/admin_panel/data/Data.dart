@@ -63,7 +63,7 @@ List topSellersData = [
   ),
 ];
 
-List referalData = [
+List referralData = [
   ReferralInfoModel(
     title: "Facebook",
     count: 234,

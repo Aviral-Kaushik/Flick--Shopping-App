@@ -48,7 +48,7 @@ class TopSellersList extends StatelessWidget {
                   physics: const BouncingScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: topSellersData.length,
-                  itemBuilder: (context, index) => TopSellerLayout(
+                  itemBuilder: (context, index) => TopSellerListLayout(
                         sellerModel: topSellersData[index],
                       )))
         ],
@@ -57,8 +57,8 @@ class TopSellersList extends StatelessWidget {
   }
 }
 
-class TopSellerLayout extends StatelessWidget {
-  const TopSellerLayout({super.key, required this.sellerModel});
+class TopSellerListLayout extends StatelessWidget {
+  const TopSellerListLayout({super.key, required this.sellerModel});
 
   final TopSellersModel sellerModel;
 

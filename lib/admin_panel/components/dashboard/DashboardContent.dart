@@ -1,6 +1,7 @@
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/admin_panel/constants/Responsive.dart';
 import 'package:flick/admin_panel/features/home/widgets/DetailsCards.dart';
+import 'package:flick/admin_panel/features/home/widgets/TopReferalsList.dart';
 import 'package:flick/admin_panel/features/home/widgets/TopSellersList.dart';
 import 'package:flick/admin_panel/features/home/widgets/UsersChart.dart';
 import 'package:flick/utils/Constants.dart';
@@ -33,24 +34,49 @@ class _DashboardContentState extends State<DashboardContent> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(flex: 5, child: Column(
-                children: [
-                  const DetailsCards(),
+              Expanded(
+                  flex: 5,
+                  child: Column(
+                    children: [
+                      const DetailsCards(),
 
-                  const SizedBox(height: appPadding * 1.7,),
+                      const SizedBox(height: appPadding * 1.7,),
 
-                  const UsersChart(),
+                      const UsersChart(),
 
-                  // TODO This Top User list is not visible in phone we can show
-                  // TODO this in different screen in the drawer or below.
-                  if (Responsive.isMobile(context))
-                    const SizedBox(height: appPadding * 1.7,),
-                    const TopSellersList()
+                      // TODO This Top User list is not visible in phone we can show
+                      // TODO this in different screen in the drawer or below.
+                      if (Responsive.isMobile(context))
+                        const SizedBox(height: appPadding * 1.7,),
+                        const TopSellersList()
 
-                ],
-              )),
+                    ],
+                  )),
             ],
           ),
+
+          const Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+               Expanded(child: Column(
+                children: [
+                  TopReferralsList(),
+                  //
+                  // Row(
+                  //   crossAxisAlignment: CrossAxisAlignment.start,
+                  //   children: [
+                  //     Expanded(
+                  //         flex: 2,
+                  //         child: TopReferralsList()
+                  //     )
+                  //   ],
+                  // ),
+
+                  SizedBox(height: appPadding * 1.7,),
+                ],
+              ))
+            ],
+          )
 
         ],
       ),

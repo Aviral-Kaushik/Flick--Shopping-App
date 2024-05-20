@@ -13,6 +13,9 @@ class AdminPanelHomeScreen extends StatefulWidget {
   State<AdminPanelHomeScreen> createState() => _AdminPanelHomeScreenState();
 }
 
+// TODO While Adding Referral part on profile screen add all options that are in
+// TODO our list and increment counter when they are pressed
+
 class _AdminPanelHomeScreenState extends State<AdminPanelHomeScreen> {
   @override
   Widget build(BuildContext context) {
