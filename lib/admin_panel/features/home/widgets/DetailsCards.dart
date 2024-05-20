@@ -65,6 +65,7 @@ class DetailsCardLayout extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(
           horizontal: appPadding, vertical: appPadding / 2),
+
       decoration: BoxDecoration(
           color: secondaryColor, borderRadius: BorderRadius.circular(10), boxShadow: [BoxShadow(
         color: Colors.black.withOpacity(0.5),
@@ -72,13 +73,16 @@ class DetailsCardLayout extends StatelessWidget {
         blurStyle: BlurStyle.outer,
         offset: const Offset(0, 5),
       )]),
+
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+
               Text(
                 "${cardModel.count}",
                 style: const TextStyle(
@@ -86,6 +90,7 @@ class DetailsCardLayout extends StatelessWidget {
                     fontSize: 18,
                     fontWeight: FontWeight.w800),
               ),
+
               Container(
                 padding: const EdgeInsets.all(appPadding / 2),
                 height: 40,
@@ -100,6 +105,7 @@ class DetailsCardLayout extends StatelessWidget {
               )
             ],
           ),
+
           Text(
             "${cardModel.title}",
             maxLines: 1,

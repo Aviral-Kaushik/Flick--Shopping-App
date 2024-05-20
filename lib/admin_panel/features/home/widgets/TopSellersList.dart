@@ -17,6 +17,7 @@ class TopSellersList extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -27,6 +28,7 @@ class TopSellersList extends StatelessWidget {
                     fontSize: 15,
                     fontWeight: FontWeight.w700),
               ),
+
               Text(
                 "View All",
                 style: TextStyle(
@@ -36,9 +38,11 @@ class TopSellersList extends StatelessWidget {
               )
             ],
           ),
+
           const SizedBox(
             height: appPadding,
           ),
+
           Flexible(
               child: ListView.builder(
                   physics: const BouncingScrollPhysics(),
@@ -65,6 +69,7 @@ class TopSellerLayout extends StatelessWidget {
       padding: const EdgeInsets.all(appPadding / 2),
       child: Row(
         children: [
+
           ClipRRect(
               borderRadius: BorderRadius.circular(40),
               child: Image.asset(
@@ -73,17 +78,20 @@ class TopSellerLayout extends StatelessWidget {
                 width: 38,
                 fit: BoxFit.cover,
               )),
+
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: appPadding),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+
                   Text(
                     "${sellerModel.name}",
                     style: const TextStyle(
                         color: textColor, fontWeight: FontWeight.w600),
                   ),
+
                   Text(
                     "${sellerModel.date}",
                     style: TextStyle(
@@ -93,6 +101,7 @@ class TopSellerLayout extends StatelessWidget {
               ),
             ),
           ),
+
           Icon(
             Icons.more_vert_rounded,
             color: textColor.withOpacity(0.5),
