@@ -25,7 +25,7 @@ class TopReferralsList extends StatelessWidget {
             children: [
 
               const Text(
-                "Top Sellers",
+                "Top Referrals",
                 style: TextStyle(
                     color: textColor,
                     fontSize: 15,

@@ -4,6 +4,7 @@ import 'package:flick/admin_panel/features/home/widgets/DetailsCards.dart';
 import 'package:flick/admin_panel/features/home/widgets/TopReferalsList.dart';
 import 'package:flick/admin_panel/features/home/widgets/TopSellersList.dart';
 import 'package:flick/admin_panel/features/home/widgets/UsersChart.dart';
+import 'package:flick/admin_panel/features/home/widgets/ViewersLineChart.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -73,6 +74,8 @@ class _DashboardContentState extends State<DashboardContent> {
                   // ),
 
                   SizedBox(height: appPadding * 1.7,),
+
+                  ViewersLineChart(),
                 ],
               ))
             ],
