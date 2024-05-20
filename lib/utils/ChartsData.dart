@@ -12,7 +12,7 @@ class ChartsData {
       BarChartRodData(
           y: 10,
           width: 20,
-          colors: [primaryColor!],
+          colors: [adminPanelPrimaryColor],
           borderRadius: BorderRadius.circular(5))
     ]));
 
@@ -20,7 +20,7 @@ class ChartsData {
       BarChartRodData(
           y: 3,
           width: 20,
-          colors: [primaryColor!],
+          colors: [adminPanelPrimaryColor],
           borderRadius: BorderRadius.circular(5))
     ]));
 
@@ -28,7 +28,7 @@ class ChartsData {
       BarChartRodData(
           y: 12,
           width: 20,
-          colors: [primaryColor!],
+          colors: [adminPanelPrimaryColor],
           borderRadius: BorderRadius.circular(5))
     ]));
 
@@ -36,7 +36,7 @@ class ChartsData {
       BarChartRodData(
           y: 8,
           width: 20,
-          colors: [primaryColor!],
+          colors: [adminPanelPrimaryColor],
           borderRadius: BorderRadius.circular(5))
     ]));
 
@@ -44,7 +44,7 @@ class ChartsData {
       BarChartRodData(
           y: 6,
           width: 20,
-          colors: [primaryColor!],
+          colors: [adminPanelPrimaryColor],
           borderRadius: BorderRadius.circular(5))
     ]));
 
@@ -52,7 +52,7 @@ class ChartsData {
       BarChartRodData(
           y: 10,
           width: 20,
-          colors: [primaryColor!],
+          colors: [adminPanelPrimaryColor],
           borderRadius: BorderRadius.circular(5))
     ]));
 
@@ -60,7 +60,7 @@ class ChartsData {
       BarChartRodData(
           y: 11,
           width: 20,
-          colors: [primaryColor!],
+          colors: [adminPanelPrimaryColor],
           borderRadius: BorderRadius.circular(5))
     ]));
 
@@ -68,7 +68,7 @@ class ChartsData {
       BarChartRodData(
           y: 6,
           width: 20,
-          colors: [primaryColor!],
+          colors: [adminPanelPrimaryColor],
           borderRadius: BorderRadius.circular(5))
     ]));
 
@@ -76,7 +76,7 @@ class ChartsData {
       BarChartRodData(
           y: 5,
           width: 20,
-          colors: [primaryColor!],
+          colors: [adminPanelPrimaryColor],
           borderRadius: BorderRadius.circular(5))
     ]));
 
@@ -84,7 +84,7 @@ class ChartsData {
       BarChartRodData(
           y: 4,
           width: 20,
-          colors: [primaryColor!],
+          colors: [adminPanelPrimaryColor],
           borderRadius: BorderRadius.circular(5))
     ]));
 
@@ -92,7 +92,7 @@ class ChartsData {
       BarChartRodData(
           y: 9,
           width: 20,
-          colors: [primaryColor!],
+          colors: [adminPanelPrimaryColor],
           borderRadius: BorderRadius.circular(5))
     ]));
 
@@ -100,7 +100,7 @@ class ChartsData {
       BarChartRodData(
           y: 7,
           width: 20,
-          colors: [primaryColor!],
+          colors: [adminPanelPrimaryColor],
           borderRadius: BorderRadius.circular(5))
     ]));
 

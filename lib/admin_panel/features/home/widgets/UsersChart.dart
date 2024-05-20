@@ -66,6 +66,7 @@ class BarChartUsers extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BarChart(BarChartData(
+      backgroundColor: secondaryColor,
         borderData: FlBorderData(border: Border.all(width: 0)),
         groupsSpace: 15,
         titlesData: FlTitlesData(
