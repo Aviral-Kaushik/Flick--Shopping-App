@@ -3,6 +3,7 @@ import 'package:flick/admin_panel/constants/Responsive.dart';
 import 'package:flick/admin_panel/features/home/widgets/DetailsCards.dart';
 import 'package:flick/admin_panel/features/home/widgets/TopReferalsList.dart';
 import 'package:flick/admin_panel/features/home/widgets/TopSellersList.dart';
+import 'package:flick/admin_panel/features/home/widgets/UserByDevicePieChart.dart';
 import 'package:flick/admin_panel/features/home/widgets/UsersChart.dart';
 import 'package:flick/admin_panel/features/home/widgets/ViewersLineChart.dart';
 import 'package:flick/utils/Constants.dart';
@@ -62,20 +63,14 @@ class _DashboardContentState extends State<DashboardContent> {
                Expanded(child: Column(
                 children: [
                   TopReferralsList(),
-                  //
-                  // Row(
-                  //   crossAxisAlignment: CrossAxisAlignment.start,
-                  //   children: [
-                  //     Expanded(
-                  //         flex: 2,
-                  //         child: TopReferralsList()
-                  //     )
-                  //   ],
-                  // ),
 
                   SizedBox(height: appPadding * 1.7,),
 
                   ViewersLineChart(),
+
+                  SizedBox(height: appPadding * 1.7,),
+
+                  UserByDevicePieChart(),
                 ],
               ))
             ],
