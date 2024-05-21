@@ -1,67 +1,89 @@
 import 'package:flick/admin_panel/constants/Responsive.dart';
-import 'package:flick/admin_panel/data/Data.dart';
+import 'package:flick/admin_panel/models/DetailsCardModel.dart';
 import 'package:flick/admin_panel/models/ReferralInfoModel.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class ReferralsCard extends StatefulWidget {
-  const ReferralsCard({super.key});
+class DetailsChipCard extends StatefulWidget {
+  DetailsChipCard({super.key, this.detailsCardData, this.referralData});
+
+  List<DetailsCardModel>? detailsCardData;
+  List<ReferralInfoModel>? referralData;
 
   @override
-  State<ReferralsCard> createState() => _DetailsCardState();
+  State<DetailsChipCard> createState() => _DetailsCardState();
 }
 
-class _DetailsCardState extends State<ReferralsCard> {
+class _DetailsCardState extends State<DetailsChipCard> {
   @override
   Widget build(BuildContext context) {
 
     Size size = MediaQuery.of(context).size;
 
     return Responsive(
-      mobile: ReferralCarGridView(
+      mobile: DetailsChipGridView(
         crossAxisCount: size.width < 650 ? 2 : 4,
         childAspectRatio: size.width < 650 ? 2 : 1.5,
+        detailsCardData: widget.detailsCardData,
+        referralData: widget.referralData
       ),
-      tablet: const ReferralCarGridView(),
-      desktop: const ReferralCarGridView(),
+      tablet: DetailsChipGridView(detailsCardData: widget.detailsCardData,
+          referralData: widget.referralData),
+      desktop: DetailsChipGridView(detailsCardData: widget.detailsCardData,
+          referralData: widget.referralData),
     );
   }
 }
 
-class ReferralCarGridView extends StatelessWidget {
-  const ReferralCarGridView(
+class DetailsChipGridView extends StatelessWidget {
+  DetailsChipGridView(
       {super.key,
       this.crossAxisCount = 4,
-      this.childAspectRatio = 1.4});
+      this.childAspectRatio = 1.4, this.detailsCardData, this.referralData});
 
   final int crossAxisCount;
   final double childAspectRatio;
 
+  List<DetailsCardModel>? detailsCardData;
+  List<ReferralInfoModel>? referralData;
+
+
   @override
   Widget build(BuildContext context) {
+
+    bool hasReferralData = referralData != null ? true : false;
+
     return GridView.builder(
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
-        itemCount: referralData.length,
+        itemCount: hasReferralData ? referralData?.length : detailsCardData?.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: crossAxisCount,
             crossAxisSpacing: appPadding,
             mainAxisSpacing: appPadding,
             childAspectRatio: childAspectRatio),
-        itemBuilder: (context, index) =>
-            ReferralCardLayout(referralModel: referralData[index]));
+        itemBuilder: (context, index) {
+          if (hasReferralData) {
+            return DetailsChipLayout(referralModel: referralData?[index]);
+          } else {
+            return DetailsChipLayout(detailsCardModel: detailsCardData?[index]);
+          }
+          return null;
+        });
   }
 }
 
-class ReferralCardLayout extends StatelessWidget {
-  const ReferralCardLayout({super.key, required this.referralModel});
+class DetailsChipLayout extends StatelessWidget {
+  DetailsChipLayout({super.key, this.referralModel, this.detailsCardModel});
 
-  final ReferralInfoModel referralModel;
+  ReferralInfoModel? referralModel;
+  DetailsCardModel? detailsCardModel;
 
   @override
   Widget build(BuildContext context) {
+    bool hasReferralData = referralModel != null ? true : false;
     return Container(
       padding: const EdgeInsets.symmetric(
           horizontal: appPadding, vertical: appPadding / 2),
@@ -84,7 +106,7 @@ class ReferralCardLayout extends StatelessWidget {
             children: [
 
               Text(
-                "${referralModel.count}",
+                "${hasReferralData ? referralModel?.count : detailsCardModel?.count}",
                 style: const TextStyle(
                     color: textColor,
                     fontSize: 18,
@@ -96,18 +118,18 @@ class ReferralCardLayout extends StatelessWidget {
                 height: 40,
                 width: 40,
                 decoration: BoxDecoration(
-                    color: referralModel.color?.withOpacity(0.1),
+                    color: hasReferralData ? referralModel?.color?.withOpacity(0.1) : detailsCardModel?.color?.withOpacity(0.1),
                     shape: BoxShape.circle),
                 child: SvgPicture.asset(
-                  referralModel.svgSrc!,
-                  color: referralModel.color,
+                  hasReferralData ? referralModel!.svgSrc! : detailsCardModel!.svgSrc!,
+                  color: hasReferralData? referralModel?.color : detailsCardModel?.color,
                 ),
               )
             ],
           ),
 
           Text(
-            "${referralModel.title}",
+            "${hasReferralData ? referralModel?.title : detailsCardModel?.title}",
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(

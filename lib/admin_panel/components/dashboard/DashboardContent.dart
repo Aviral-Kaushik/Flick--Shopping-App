@@ -1,6 +1,7 @@
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
+import 'package:flick/admin_panel/components/widgets/DetailsChipCard.dart';
 import 'package:flick/admin_panel/constants/Responsive.dart';
-import 'package:flick/admin_panel/features/home/widgets/DetailsCards.dart';
+import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/admin_panel/features/home/widgets/TopSellersList.dart';
 import 'package:flick/admin_panel/features/home/widgets/UserByDevicePieChart.dart';
 import 'package:flick/admin_panel/features/home/widgets/UsersChart.dart';
@@ -39,7 +40,7 @@ class _DashboardContentState extends State<DashboardContent> {
                   flex: 5,
                   child: Column(
                     children: [
-                      const DetailsCards(),
+                      DetailsChipCard(detailsCardData: detailsCardData,),
 
                       const SizedBox(height: appPadding * 1.7,),
 
@@ -61,9 +62,6 @@ class _DashboardContentState extends State<DashboardContent> {
             children: [
                Expanded(child: Column(
                 children: [
-                  // TopReferralsList(),
-                  //
-                  // SizedBox(height: appPadding * 1.7,),
 
                   ViewersLineChart(),
 

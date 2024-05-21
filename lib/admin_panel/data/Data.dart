@@ -3,7 +3,7 @@ import 'package:flick/admin_panel/models/TopSellersModel.dart';
 import 'package:flick/admin_panel/models/ReferralInfoModel.dart';
 import 'package:flick/utils/Colors.dart';
 
-List detailsCardData = [
+List<DetailsCardModel> detailsCardData = [
   DetailsCardModel(
     title: "Subscribers",
     count: 720,
@@ -63,7 +63,7 @@ List topSellersData = [
   ),
 ];
 
-List referralData = [
+List<ReferralInfoModel> referralData = [
   ReferralInfoModel(
     title: "Facebook",
     count: 234,

@@ -1,5 +1,6 @@
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
-import 'package:flick/admin_panel/features/referral/widgets/ReferralsCards.dart';
+import 'package:flick/admin_panel/components/widgets/DetailsChipCard.dart';
+import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +26,7 @@ class _ReferralsScreenContentState extends State<ReferralsScreenContent> {
               height: appPadding,
             ),
 
-            const ReferralsCard()
+            DetailsChipCard(referralData: referralData)
           ],
         ),
       ),
