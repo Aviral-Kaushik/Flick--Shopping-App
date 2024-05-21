@@ -20,7 +20,8 @@ class _AdminPanelHomeScreenState extends State<AdminPanelHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: bgColor,
+      // backgroundColor: bgColor,
+      backgroundColor: secondaryColor,
       // appBar: AdminAppBar(),
       drawer: const AdminDrawerMenu(),
       body: SafeArea(

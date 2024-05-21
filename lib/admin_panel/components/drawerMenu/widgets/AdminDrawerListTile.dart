@@ -19,12 +19,12 @@ class AdminDrawerListTile extends StatelessWidget {
       horizontalTitleGap: 0.0,
       leading: SvgPicture.asset(
         icon,
-        color: grey,
+        color: adminPanelPrimaryColor,
         height: 20,
       ),
       title: Text(
         title,
-        style: const TextStyle(color: grey),
+        style: const TextStyle(color: textColor),
       ),
     );
   }

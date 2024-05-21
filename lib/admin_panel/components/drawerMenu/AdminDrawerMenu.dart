@@ -22,18 +22,33 @@ class AdminDrawerMenu extends StatelessWidget {
               onTap: () {}),
 
           AdminDrawerListTile(
-              title: "Blog Post",
-              icon: "assets/icons/BlogPost.svg",
+              title: "Users",
+              icon: "assets/icons/Users.svg",
               onTap: () {}),
 
           AdminDrawerListTile(
-              title: "Message",
+              title: "Products",
               icon: "assets/icons/Message.svg",
               onTap: () {}),
 
           AdminDrawerListTile(
-              title: "Statistics",
-              icon: "assets/icons/Statistics.svg",
+              title: "Referrals",
+              icon: "assets/icons/Referrals.svg",
+              onTap: () {}),
+
+          AdminDrawerListTile(
+              title: "Messages",
+              icon: "assets/icons/Messages.svg",
+              onTap: () {}),
+
+          AdminDrawerListTile(
+              title: "Terms of Use",
+              icon: "assets/icons/Policy.svg",
+              onTap: () {}),
+
+          AdminDrawerListTile(
+              title: "Privacy Policy",
+              icon: "assets/icons/Policy.svg",
               onTap: () {}),
 
           const Padding(
