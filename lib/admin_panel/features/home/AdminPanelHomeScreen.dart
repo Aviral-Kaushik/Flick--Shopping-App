@@ -1,4 +1,3 @@
-import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/admin_panel/components/dashboard/DashboardContent.dart';
 import 'package:flick/admin_panel/components/drawerMenu/AdminDrawerMenu.dart';
 import 'package:flick/utils/Colors.dart';
@@ -20,9 +19,7 @@ class _AdminPanelHomeScreenState extends State<AdminPanelHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: bgColor,
-      backgroundColor: secondaryColor,
-      // appBar: AdminAppBar(),
+      backgroundColor: bgColor,
       drawer: const AdminDrawerMenu(),
       body: SafeArea(
         child: Row(

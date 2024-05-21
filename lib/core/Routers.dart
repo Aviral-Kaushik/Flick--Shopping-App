@@ -1,5 +1,6 @@
 import 'package:flick/admin_panel/controllers/AdminPanelController.dart';
 import 'package:flick/admin_panel/features/home/AdminPanelHomeScreen.dart';
+import 'package:flick/admin_panel/features/referral/ReferralsScreen.dart';
 import 'package:flick/features/cart/screen/CartScreen.dart';
 import 'package:flick/features/home/screen/HomeScreen.dart';
 import 'package:flick/features/intro/IntroScreen.dart';
@@ -27,6 +28,8 @@ class Routers {
           ));
       case "/profileHome":
         return MaterialPageRoute(builder: (_) => const ProfileHome());
+      case "/referralsScreen":
+        return MaterialPageRoute(builder: (_) => const ReferralsScreen());
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(

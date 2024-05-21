@@ -34,7 +34,9 @@ class AdminDrawerMenu extends StatelessWidget {
           AdminDrawerListTile(
               title: "Referrals",
               icon: "assets/icons/Referrals.svg",
-              onTap: () {}),
+              onTap: () {
+                Navigator.pushNamed(context, "/referralsScreen");
+              }),
 
           AdminDrawerListTile(
               title: "Messages",

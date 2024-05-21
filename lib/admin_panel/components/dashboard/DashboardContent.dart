@@ -1,7 +1,6 @@
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/admin_panel/constants/Responsive.dart';
 import 'package:flick/admin_panel/features/home/widgets/DetailsCards.dart';
-import 'package:flick/admin_panel/features/home/widgets/TopReferalsList.dart';
 import 'package:flick/admin_panel/features/home/widgets/TopSellersList.dart';
 import 'package:flick/admin_panel/features/home/widgets/UserByDevicePieChart.dart';
 import 'package:flick/admin_panel/features/home/widgets/UsersChart.dart';
@@ -62,9 +61,9 @@ class _DashboardContentState extends State<DashboardContent> {
             children: [
                Expanded(child: Column(
                 children: [
-                  TopReferralsList(),
-
-                  SizedBox(height: appPadding * 1.7,),
+                  // TopReferralsList(),
+                  //
+                  // SizedBox(height: appPadding * 1.7,),
 
                   ViewersLineChart(),
 
