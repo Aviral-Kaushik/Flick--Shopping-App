@@ -19,7 +19,9 @@ class AdminDrawerMenu extends StatelessWidget {
           AdminDrawerListTile(
               title: "Dash Board",
               icon: "assets/icons/Dashboard.svg",
-              onTap: () {}),
+              onTap: () {
+                Navigator.pushNamed(context, "/adminPanel");
+              }),
 
           AdminDrawerListTile(
               title: "Users",
