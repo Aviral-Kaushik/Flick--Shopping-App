@@ -22,81 +22,85 @@ class _ReferralsScreenContentState extends State<ReferralsScreenContent> {
   Widget build(BuildContext context) {
     referralMessageController.text = initialTextMessage;
     return SafeArea(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.only(
-            left: appPadding, right: appPadding, bottom: appPadding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const AdminAppBar(),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SingleChildScrollView(
+            padding: const EdgeInsets.only(
+                left: appPadding, right: appPadding, bottom: appPadding),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const AdminAppBar(),
 
-            const SizedBox(
-              height: appPadding,
-            ),
-
-            DetailsChipCard(referralData: referralData),
-
-            const SizedBox(
-              height: appPadding * 3,
-            ),
-
-            const Text("Referral Message", style: TextStyle(
-              color: textColor,
-              fontWeight: FontWeight.bold,
-              fontSize: 25
-            )),
-
-            const SizedBox(height: 4,),
-
-            const Text("This message will be shared with each referral message with app link",
-            style: TextStyle(
-              color: grey,
-              fontSize: 11
-            ),),
-
-            const SizedBox(height: appPadding * 2 ,),
-
-            TextFormField(
-              minLines: 8,
-              maxLines: null,
-              controller: referralMessageController,
-              keyboardType: TextInputType.multiline,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: adminPanelPrimaryColor
-                  )
+                const SizedBox(
+                  height: appPadding,
                 ),
-                labelText: "Referral Message",
-              ),
-            ),
 
-            const SizedBox(height: appPadding * 2 ,),
+                DetailsChipCard(referralData: referralData),
 
-            GestureDetector(
-                onTap: () {
-                  // TODO Show Successful Dialog Here
-                },
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.only(
-                      top: appPadding / 2,
-                      bottom: appPadding / 2),
-                  decoration: BoxDecoration(
-                    color: adminPanelPrimaryColor,
-                    borderRadius: BorderRadius.circular(24)
-                  ),
-                  child: Center(
-                    child: Text("Submit", style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: whiteColor
-                    ),),
+                const SizedBox(
+                  height: appPadding * 3,
+                ),
+
+                const Text("Referral Message", style: TextStyle(
+                  color: textColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25
+                )),
+
+                const SizedBox(height: 4,),
+
+                const Text("This message will be shared with each referral message with app link",
+                style: TextStyle(
+                  color: grey,
+                  fontSize: 11
+                ),),
+
+                const SizedBox(height: appPadding * 2 ,),
+
+                TextFormField(
+                  minLines: 8,
+                  maxLines: null,
+                  controller: referralMessageController,
+                  keyboardType: TextInputType.multiline,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: adminPanelPrimaryColor
+                      )
+                    ),
+                    labelText: "Referral Message",
                   ),
                 ),
+
+                const SizedBox(height: appPadding * 2 ,),
+
+              ],
+            ),
+          ),
+
+          GestureDetector(
+            onTap: () {
+              // TODO Show Successful Dialog Here
+            },
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(appPadding),
+              decoration: BoxDecoration(
+                  color: adminPanelPrimaryColor,
+                  borderRadius: BorderRadius.circular(24)
               ),
-          ],
-        ),
+              child: Center(
+                child: Text("Submit", style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: whiteColor
+                ),),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
