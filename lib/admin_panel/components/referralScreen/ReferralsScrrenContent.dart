@@ -89,11 +89,14 @@ class _ReferralsScreenContentState extends State<ReferralsScreenContent> {
               padding: const EdgeInsets.only(
                   top: appPadding / 2,
                   bottom: appPadding / 2),
+
               margin: const EdgeInsets.all(appPadding),
+
               decoration: BoxDecoration(
                   color: adminPanelPrimaryColor,
                   borderRadius: BorderRadius.circular(24)
               ),
+
               child: Center(
                 child: Text("Submit", style: TextStyle(
                     fontSize: 15,

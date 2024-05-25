@@ -17,11 +17,13 @@ class _ReferralsScreenState extends State<ReferralsScreen> {
       backgroundColor: bgColor,
       drawer: AdminDrawerMenu(),
       body: SafeArea(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(child: ReferralsScreenContent())
-          ],
+        child: SingleChildScrollView(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(child: ReferralsScreenContent())
+            ],
+          ),
         ),
       ),
     );

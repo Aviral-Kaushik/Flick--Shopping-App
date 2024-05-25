@@ -17,10 +17,8 @@ class AdminAppBar extends StatelessWidget {
             onPressed: () {
               Scaffold.of(context).openDrawer();
             },
-            icon: const Padding(
-              padding: EdgeInsets.only(left: 8.0),
-              child: Icon(Icons.menu, color: Colors.black),
-            )),
+            icon: const Icon(Icons.menu, color: Colors.black),
+            ),
 
         Padding(
           padding: const EdgeInsets.all(appPadding),

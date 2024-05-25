@@ -1,4 +1,4 @@
-import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
+import 'package:flick/admin_panel/components/drawerMenu/AdminDrawerMenu.dart';
 import 'package:flick/admin_panel/components/termsAndPrivacyScreen/TermsAndPrivacyScreenContent.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flutter/material.dart';
@@ -25,13 +25,15 @@ class _TermsAndPrivacyState extends State<TermsAndPrivacyScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: bgColor,
-      drawer: const AdminAppBar(),
+      drawer: const AdminDrawerMenu(),
       body: SafeArea(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(child: TermsAndPrivacyScreenContent(showUIForPrivacyPolicy: showUiForPrivacyPolicy,))
-          ],
+        child: SingleChildScrollView(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(child: TermsAndPrivacyScreenContent(showUIForPrivacyPolicy: showUiForPrivacyPolicy,))
+            ],
+          ),
         ),
       )
     );
