@@ -37,7 +37,7 @@ class AdminDrawerMenu extends StatelessWidget {
               title: "Referrals",
               icon: "assets/icons/Referrals.svg",
               onTap: () {
-                Navigator.pushNamed(context, "/referralsScreen");
+                Navigator.pushNamed(context, "/adminReferralsScreen");
               }),
 
           AdminDrawerListTile(
@@ -48,12 +48,16 @@ class AdminDrawerMenu extends StatelessWidget {
           AdminDrawerListTile(
               title: "Terms of Use",
               icon: "assets/icons/Policy.svg",
-              onTap: () {}),
+              onTap: () {
+                Navigator.pushNamed(context, "/adminTermsAndCondition");
+              }),
 
           AdminDrawerListTile(
               title: "Privacy Policy",
               icon: "assets/icons/Policy.svg",
-              onTap: () {}),
+              onTap: () {
+                Navigator.pushNamed(context, "/adminPrivacyPolicyScreen");
+              }),
 
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: appPadding * 2),

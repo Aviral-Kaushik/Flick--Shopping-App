@@ -86,7 +86,10 @@ class _ReferralsScreenContentState extends State<ReferralsScreenContent> {
             },
             child: Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(appPadding),
+              padding: const EdgeInsets.only(
+                  top: appPadding / 2,
+                  bottom: appPadding / 2),
+              margin: const EdgeInsets.all(appPadding),
               decoration: BoxDecoration(
                   color: adminPanelPrimaryColor,
                   borderRadius: BorderRadius.circular(24)

@@ -2,6 +2,7 @@ import 'package:flick/models/Address.dart';
 import 'package:flick/models/Product.dart';
 
 class User {
+
   User({
    required this.id,
    required this.username,
