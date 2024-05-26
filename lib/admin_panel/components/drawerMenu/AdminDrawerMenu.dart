@@ -26,7 +26,9 @@ class AdminDrawerMenu extends StatelessWidget {
           AdminDrawerListTile(
               title: "Users",
               icon: "assets/icons/Users.svg",
-              onTap: () {}),
+              onTap: () {
+                Navigator.pushNamed(context, "/adminUsersListScreen");
+              }),
 
           AdminDrawerListTile(
               title: "Products",
