@@ -1,4 +1,6 @@
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
+import 'package:flick/admin_panel/data/Data.dart';
+import 'package:flick/models/User.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,15 @@ class UsersListContent extends StatefulWidget {
 }
 
 class _UsersListContentState extends State<UsersListContent> {
+
+  late List<User> usersData;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    usersData = getUsersData();
+  }
 
   TextEditingController searchController = TextEditingController();
 
@@ -69,8 +80,7 @@ class _UsersListContentState extends State<UsersListContent> {
                         textStyle: MaterialStateProperty.resolveWith((states) {
                           return TextStyle(
                               color: whiteTextColor,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold
+                              fontSize: 13,
                           );
                         })
                       ), child: Row(
@@ -85,8 +95,7 @@ class _UsersListContentState extends State<UsersListContent> {
                             Text(
                               "Filter", style: TextStyle(
                                 color: whiteTextColor,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w700
+                                fontSize: 13,
                             ),
                             ),
                           ],
@@ -94,6 +103,16 @@ class _UsersListContentState extends State<UsersListContent> {
                     ],
                   ),
 
+                  const SizedBox(height: appPadding * 2,),
+
+                  // TODO Implement Pagination Here like show 10 user on single page then next page
+                  ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: usersData.length,
+                      itemBuilder: (context, index) => SingleUserListLayout(
+                        user: usersData[index]
+                      )),
 
                 ],
               ),
@@ -102,3 +121,72 @@ class _UsersListContentState extends State<UsersListContent> {
     ));
   }
 }
+
+class SingleUserListLayout extends StatefulWidget {
+  const SingleUserListLayout({super.key, required this.user});
+
+  final User user;
+
+  @override
+  State<SingleUserListLayout> createState() => _SingleUserListLayoutState();
+}
+
+class _SingleUserListLayoutState extends State<SingleUserListLayout> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: appPadding),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+
+              // ClipRRect(
+              //     borderRadius: BorderRadius.circular(30),
+              //     child: Image.network(
+              //       widget.user.profilePhoto,
+              //       width: 60, height: 60,
+              //       fit: BoxFit.cover,
+              //     )),
+
+              ClipRRect(
+                  borderRadius: BorderRadius.circular(30),
+                  child: Image.asset(
+                    widget.user.profilePhoto,
+                    width: 60, height: 60,
+                    fit: BoxFit.cover,
+                  )),
+
+              const SizedBox(width: appPadding,),
+
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(widget.user.name, style: const TextStyle(
+                    color: textColor,
+                    fontSize: 15,
+                    overflow: TextOverflow.ellipsis,
+                  ),),
+
+                  Text(widget.user.username, style: TextStyle(
+                      color: textColor.withOpacity(0.4),
+                      fontSize: 13,
+                      overflow: TextOverflow.ellipsis,
+                  ),),
+                ],
+              )
+            ],
+          ),
+
+          const Icon(Icons.edit_note, color: grey),
+        ],
+      ),
+    );
+  }
+}
+
