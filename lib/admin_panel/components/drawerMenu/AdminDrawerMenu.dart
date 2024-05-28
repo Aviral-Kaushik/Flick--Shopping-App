@@ -1,6 +1,5 @@
 import 'package:flick/admin_panel/components/drawerMenu/widgets/AdminDrawerListTile.dart';
 import 'package:flick/utils/Colors.dart';
-import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
 
 class AdminDrawerMenu extends StatelessWidget {
@@ -9,11 +8,20 @@ class AdminDrawerMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
+      backgroundColor: darkGreyButtonBackground,
+      child: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(appPadding),
-            child: Image.asset('assets/images/logowithtext.png'),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            child: DrawerHeader(
+                child: Image.asset(
+                  "assets/images/logowithtext.png",
+                )),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Divider(color: dividerColor,),
           ),
 
           AdminDrawerListTile(
@@ -61,12 +69,9 @@ class AdminDrawerMenu extends StatelessWidget {
                 Navigator.pushNamed(context, "/adminPrivacyPolicyScreen");
               }),
 
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: appPadding * 2),
-            child: Divider(
-              color: grey,
-              thickness: 0.2,
-            ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Divider(color: dividerColor,),
           ),
 
           AdminDrawerListTile(

@@ -30,6 +30,8 @@ Color? whiteColor = Colors.white;
 // Profile Page Color
 Color accentIconColor = const Color(0xff54c0f1);
 
+Color blueThemeColor = const Color(0xff00baf2);
+
 // Admin Panel Colors
 const adminPanelPrimaryColor = Color.fromRGBO(17, 159, 250, 1.0);
 const secondaryColor = Colors.white;

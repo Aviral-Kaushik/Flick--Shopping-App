@@ -93,7 +93,7 @@ class _ReferralsScreenContentState extends State<ReferralsScreenContent> {
               margin: const EdgeInsets.all(appPadding),
 
               decoration: BoxDecoration(
-                  color: adminPanelPrimaryColor,
+                  color: blueThemeColor,
                   borderRadius: BorderRadius.circular(24)
               ),
 

@@ -14,17 +14,19 @@ class AdminDrawerListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onTap: onTap,
-      horizontalTitleGap: 0.0,
-      leading: SvgPicture.asset(
-        icon,
-        color: adminPanelPrimaryColor,
-        height: 20,
-      ),
-      title: Text(
-        title,
-        style: const TextStyle(color: textColor),
+    return Padding(
+      padding: const EdgeInsets.only(left: 25.0),
+      child: ListTile(
+        onTap: onTap,
+        leading: SvgPicture.asset(
+          icon,
+          color: adminPanelPrimaryColor,
+          height: 20,
+        ),
+        title: Text(
+          title,
+          style: const TextStyle(color: Colors.white),
+        ),
       ),
     );
   }

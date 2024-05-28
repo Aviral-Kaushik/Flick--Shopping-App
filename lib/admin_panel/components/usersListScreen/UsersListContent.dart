@@ -11,6 +11,9 @@ class UsersListContent extends StatefulWidget {
 }
 
 class _UsersListContentState extends State<UsersListContent> {
+
+  TextEditingController searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -30,14 +33,13 @@ class _UsersListContentState extends State<UsersListContent> {
 
                   Container(
                     height: 50,
-                    // padding: const EdgeInsets.all(appPadding),
-                    // margin: const EdgeInsets.symmetric(horizontal: 25),
                     decoration: BoxDecoration(
                       color: searchBarBackgroundColor,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: TextField(
                       keyboardType: TextInputType.text,
+                      controller: searchController,
                       decoration: InputDecoration(
                         prefixIcon: const Icon(Icons.search),
                         border: OutlineInputBorder(
@@ -48,11 +50,54 @@ class _UsersListContentState extends State<UsersListContent> {
                         labelText: "Search"
                       ),
                     ),
-                  )
+                  ),
+
+                  const SizedBox(
+                    height: 12,
+                  ),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ElevatedButton(onPressed: () {
+                        // TODO : Show Filter Dialog Box Here
+                      },
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.resolveWith((states) {
+                            return blueThemeColor;
+                          }),
+                        textStyle: MaterialStateProperty.resolveWith((states) {
+                          return TextStyle(
+                              color: whiteTextColor,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold
+                          );
+                        })
+                      ), child: Row(
+                          children: [
+                            const Icon(Icons.filter_list_alt,
+                                color: Colors.white),
+
+                            const SizedBox(
+                              width: 8,
+                            ),
+
+                            Text(
+                              "Filter", style: TextStyle(
+                                color: whiteTextColor,
+                                fontSize: 17,
+                                fontWeight: FontWeight.w700
+                            ),
+                            ),
+                          ],
+                        ),),
+                    ],
+                  ),
+
+
                 ],
               ),
             ),
-
           ],
     ));
   }
