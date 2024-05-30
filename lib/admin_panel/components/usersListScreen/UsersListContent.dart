@@ -106,13 +106,23 @@ class _UsersListContentState extends State<UsersListContent> {
                   const SizedBox(height: appPadding * 2,),
 
                   // TODO Implement Pagination Here like show 10 user on single page then next page
-                  ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: usersData.length,
-                      itemBuilder: (context, index) => SingleUserListLayout(
-                        user: usersData[index]
-                      )),
+                  Container(
+                    padding: const EdgeInsets.all(appPadding),
+                    decoration: BoxDecoration(
+                      color: whiteColor,
+                      borderRadius: BorderRadius.circular(appPadding)
+                    ),
+                    child: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: usersData.length,
+                        itemBuilder: (context, index) => SingleUserListLayout(
+                          user: usersData[index],
+                          onTap: () {
+                            // TODO Open Edit User Page Here
+                          },
+                        )),
+                  ),
 
                 ],
               ),
@@ -123,9 +133,11 @@ class _UsersListContentState extends State<UsersListContent> {
 }
 
 class SingleUserListLayout extends StatefulWidget {
-  const SingleUserListLayout({super.key, required this.user});
+  const SingleUserListLayout({super.key, required this.user,
+    required this.onTap});
 
   final User user;
+  final Function() onTap;
 
   @override
   State<SingleUserListLayout> createState() => _SingleUserListLayoutState();
@@ -183,7 +195,8 @@ class _SingleUserListLayoutState extends State<SingleUserListLayout> {
             ],
           ),
 
-          const Icon(Icons.edit_note, color: grey),
+          GestureDetector(onTap: widget.onTap,
+              child: const Icon(Icons.edit_note, color: grey)),
         ],
       ),
     );
