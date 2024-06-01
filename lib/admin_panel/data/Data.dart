@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flick/admin_panel/models/DetailsCardModel.dart';
 import 'package:flick/admin_panel/models/TopSellersModel.dart';
 import 'package:flick/admin_panel/models/ReferralInfoModel.dart';
+import 'package:flick/models/Message.dart';
 import 'package:flick/models/User.dart';
 import 'package:flick/utils/Colors.dart';
 
@@ -196,4 +197,14 @@ List<User> getUsersData() {
   }
 
   return usersList;
+}
+
+List<Message> getDummyMessages() {
+  return [
+    Message(id: "1", name: "Jobye Phillipp", contactEmail: "jphillipp2@deviantart.com", message: "What is Flick?", dateAndTime: DateTime.now().toString()),
+    Message(id: "2", name: "Ella Werendell", contactEmail: "ewerendell0@yandex.ru", message: "How does it work?", dateAndTime: DateTime.now().toString()),
+    Message(id: "3", name: "Donnajean Hawse", contactEmail: "dhawse3@printfriendly.com", message: "When will new nike new limited edition will come?", dateAndTime: DateTime.now().toString()),
+    Message(id: "4", name: "Ban Steutly", contactEmail: "bsteutly6@booking.com", message: "Does you deals in electronics?", dateAndTime: DateTime.now().toString()),
+    Message(id: "5", name: "Rosamond Fanning", contactEmail: "rfanning9@disqus.com", message: "When will the special festiv sale will come?", dateAndTime: DateTime.now().toString())
+  ];
 }
