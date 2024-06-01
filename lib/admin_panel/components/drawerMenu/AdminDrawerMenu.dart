@@ -53,7 +53,9 @@ class AdminDrawerMenu extends StatelessWidget {
           AdminDrawerListTile(
               title: "Messages",
               icon: "assets/icons/Messages.svg",
-              onTap: () {}),
+              onTap: () {
+                Navigator.pushNamed(context, "/adminMessagesScreen");
+              }),
 
           AdminDrawerListTile(
               title: "Terms of Use",

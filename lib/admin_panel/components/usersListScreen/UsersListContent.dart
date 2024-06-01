@@ -15,12 +15,13 @@ class UsersListContent extends StatefulWidget {
 class _UsersListContentState extends State<UsersListContent> {
 
   late List<User> usersData;
+  late int totalNumberOfUsers;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     usersData = getUsersData();
+    totalNumberOfUsers = 10;
   }
 
   TextEditingController searchController = TextEditingController();
@@ -112,17 +113,33 @@ class _UsersListContentState extends State<UsersListContent> {
                       color: whiteColor,
                       borderRadius: BorderRadius.circular(appPadding)
                     ),
-                    child: ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: usersData.length,
-                        itemBuilder: (context, index) => SingleUserListLayout(
-                          user: usersData[index],
-                          onTap: () {
-                            // TODO Open Edit User Page Here
-                          },
-                        )),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+
+                        const Text("Users", style: TextStyle(
+                          color: textColor,
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold
+                        ),),
+
+                        const SizedBox(height: appPadding,),
+
+                        ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: usersData.length,
+                            itemBuilder: (context, index) => SingleUserListLayout(
+                              user: usersData[index],
+                              onTap: () {
+                                // TODO Open Edit User Page Here
+                              },
+                            )),
+                      ],
+                    ),
                   ),
+
+                  const SizedBox(height: appPadding * 2,),
 
                 ],
               ),

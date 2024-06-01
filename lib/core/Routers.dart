@@ -1,5 +1,6 @@
 import 'package:flick/admin_panel/controllers/AdminPanelController.dart';
 import 'package:flick/admin_panel/features/home/AdminPanelHomeScreen.dart';
+import 'package:flick/admin_panel/features/messages/MessagesScreen.dart';
 import 'package:flick/admin_panel/features/referral/ReferralsScreen.dart';
 import 'package:flick/admin_panel/features/termsAndPrivacy/TermsAndPrivacyScreeen.dart';
 import 'package:flick/admin_panel/features/users/UsersListScreen.dart';
@@ -38,6 +39,8 @@ class Routers {
         return MaterialPageRoute(builder: (_) => const TermsAndPrivacyScreen(showUIForPrivacyPolicy: true));
       case "/adminUsersListScreen":
         return MaterialPageRoute(builder: (_) => const UsersListScreen());
+      case "/adminMessagesScreen":
+        return MaterialPageRoute(builder: (_) => const MessagesScreen());
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(
