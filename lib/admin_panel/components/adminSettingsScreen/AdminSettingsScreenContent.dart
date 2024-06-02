@@ -1,10 +1,10 @@
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
-import 'package:flick/admin_panel/components/widgets/DetailsChipCard.dart';
 import 'package:flick/admin_panel/components/widgets/SerachBarWithButton.dart';
+import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/admin_panel/models/DetailsCardModel.dart';
+import 'package:flick/models/User.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -19,6 +19,7 @@ class _AdminSettingsScreenContentState extends State<AdminSettingsScreenContent>
 
   late DetailsCardModel adminCardModel;
   late int totalAdmins;
+  late List<User> adminUsersList;
 
   TextEditingController searchController = TextEditingController();
 
@@ -34,6 +35,9 @@ class _AdminSettingsScreenContentState extends State<AdminSettingsScreenContent>
       svgSrc: "assets/icons/Subscribers.svg",
       color: adminPanelPrimaryColor,
     );
+
+    adminUsersList = getUsersData().where((element) => element.isAdmin).toList();
+
   }
 
   @override
@@ -107,6 +111,41 @@ class _AdminSettingsScreenContentState extends State<AdminSettingsScreenContent>
             const SizedBox(
               height: appPadding,
             ),
+
+            Container(
+              padding: const EdgeInsets.all(appPadding),
+              decoration: BoxDecoration(
+                color: whiteColor,
+                borderRadius: BorderRadius.circular(appPadding)
+              ),
+              child: Column(
+                children: [
+
+                  Text("Admins List", style: TextStyle(
+                    color: blackColor,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold
+                  ),),
+
+                  const SizedBox(
+                    height: appPadding / 2,
+                  ),
+
+                  ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: adminUsersList.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) =>
+                          SingleAdminUserLayout(
+                              user: adminUsersList[index],
+                              onTap: () {
+                               // TODO Show Remove Admin Dialog Here
+                              }
+                          )),
+
+                ],
+              ),
+            )
           ],
         ),
       ),
@@ -155,7 +194,7 @@ class _AdminChipCardState extends State<AdminChipCard> {
                     fontWeight: FontWeight.w800),
               ),
 
-              const SizedBox(width: appPadding * 2,),
+              const SizedBox(width: appPadding * 3,),
 
               Container(
                 padding: const EdgeInsets.all(appPadding / 2),
@@ -172,7 +211,7 @@ class _AdminChipCardState extends State<AdminChipCard> {
             ],
           ),
 
-          const SizedBox(width: appPadding,),
+          const SizedBox(width: appPadding * 2,),
 
           Text(
             "${widget.adminCardModel.title}",
@@ -186,4 +225,71 @@ class _AdminChipCardState extends State<AdminChipCard> {
     );
   }
 }
+
+class SingleAdminUserLayout extends StatefulWidget {
+  const SingleAdminUserLayout({super.key,
+        required this.user, required this.onTap});
+
+  final User user;
+  final Function() onTap;
+
+  @override
+  State<SingleAdminUserLayout> createState() => _SingleAdminUserLayoutState();
+}
+
+class _SingleAdminUserLayoutState extends State<SingleAdminUserLayout> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(top: appPadding),
+      padding: const EdgeInsets.all(appPadding / 2),
+      child: Row(
+        children: [
+
+          ClipRRect(
+              borderRadius: BorderRadius.circular(40),
+              child: Image.asset(
+                widget.user.profilePhoto,
+                height: 38,
+                width: 38,
+                fit: BoxFit.cover,
+              )),
+
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: appPadding),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+
+                  Text(
+                    widget.user.name,
+                    style: const TextStyle(
+                        color: textColor, fontWeight: FontWeight.w600),
+                  ),
+
+                  Text(
+                    widget.user.email,
+                    style: TextStyle(
+                        color: textColor.withOpacity(0.5), fontSize: 13),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          GestureDetector(
+            onTap: widget.onTap,
+            child: const Icon(
+              Icons.delete_outline,
+              color: red,
+              size: 18,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
 
