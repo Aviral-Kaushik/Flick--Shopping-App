@@ -41,6 +41,7 @@ dependencies:
   fl_chart: ^0.36.1
   data_table_2: ^2.0.3
   line_awesome_flutter: ^2.0.0
+  flutter_statusbarcolor_ns: ^0.5.0
 
 dev_dependencies:
   flutter_test:

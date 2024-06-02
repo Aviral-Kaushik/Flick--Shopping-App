@@ -1,6 +1,7 @@
 import 'package:flick/admin_panel/constants/Responsive.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -13,12 +14,10 @@ class AdminAppBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
 
-        IconButton(
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-            icon: const Icon(Icons.menu, color: Colors.black),
-            ),
+        GestureDetector(
+            onTap: () => Scaffold.of(context).openDrawer(),
+            child: const Icon(Icons.menu, color: Colors.black)
+        ),
 
         Padding(
           padding: const EdgeInsets.all(appPadding),

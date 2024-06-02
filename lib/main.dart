@@ -1,6 +1,7 @@
 import 'package:flick/core/Routers.dart';
 import 'package:flick/core/models/CartItem.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -15,6 +16,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
     return ChangeNotifierProvider(
       create: (context) => CartItem(),
       builder: (context, child) => const MaterialApp(
