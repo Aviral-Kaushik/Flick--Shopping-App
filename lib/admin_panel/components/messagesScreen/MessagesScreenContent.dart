@@ -1,4 +1,5 @@
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
+import 'package:flick/admin_panel/components/widgets/SerachBarWithButton.dart';
 import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/models/Message.dart';
 import 'package:flick/utils/Colors.dart';
@@ -115,66 +116,11 @@ class _MessagesScreenContentState extends State<MessagesScreenContent> {
                 height: appPadding * 2,
               ),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-
-                  Expanded(
-                    flex: 2,
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: whiteColor,
-                        borderRadius: BorderRadius.circular(40),
-                      ),
-
-                      child: TextField(
-                        keyboardType: TextInputType.text,
-                        controller: searchController,
-                        decoration: InputDecoration(
-                            prefixIcon: const Icon(Icons.search),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(40.0),
-                                borderSide: BorderSide(color: textFiedGreyBorder)),
-                            labelText: "Email"),
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(
-                    width: appPadding / 2,
-                  ),
-
-                  Expanded(
-                    flex: 1,
-                    child: SizedBox(
-                      height: 50,
-
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // TODO : Implement search here
-                        },
-                        style: ButtonStyle(backgroundColor:
-                            MaterialStateProperty.resolveWith((states) {
-                          return blackColor;
-                        }), textStyle: MaterialStateProperty.resolveWith((states) {
-                          return TextStyle(
-                            color: whiteTextColor,
-                            fontSize: 17,
-                          );
-                        })),
-
-                        child: Text(
-                              "Search",
-                              style: TextStyle(
-                                color: whiteTextColor,
-                                fontSize: 17,
-                              ),
-                            ),
-                      ),
-                    ),
-                  ),
-                ],
+              SearchBarWithButton(
+                  searchController: searchController,
+                  onPressed: () {
+                    // TODO : Implement search here
+                  }
               ),
 
               const SizedBox(
@@ -195,25 +141,6 @@ class _MessagesScreenContentState extends State<MessagesScreenContent> {
                        message:  messages[index],
                         onTap: (Offset offset) async {
                           _showPopupMenu(context, offset);
-                         // PopupMenuButton<String>(
-                         //   initialValue: "1",
-                         //   itemBuilder: ((context) {
-                         //     return const [
-                         //
-                         //       PopupMenuItem(value: "1",
-                         //         child: Text("Show Message", style: TextStyle(
-                         //           color: textColor,
-                         //           fontSize: 15
-                         //         ),),),
-                         //
-                         //       PopupMenuItem(value: "2",
-                         //         child: Text("Delete Message", style: TextStyle(
-                         //              color: Colors.red,
-                         //             fontSize: 15),),),
-                         //     ];
-                         //   }),
-                         //   onSelected: (value) => handleContextMenuButtonTap(value),
-                         // );
                         },
                     )),
               )

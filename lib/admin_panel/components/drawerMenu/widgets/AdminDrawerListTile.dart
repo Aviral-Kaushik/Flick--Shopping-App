@@ -7,10 +7,14 @@ class AdminDrawerListTile extends StatelessWidget {
       {super.key,
       required this.title,
       required this.icon,
-      required this.onTap});
+      required this.onTap,
+      required this.isSvgImage,
+      this.tileIcon});
 
   final String title, icon;
   final void Function() onTap;
+  final bool isSvgImage;
+  final Icon? tileIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +22,11 @@ class AdminDrawerListTile extends StatelessWidget {
       padding: const EdgeInsets.only(left: 25.0),
       child: ListTile(
         onTap: onTap,
-        leading: SvgPicture.asset(
+        leading: isSvgImage ? SvgPicture.asset(
           icon,
           color: adminPanelPrimaryColor,
           height: 20,
-        ),
+        ) : ((tileIcon == null) ? const Icon(Icons.device_unknown) : tileIcon),
         title: Text(
           title,
           style: const TextStyle(color: Colors.white),
