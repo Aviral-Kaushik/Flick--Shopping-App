@@ -18,11 +18,11 @@ class SuccessfulDialog extends StatelessWidget {
           borderRadius: BorderRadius.circular(appPadding)),
       elevation: 0.0,
       backgroundColor: Colors.transparent,
-      child: dialogContent(context),
+      child: successfulDialogContent(context),
     );
   }
 
-  dialogContent(BuildContext context) {
+  successfulDialogContent(BuildContext context) {
     return Stack(
       children: <Widget>[
 

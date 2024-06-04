@@ -1,5 +1,7 @@
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/admin_panel/components/widgets/SerachBarWithButton.dart';
+import 'package:flick/admin_panel/components/widgets/dialogs/SuccessfulDialog.dart';
+import 'package:flick/admin_panel/components/widgets/dialogs/WarningDialog.dart';
 import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/admin_panel/models/DetailsCardModel.dart';
 import 'package:flick/models/User.dart';
@@ -38,6 +40,25 @@ class _AdminSettingsScreenContentState extends State<AdminSettingsScreenContent>
 
     adminUsersList = getUsersData().where((element) => element.isAdmin).toList();
 
+  }
+
+  showDeleteAdminDialog() {
+    showDialog(context: context,
+        builder: (BuildContext context) => WarningDialog(
+            message: "Are you sure want to remove this admin?",
+            firstBtnTitle: "Delete",
+            secondBtnTitle: "Cancel",
+            onPressed: () => deleteAdminAndShowSuccessfulDialog(),
+            firstButtonColor: red,));
+  }
+
+  deleteAdminAndShowSuccessfulDialog() {
+    // TODO Add functionality for deleting admin
+    Navigator.pop(context);
+    showDialog(context: context, builder: (BuildContext context) => const SuccessfulDialog(
+        title: "Success!",
+        description: "Admin Deleted Successfully!",
+        buttonText: "Okay"));
   }
 
   @override
@@ -140,6 +161,7 @@ class _AdminSettingsScreenContentState extends State<AdminSettingsScreenContent>
                               user: adminUsersList[index],
                               onTap: () {
                                // TODO Show Remove Admin Dialog Here
+                                showDeleteAdminDialog();
                               }
                           )),
 

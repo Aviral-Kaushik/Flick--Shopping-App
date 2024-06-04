@@ -1,5 +1,7 @@
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/admin_panel/components/widgets/SerachBarWithButton.dart';
+import 'package:flick/admin_panel/components/widgets/dialogs/SuccessfulDialog.dart';
+import 'package:flick/admin_panel/components/widgets/dialogs/WarningDialog.dart';
 import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/models/Message.dart';
 import 'package:flick/utils/Colors.dart';
@@ -70,9 +72,28 @@ class _MessagesScreenContentState extends State<MessagesScreenContent> {
         case "1":
         // TODO Add functionality for showing message dialog here
         case "2":
-        // TODO Add functionality for deleting message here
+          showDeleteMessageDialog();
       }
     }
+  }
+
+  showDeleteMessageDialog() {
+    showDialog(context: context,
+        builder: (BuildContext context) => WarningDialog(
+            message: "Are you sure want to delete this message?",
+            firstBtnTitle: "Delete",
+            secondBtnTitle: "Cancel",
+            onPressed: () => deleteMessageAndShowSuccessfulDialog(),
+            firstButtonColor: Colors.redAccent,));
+  }
+
+  deleteMessageAndShowSuccessfulDialog() {
+    // TODO Add functionality for deleting message
+    Navigator.pop(context);
+    showDialog(context: context, builder: (BuildContext context) => const SuccessfulDialog(
+        title: "Success!",
+        description: "Message Deleted Successfully!",
+        buttonText: "Okay"));
   }
 
   @override
