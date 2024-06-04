@@ -27,15 +27,6 @@ class _MessagesScreenContentState extends State<MessagesScreenContent> {
 
   TextEditingController searchController = TextEditingController();
 
-  handleContextMenuButtonTap(String value) {
-    switch (value) {
-      case "1":
-        // TODO Add functionality for showing message dialog here
-      case "2":
-        // TODO Add functionality for deleting message here
-    }
-  }
-
   void _showPopupMenu(BuildContext context, Offset offset) async {
     double left = offset.dx;
     double top = offset.dy;

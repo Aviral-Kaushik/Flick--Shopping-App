@@ -1,4 +1,5 @@
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
+import 'package:flick/admin_panel/components/widgets/dialogs/SuccessfulDialog.dart';
 import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
@@ -30,6 +31,14 @@ class _TermsAndPrivacyScreenContentState
     } else {
       termsAndPrivacyController.text = termsAndCondition;
     }
+  }
+
+  showSuccessfulDialog() {
+    showDialog(context: context, builder: (BuildContext context) => SuccessfulDialog(
+        title: "Success!",
+        description: "Successful! updated the "
+            "${widget.showUIForPrivacyPolicy ? "Privacy Policy" : "Terms & Condition"} ",
+        buttonText: "Okay"));
   }
 
   @override
@@ -98,7 +107,7 @@ class _TermsAndPrivacyScreenContentState
 
               GestureDetector(
                 onTap: () {
-                  // TODO Show Successful dialog here
+                  showSuccessfulDialog();
                 },
                 child: Container(
                   width: double.infinity,

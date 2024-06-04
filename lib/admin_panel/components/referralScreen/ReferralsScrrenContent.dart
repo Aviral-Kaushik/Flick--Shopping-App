@@ -1,5 +1,6 @@
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/admin_panel/components/widgets/DetailsChipCard.dart';
+import 'package:flick/admin_panel/components/widgets/dialogs/SuccessfulDialog.dart';
 import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
@@ -17,6 +18,13 @@ class _ReferralsScreenContentState extends State<ReferralsScreenContent> {
   String initialTextMessage = "Flick is an innovative e-commerce application designed to revolutionize online shopping experiences. With a sleek interface and user-friendly features, Flick empowers users to browse, discover, and purchase products effortlessly.";
 
   var referralMessageController = TextEditingController();
+
+  showSuccessfulDialog() {
+    showDialog(context: context, builder: (BuildContext context) => const SuccessfulDialog(
+        title: "Success!",
+        description: "Successful! updated the Referral Message",
+        buttonText: "Okay"));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +90,7 @@ class _ReferralsScreenContentState extends State<ReferralsScreenContent> {
 
           GestureDetector(
             onTap: () {
-              // TODO Show Successful Dialog Here
+              showSuccessfulDialog();
             },
             child: Container(
               width: double.infinity,
