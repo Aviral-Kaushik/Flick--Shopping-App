@@ -2,14 +2,16 @@ import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
 
-class SuccessfulDialog extends StatelessWidget {
-  const SuccessfulDialog(
+class SuccessfulAndErrorDialog extends StatelessWidget {
+  const SuccessfulAndErrorDialog(
       {super.key,
       required this.title,
       required this.description,
-      required this.buttonText});
+      required this.buttonText,
+      this.showUIForErrorDialog});
 
   final String title, description, buttonText;
+  final bool? showUIForErrorDialog;
 
   @override
   Widget build(BuildContext context) {
@@ -104,9 +106,11 @@ class SuccessfulDialog extends StatelessWidget {
           left: appPadding,
           right: appPadding,
           child: CircleAvatar(
-            backgroundColor: Colors.blueAccent,
+            backgroundColor: (showUIForErrorDialog != null && showUIForErrorDialog!)
+                ? Colors.redAccent : Colors.blueAccent,
             radius: avatarRadius,
-            child: Icon(Icons.done, color: whiteColor, size: 40,),
+            child: Icon((showUIForErrorDialog != null && showUIForErrorDialog!)
+                ? Icons.error_outline_sharp : Icons.done, color: whiteColor, size: 40,),
           ),
         ),
       ],

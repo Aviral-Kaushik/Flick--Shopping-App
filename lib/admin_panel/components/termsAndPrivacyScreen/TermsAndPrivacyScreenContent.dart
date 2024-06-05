@@ -1,5 +1,5 @@
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
-import 'package:flick/admin_panel/components/widgets/dialogs/SuccessfulDialog.dart';
+import 'package:flick/admin_panel/components/widgets/dialogs/SuccessfulAndErrorDialog.dart';
 import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
@@ -33,11 +33,12 @@ class _TermsAndPrivacyScreenContentState
   }
 
   showSuccessfulDialog() {
-    showDialog(context: context, builder: (BuildContext context) => SuccessfulDialog(
+    showDialog(context: context, builder: (BuildContext context) => SuccessfulAndErrorDialog(
         title: "Success!",
         description: "Successful! updated the "
             "${widget.showUIForPrivacyPolicy ? "Privacy Policy" : "Terms & Condition"} ",
-        buttonText: "Okay"));
+        buttonText: "Okay",
+        showUIForErrorDialog: false));
   }
 
   @override

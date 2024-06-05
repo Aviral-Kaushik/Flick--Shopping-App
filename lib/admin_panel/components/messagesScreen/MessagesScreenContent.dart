@@ -1,6 +1,6 @@
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/admin_panel/components/widgets/SerachBarWithButton.dart';
-import 'package:flick/admin_panel/components/widgets/dialogs/SuccessfulDialog.dart';
+import 'package:flick/admin_panel/components/widgets/dialogs/SuccessfulAndErrorDialog.dart';
 import 'package:flick/admin_panel/components/widgets/dialogs/WarningDialog.dart';
 import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/models/Message.dart';
@@ -90,10 +90,11 @@ class _MessagesScreenContentState extends State<MessagesScreenContent> {
   deleteMessageAndShowSuccessfulDialog() {
     // TODO Add functionality for deleting message
     Navigator.pop(context);
-    showDialog(context: context, builder: (BuildContext context) => const SuccessfulDialog(
+    showDialog(context: context, builder: (BuildContext context) => const SuccessfulAndErrorDialog(
         title: "Success!",
         description: "Message Deleted Successfully!",
-        buttonText: "Okay"));
+        buttonText: "Okay",
+        showUIForErrorDialog: false,));
   }
 
   @override

@@ -1,7 +1,6 @@
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/admin_panel/components/widgets/DetailsChipCard.dart';
-import 'package:flick/admin_panel/components/widgets/dialogs/ErrorDialog.dart';
-import 'package:flick/admin_panel/components/widgets/dialogs/SuccessfulDialog.dart';
+import 'package:flick/admin_panel/components/widgets/dialogs/SuccessfulAndErrorDialog.dart';
 import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
@@ -21,10 +20,11 @@ class _ReferralsScreenContentState extends State<ReferralsScreenContent> {
   var referralMessageController = TextEditingController();
 
   showSuccessfulDialog() {
-    showDialog(context: context, builder: (BuildContext context) => const SuccessfulDialog(
-        title: "Success!",
-        description: "Successful! updated the Referral Message",
-        buttonText: "Okay"));
+    showDialog(context: context, builder: (BuildContext context) => const SuccessfulAndErrorDialog(
+        title: "Oops!",
+        description: "Something went wrong! Please try again later",
+        buttonText: "Okay",
+        showUIForErrorDialog: true,));
   }
 
   @override
