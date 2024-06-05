@@ -1,5 +1,6 @@
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/admin_panel/components/widgets/DetailsChipCard.dart';
+import 'package:flick/admin_panel/components/widgets/dialogs/ErrorDialog.dart';
 import 'package:flick/admin_panel/components/widgets/dialogs/SuccessfulDialog.dart';
 import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/utils/Colors.dart';
@@ -101,7 +102,7 @@ class _ReferralsScreenContentState extends State<ReferralsScreenContent> {
               margin: const EdgeInsets.all(appPadding),
 
               decoration: BoxDecoration(
-                  color: blueThemeColor,
+                  color: Colors.blueAccent,
                   borderRadius: BorderRadius.circular(24)
               ),
 

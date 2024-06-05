@@ -49,7 +49,7 @@ class _AdminSettingsScreenContentState extends State<AdminSettingsScreenContent>
             firstBtnTitle: "Delete",
             secondBtnTitle: "Cancel",
             onPressed: () => deleteAdminAndShowSuccessfulDialog(),
-            firstButtonColor: red,));
+            firstButtonColor: Colors.redAccent,));
   }
 
   deleteAdminAndShowSuccessfulDialog() {

@@ -76,7 +76,7 @@ class _UsersListContentState extends State<UsersListContent> {
                       },
                       style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.resolveWith((states) {
-                            return blueThemeColor;
+                            return Colors.blueAccent;
                           }),
                         textStyle: MaterialStateProperty.resolveWith((states) {
                           return TextStyle(

@@ -32,7 +32,7 @@ class SearchBarWithButton extends StatelessWidget {
                   prefixIcon: const Icon(Icons.search),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(40.0),
-                      borderSide: BorderSide(color: textFiedGreyBorder)),
+                      borderSide: BorderSide(color: textFieldGreyBorder)),
                   labelText: "Email"),
             ),
           ),

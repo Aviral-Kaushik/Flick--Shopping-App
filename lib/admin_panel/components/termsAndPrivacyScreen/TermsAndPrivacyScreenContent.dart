@@ -3,7 +3,6 @@ import 'package:flick/admin_panel/components/widgets/dialogs/SuccessfulDialog.da
 import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TermsAndPrivacyScreenContent extends StatefulWidget {
@@ -118,7 +117,7 @@ class _TermsAndPrivacyScreenContentState
 
                   margin: const EdgeInsets.all(appPadding),
                   decoration: BoxDecoration(
-                    color: blueThemeColor,
+                    color: Colors.blueAccent,
                     borderRadius: BorderRadius.circular(24)
                   ),
 
