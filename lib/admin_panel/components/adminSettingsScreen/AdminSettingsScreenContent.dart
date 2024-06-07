@@ -1,5 +1,6 @@
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/admin_panel/components/widgets/SerachBarWithButton.dart';
+import 'package:flick/admin_panel/components/widgets/dialogs/CreateNewAdminDialog.dart';
 import 'package:flick/admin_panel/components/widgets/dialogs/SuccessfulAndErrorDialog.dart';
 import 'package:flick/admin_panel/components/widgets/dialogs/WarningDialog.dart';
 import 'package:flick/admin_panel/data/Data.dart';
@@ -54,10 +55,30 @@ class _AdminSettingsScreenContentState extends State<AdminSettingsScreenContent>
 
   deleteAdminAndShowSuccessfulDialog() {
     // TODO Add functionality for deleting admin
+    popAndShowSuccessfulDialog("Admin Deleted Successfully!");
+    // showDialog(context: context, builder: (BuildContext context) => const SuccessfulAndErrorDialog(
+    //     title: "Success!",
+    //     description: "Admin Deleted Successfully!",
+    //     buttonText: "Okay",
+    //     showUIForErrorDialog: false));
+  }
+
+  showCreateAdminDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) =>
+            CreateNewAdminDialog(onPressed: (String email) {
+              // TODO: Add functionality for giving admin access to this
+              // TODO: email and sent a email template like daity
+              popAndShowSuccessfulDialog("Admin access given to $email");
+            }));
+  }
+
+  popAndShowSuccessfulDialog(String description) {
     Navigator.pop(context);
-    showDialog(context: context, builder: (BuildContext context) => const SuccessfulAndErrorDialog(
+    showDialog(context: context, builder: (BuildContext context) => SuccessfulAndErrorDialog(
         title: "Success!",
-        description: "Admin Deleted Successfully!",
+        description: description,
         buttonText: "Okay",
         showUIForErrorDialog: false));
   }
@@ -96,7 +117,7 @@ class _AdminSettingsScreenContentState extends State<AdminSettingsScreenContent>
 
                 GestureDetector(
                   onTap: () {
-                    // TODO Show Add new admin dialog here
+                    showCreateAdminDialog();
                   },
                   child: Container(
                     padding: const EdgeInsets.all(appPadding),
