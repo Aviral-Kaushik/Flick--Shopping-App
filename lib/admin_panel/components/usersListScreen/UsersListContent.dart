@@ -1,4 +1,5 @@
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
+import 'package:flick/admin_panel/components/widgets/dialogs/FilterUserDialog.dart';
 import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/models/User.dart';
 import 'package:flick/utils/Colors.dart';
@@ -16,6 +17,7 @@ class _UsersListContentState extends State<UsersListContent> {
 
   late List<User> usersData;
   late int totalNumberOfUsers;
+  TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
@@ -24,7 +26,9 @@ class _UsersListContentState extends State<UsersListContent> {
     totalNumberOfUsers = 10;
   }
 
-  TextEditingController searchController = TextEditingController();
+  showFilterDialog() {
+    showDialog(context: context, builder: (BuildContext context) => FilterUserDialog());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +76,7 @@ class _UsersListContentState extends State<UsersListContent> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       ElevatedButton(onPressed: () {
-                        // TODO : Show Filter Dialog Box Here
+                        showFilterDialog();
                       },
                       style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.resolveWith((states) {
