@@ -5,6 +5,6 @@ class UserFilter {
       this.filterInAscendingOrder
       );
 
-  String filterName;
-  bool filterInAscendingOrder;
+  final String filterName;
+  final bool filterInAscendingOrder;
 }

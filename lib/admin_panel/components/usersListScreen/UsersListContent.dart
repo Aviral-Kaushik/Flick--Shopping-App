@@ -1,6 +1,7 @@
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/admin_panel/components/widgets/dialogs/FilterUserDialog.dart';
 import 'package:flick/admin_panel/data/Data.dart';
+import 'package:flick/admin_panel/helper/UserFilter.dart';
 import 'package:flick/models/User.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
@@ -27,7 +28,13 @@ class _UsersListContentState extends State<UsersListContent> {
   }
 
   showFilterDialog() {
-    showDialog(context: context, builder: (BuildContext context) => FilterUserDialog());
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => FilterUserDialog(
+            filterToBeApplied: (UserFilter userFilter) {
+              // TODO Fetch and apply user filter logic
+            }
+        ));
   }
 
   @override

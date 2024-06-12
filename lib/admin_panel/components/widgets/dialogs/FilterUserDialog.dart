@@ -1,15 +1,24 @@
+import 'package:flick/admin_panel/helper/UserFilter.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
 
 class FilterUserDialog extends StatefulWidget {
-  const FilterUserDialog({super.key});
+  const FilterUserDialog({super.key, required this.filterToBeApplied});
+
+  final Function(UserFilter) filterToBeApplied;
 
   @override
   State<FilterUserDialog> createState() => _FilterUserDialogState();
 }
 
 class _FilterUserDialogState extends State<FilterUserDialog> {
+
+  bool isAToZChipSelected = false;
+  bool isDateCreatedChipSelected = false;
+  bool isAscendingChipSelected = false;
+  bool isDescendingChipSelected = false;
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -22,11 +31,6 @@ class _FilterUserDialogState extends State<FilterUserDialog> {
   }
 
   filterUserDialogContent() {
-    bool isAToZChipSelected = false;
-    bool isDateCreatedChipSelected = false;
-    bool isAscendingChipSelected = false;
-    bool isDescendingChipSelected = false;
-
     return Container(
       padding: const EdgeInsets.all(appPadding),
 
@@ -74,8 +78,10 @@ class _FilterUserDialogState extends State<FilterUserDialog> {
                 label: const Text("A to Z"),
                 selected: isAToZChipSelected,
                 onSelected: (bool value) {
-                  isAToZChipSelected = value;
-                  setState() {}
+                  setState(() {
+                    isAToZChipSelected = value;
+                    isDateCreatedChipSelected = false;
+                  });
                 },
                 selectedColor: Colors.greenAccent,
                 selectedShadowColor: Colors.greenAccent.withOpacity(0.3),
@@ -85,8 +91,10 @@ class _FilterUserDialogState extends State<FilterUserDialog> {
                 label: const Text("Date Created"),
                 selected: isDateCreatedChipSelected,
                 onSelected: (bool value) {
-                  isDateCreatedChipSelected = value;
-                  setState() {}
+                  setState(() {
+                    isDateCreatedChipSelected = value;
+                    isAToZChipSelected = false;
+                  });
                 },
                 selectedColor: Colors.greenAccent,
                 selectedShadowColor: Colors.greenAccent.withOpacity(0.3),
@@ -115,8 +123,10 @@ class _FilterUserDialogState extends State<FilterUserDialog> {
                 label: const Text("Ascending"),
                 selected: isAscendingChipSelected,
                 onSelected: (bool value) {
-                  isAscendingChipSelected = value;
-                  setState() {}
+                  setState(() {
+                    isAscendingChipSelected = value;
+                    isDescendingChipSelected = false;
+                  });
                 },
                 selectedColor: Colors.greenAccent,
                 selectedShadowColor: Colors.greenAccent.withOpacity(0.3),
@@ -126,8 +136,10 @@ class _FilterUserDialogState extends State<FilterUserDialog> {
                 label: const Text("Descending"),
                 selected: isDescendingChipSelected,
                 onSelected: (bool value) {
-                  isDescendingChipSelected = value;
-                  setState() {}
+                  setState(() {
+                    isDescendingChipSelected = value;
+                    isAscendingChipSelected = false;
+                  });
                 },
                 selectedColor: Colors.greenAccent,
                 selectedShadowColor: Colors.greenAccent.withOpacity(0.3),
@@ -141,16 +153,19 @@ class _FilterUserDialogState extends State<FilterUserDialog> {
           Row(
             children: [
 
-              const Expanded(
-                  child: Center(
-                    child: Text(
-                      "Cancel",
-                      style: TextStyle(
-                          color: textColor,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600),
+              Expanded(
+                  child: GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: const Center(
+                      child: Text(
+                        "Cancel",
+                        style: TextStyle(
+                            color: textColor,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600),
+                      ),
                     ),
-              )),
+                  )),
 
               const SizedBox(
                 width: 4,
@@ -162,13 +177,22 @@ class _FilterUserDialogState extends State<FilterUserDialog> {
                       decoration: BoxDecoration(
                         color: Colors.blueAccent,
                         borderRadius: BorderRadius.circular(appPadding / 2)),
-                    child: Center(
-                      child: Text(
-                        "Apply",
-                        style: TextStyle(
-                            color: whiteTextColor,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600),
+                    child: GestureDetector(
+                      onTap: () {
+                        widget.filterToBeApplied(UserFilter(
+                            isAToZChipSelected ? "A to Z" : (isDateCreatedChipSelected ? "Date Created" : ""),
+                            isAscendingChipSelected ? true : false));
+
+                        Navigator.pop(context);
+                      },
+                      child: Center(
+                        child: Text(
+                          "Apply",
+                          style: TextStyle(
+                              color: whiteTextColor,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600),
+                        ),
                       ),
                     )),
               )
@@ -177,5 +201,9 @@ class _FilterUserDialogState extends State<FilterUserDialog> {
         ],
       ),
     );
+  }
+
+  fetchSelectedFiltersAndPopFilterDialog() {
+
   }
 }
