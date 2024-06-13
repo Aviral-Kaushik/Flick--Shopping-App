@@ -1,6 +1,7 @@
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/admin_panel/components/widgets/SerachBarWithButton.dart';
 import 'package:flick/admin_panel/components/widgets/dialogs/SuccessfulAndErrorDialog.dart';
+import 'package:flick/admin_panel/components/widgets/dialogs/ViewMessageDialog.dart';
 import 'package:flick/admin_panel/components/widgets/dialogs/WarningDialog.dart';
 import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/models/Message.dart';
@@ -29,7 +30,7 @@ class _MessagesScreenContentState extends State<MessagesScreenContent> {
 
   TextEditingController searchController = TextEditingController();
 
-  void _showPopupMenu(BuildContext context, Offset offset) async {
+  void _showPopupMenu(BuildContext context, Offset offset, Message message) async {
     double left = offset.dx;
     double top = offset.dy;
 
@@ -70,11 +71,25 @@ class _MessagesScreenContentState extends State<MessagesScreenContent> {
     if (selected != null) {
       switch (selected) {
         case "1":
-        // TODO Add functionality for showing message dialog here
+          showViewMessageDialog(message);
+          break;
         case "2":
           showDeleteMessageDialog();
+          break;
       }
     }
+  }
+
+  showViewMessageDialog(Message message) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => ViewMessageDialog(
+            message: message, shareReplyEmail: (String replyMessage) {
+              Navigator.pop(context);
+              showSuccessfulDialog("Reply sent successfully!");
+              // TODO Dismiss View Message Dialog show progress dialog,
+          //     TODO implement functionality for send mail to user and then show successful dialog
+        }));
   }
 
   showDeleteMessageDialog() {
@@ -90,11 +105,15 @@ class _MessagesScreenContentState extends State<MessagesScreenContent> {
   deleteMessageAndShowSuccessfulDialog() {
     // TODO Add functionality for deleting message
     Navigator.pop(context);
-    showDialog(context: context, builder: (BuildContext context) => const SuccessfulAndErrorDialog(
-        title: "Success!",
-        description: "Message Deleted Successfully!",
-        buttonText: "Okay",
-        showUIForErrorDialog: false,));
+    showSuccessfulDialog("Message Deleted Successfully!");
+  }
+
+  showSuccessfulDialog(String description) {
+    showDialog(context: context, builder: (BuildContext context) => SuccessfulAndErrorDialog(
+      title: "Success!",
+      description: description,
+      buttonText: "Okay",
+      showUIForErrorDialog: false,));
   }
 
   @override
@@ -153,7 +172,7 @@ class _MessagesScreenContentState extends State<MessagesScreenContent> {
                     itemBuilder: (context, index) => SingleMessageListItemLayout(
                        message:  messages[index],
                         onTap: (Offset offset) async {
-                          _showPopupMenu(context, offset);
+                          _showPopupMenu(context, offset, messages[index]);
                         },
                     )),
               )

@@ -34,7 +34,7 @@ class WarningDialog extends StatelessWidget {
         color: whiteColor,
         shape: BoxShape.rectangle,
         borderRadius: BorderRadius.circular(appPadding),
-        boxShadow: const[
+        boxShadow: const [
           BoxShadow(
             color: Colors.black26,
             blurRadius: 10.0,
