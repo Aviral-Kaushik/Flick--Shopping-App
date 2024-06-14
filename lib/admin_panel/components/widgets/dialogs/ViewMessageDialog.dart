@@ -1,9 +1,7 @@
 import 'package:flick/models/Message.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class ViewMessageDialog extends StatelessWidget {
   ViewMessageDialog({super.key,

@@ -64,22 +64,17 @@ class CreateNewAdminDialog extends StatelessWidget {
             height: appPadding * 2,
           ),
 
-          Text("Enter mail for admin access", style: TextStyle(
-            color: darkGreyButtonBackground,
-            fontSize: 10
-          ),),
-
           Row(
             children: [
               Expanded(
                 child: Container(
-                  height: 48,
+                  height: 70,
                   decoration: BoxDecoration(
                     color: whiteColor,
                     borderRadius: BorderRadius.circular(40),
                   ),
 
-                  child: TextField(
+                  child: TextFormField(
                     keyboardType: TextInputType.text,
                     style: TextStyle(
                       color: blackColor,
@@ -93,7 +88,13 @@ class CreateNewAdminDialog extends StatelessWidget {
                         labelText: "Enter email",
                         labelStyle: const TextStyle(
                           fontSize: 14
-                        )),
+                        ),
+                        helperText: "Enter mail for providing admin access",
+                        helperStyle: TextStyle(
+                          fontSize: 10,
+                          color: darkGreyButtonBackground
+                        )
+                    ),
                   ),
                 ),
               ),
