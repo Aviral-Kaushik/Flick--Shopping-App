@@ -22,58 +22,54 @@ class ProgressDialog extends StatelessWidget {
 
   progressDialogContent(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width - 50,
       padding: const EdgeInsets.all(appPadding),
 
       decoration: BoxDecoration(
-        color: whiteColor,
-        borderRadius: BorderRadius.circular(appPadding),
-        shape: BoxShape.rectangle,
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black26,
-            blurRadius: 10.0,
-            offset: Offset(0.0, 10.0)
-          )
-        ]
+          color: whiteColor,
+          borderRadius: BorderRadius.circular(appPadding),
+          shape: BoxShape.rectangle,
+          boxShadow: const [
+            BoxShadow(
+                color: Colors.black26,
+                blurRadius: 10.0,
+                offset: Offset(0.0, 10.0)
+            )
+          ]
       ),
 
-      child: Expanded(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
 
-          children: [
-            const SizedBox(
-              height: appPadding * 2,
-            ),
+        children: [
+          const SizedBox(
+            height: appPadding * 2,
+          ),
 
-            Center(
-              child: CircularProgressIndicator(
-                backgroundColor: whiteColor,
-                valueColor: const AlwaysStoppedAnimation(Colors.blueAccent),
-                strokeWidth: 7,
-              ),
+          const Center(
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.white,
+              valueColor: AlwaysStoppedAnimation(Colors.blueAccent),
+              strokeWidth: 5,
             ),
+          ),
 
-            const SizedBox(
-              height: appPadding,
-            ),
+          const SizedBox(
+            height: appPadding * 2,
+          ),
 
-            Center(
-              child: Text(message, style: const TextStyle(
-                color: textColor,
-                fontSize: 18,
-                fontWeight: FontWeight.w600
-              ),),
-            ),
+          Center(
+            child: Text(message, style: const TextStyle(
+              color: textColor,
+              fontSize: 13,
+            ),),
+          ),
 
-            const SizedBox(
-              height: appPadding * 2,
-            ),
-          ],
-        ),
+          const SizedBox(
+            height: appPadding,
+          ),
+        ],
       ),
     );
   }
