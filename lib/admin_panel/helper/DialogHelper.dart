@@ -8,7 +8,12 @@ class DialogHelper {
     showDialog(
         barrierDismissible: false,
         context: context,
-        builder: (BuildContext context) => ProgressDialog(message: message)
+        builder: (BuildContext context) {
+          return PopScope(
+              canPop: false,
+              child: ProgressDialog(message: message)
+          );
+        }
     );
   }
 }
