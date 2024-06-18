@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class DialogHelper {
 
   // TODO Use this dialog for showing progress dialog everywhere
-  void showProgressDialog(BuildContext context, String message) {
+  void showProgressDialog(BuildContext context, String message, Function()? afterDismissCallback) {
     showDialog(
         barrierDismissible: false,
         context: context,
@@ -14,6 +14,6 @@ class DialogHelper {
               child: ProgressDialog(message: message)
           );
         }
-    );
+    ).then((value) => afterDismissCallback);
   }
 }
