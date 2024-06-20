@@ -1,15 +1,16 @@
+import 'package:flick/admin_panel/blocs/messages/messages_bloc.dart';
+import 'package:flick/admin_panel/blocs/messages/messages_event.dart';
+import 'package:flick/admin_panel/blocs/messages/messages_state.dart';
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/admin_panel/components/widgets/SerachBarWithButton.dart';
-import 'package:flick/admin_panel/components/widgets/dialogs/SuccessfulAndErrorDialog.dart';
 import 'package:flick/admin_panel/components/widgets/dialogs/ViewMessageDialog.dart';
-import 'package:flick/admin_panel/components/widgets/dialogs/WarningDialog.dart';
-import 'package:flick/admin_panel/data/Data.dart';
+import 'package:flick/admin_panel/helper/DialogHelper.dart';
+import 'package:flick/locator.dart';
 import 'package:flick/models/Message.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MessagesScreenContent extends StatefulWidget {
   const MessagesScreenContent({super.key});
@@ -20,15 +21,20 @@ class MessagesScreenContent extends StatefulWidget {
 
 class _MessagesScreenContentState extends State<MessagesScreenContent> {
 
+  late DialogHelper dialogHelper;
   late List<Message> messages;
+  final MessagesBloc messagesBloc = locator.get<MessagesBloc>();
+  TextEditingController searchController = TextEditingController();
+  bool isAnyDialogShowing = false;
 
   @override
   void initState() {
     super.initState();
-    messages = getDummyMessages();
+    messages = List.empty();
+    messagesBloc.add(const FetchAllMessages());
+    dialogHelper = DialogHelper(context);
+    // messages = getDummyMessages();
   }
-
-  TextEditingController searchController = TextEditingController();
 
   void _showPopupMenu(BuildContext context, Offset offset, Message message) async {
     double left = offset.dx;
@@ -81,104 +87,161 @@ class _MessagesScreenContentState extends State<MessagesScreenContent> {
   }
 
   showViewMessageDialog(Message message) {
+    isAnyDialogShowing = true;
     showDialog(
         context: context,
         builder: (BuildContext context) => ViewMessageDialog(
             message: message, shareReplyEmail: (String replyMessage) {
               Navigator.pop(context);
-              showSuccessfulDialog("Reply sent successfully!");
-              // TODO Dismiss View Message Dialog show progress dialog,
-          //     TODO implement functionality for send mail to user and then show successful dialog
-        }));
+              messagesBloc.add(SendReplyEmail(message.contactEmail, replyMessage));
+        })).then((value) {
+          isAnyDialogShowing = false;
+    });
   }
 
   showDeleteMessageDialog() {
-    showDialog(context: context,
-        builder: (BuildContext context) => WarningDialog(
-            message: "Are you sure want to delete this message?",
-            firstBtnTitle: "Delete",
-            secondBtnTitle: "Cancel",
-            onPressed: () => deleteMessageAndShowSuccessfulDialog(),
-            firstButtonColor: Colors.redAccent,));
+    isAnyDialogShowing = true;
+    dialogHelper.showWarningDialog(
+        "Are you sure want to delete this message?",
+        "Delete",
+        "Cancel",
+         () => deleteMessageAndShowSuccessfulDialog(),
+         Colors.redAccent, () {
+            isAnyDialogShowing = false;
+          });
+    // showDialog(context: context,
+    //     builder: (BuildContext context) => WarningDialog(
+    //         message: "Are you sure want to delete this message?",
+    //         firstBtnTitle: "Delete",
+    //         secondBtnTitle: "Cancel",
+    //         onPressed: () => deleteMessageAndShowSuccessfulDialog(),
+    //         firstButtonColor: Colors.redAccent,));
   }
 
   deleteMessageAndShowSuccessfulDialog() {
     // TODO Add functionality for deleting message
     Navigator.pop(context);
-    showSuccessfulDialog("Message Deleted Successfully!");
+    showSuccessfulOrErrorDialog("Message Deleted Successfully!", false);
   }
 
-  showSuccessfulDialog(String description) {
-    showDialog(context: context, builder: (BuildContext context) => SuccessfulAndErrorDialog(
-      title: "Success!",
-      description: description,
-      buttonText: "Okay",
-      showUIForErrorDialog: false,));
+  showSuccessfulOrErrorDialog(String description, bool showUiForErrorMessage) {
+    isAnyDialogShowing = true;
+    dialogHelper.showSuccessfulOrErrorDialog(
+        "Success!", description,
+        "Okay", showUiForErrorMessage, () {
+          isAnyDialogShowing = false;
+    });
+    // showDialog(context: context, builder: (BuildContext context) => SuccessfulAndErrorDialog(
+    //   title: "Success!",
+    //   description: description,
+    //   buttonText: "Okay",
+    //   showUIForErrorDialog: showUiForErrorMessage,));
+  }
+
+  showProgressDialog(String message) {
+    isAnyDialogShowing = true;
+    dialogHelper.showProgressDialog(message, () {
+      isAnyDialogShowing = false;
+    });
+  }
+
+  dismissAllDialog() {
+    if (isAnyDialogShowing) {
+      Navigator.pop(context);
+      isAnyDialogShowing = false;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.only(
-              left: appPadding, right: appPadding, bottom: appPadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const AdminAppBar(),
+    return BlocProvider<MessagesBloc>(
+      create: (_) => messagesBloc,
+      child: BlocListener<MessagesBloc, MessagesState>(
+        listener: (context, state) {
+          if (state is MessageLoading) {
+            dismissAllDialog();
+            showProgressDialog(state.progressDisplayMessage);
+          }
 
-              const SizedBox(
-                height: appPadding,
+          if (state is MessageFetched) {
+            messages = state.messages;
+            setState(() {});
+            dismissAllDialog();
+          }
+
+          if (state is MessageError) {
+            dismissAllDialog();
+            showSuccessfulOrErrorDialog(state.errorMessage, true);
+          }
+
+          if (state is ReplyEmailSentSuccessfully) {
+            dismissAllDialog();
+            showSuccessfulOrErrorDialog("Reply email! Sent Successfully", false);
+          }
+        },
+        child: SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.only(
+                  left: appPadding, right: appPadding, bottom: appPadding),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const AdminAppBar(),
+
+                  const SizedBox(
+                    height: appPadding,
+                  ),
+
+                  const Text("Messages",
+                      style: TextStyle(
+                          color: textColor, fontWeight: FontWeight.bold, fontSize: 25)),
+
+                  const SizedBox(
+                    height: 4,
+                  ),
+
+                  const Text(
+                    "This message are received from the contact us page",
+                    style: TextStyle(color: grey, fontSize: 11),
+                  ),
+
+                  const SizedBox(
+                    height: appPadding * 2,
+                  ),
+
+                  SearchBarWithButton(
+                      searchController: searchController,
+                      onPressed: () {
+                        // TODO : Implement search here
+                      }
+                  ),
+
+                  const SizedBox(
+                    height: appPadding * 2,
+                  ),
+
+                  Container(
+                    padding: const EdgeInsets.all(appPadding),
+                    decoration: BoxDecoration(
+                      color: whiteColor,
+                      borderRadius: BorderRadius.circular(appPadding)
+                    ),
+                    child: (messages.isNotEmpty) ? ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: messages.length,
+                        itemBuilder: (context, index) => SingleMessageListItemLayout(
+                           message:  messages[index],
+                            onTap: (Offset offset) async {
+                              _showPopupMenu(context, offset, messages[index]);
+                            },
+                        )) : const Center(child: Text("No Messages Found!"),),
+                  )
+                ],
               ),
-
-              const Text("Messages",
-                  style: TextStyle(
-                      color: textColor, fontWeight: FontWeight.bold, fontSize: 25)),
-
-              const SizedBox(
-                height: 4,
-              ),
-
-              const Text(
-                "This message are received from the contact us page",
-                style: TextStyle(color: grey, fontSize: 11),
-              ),
-
-              const SizedBox(
-                height: appPadding * 2,
-              ),
-
-              SearchBarWithButton(
-                  searchController: searchController,
-                  onPressed: () {
-                    // TODO : Implement search here
-                  }
-              ),
-
-              const SizedBox(
-                height: appPadding * 2,
-              ),
-
-              Container(
-                padding: const EdgeInsets.all(appPadding),
-                decoration: BoxDecoration(
-                  color: whiteColor,
-                  borderRadius: BorderRadius.circular(appPadding)
-                ),
-                child: ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: messages.length,
-                    itemBuilder: (context, index) => SingleMessageListItemLayout(
-                       message:  messages[index],
-                        onTap: (Offset offset) async {
-                          _showPopupMenu(context, offset, messages[index]);
-                        },
-                    )),
-              )
-            ],
-          ),
-    ));
+        )),
+      ),
+    );
   }
 }
 

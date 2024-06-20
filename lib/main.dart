@@ -15,6 +15,8 @@ class MyApp extends StatelessWidget {
 
 // TODO While Adding Referral part on profile screen add all options that are in
 // TODO our list and increment counter when they are pressed
+// TODO Implement sharing mail functionality using App Password from link
+// TODO https://syedahmedusman2.medium.com/how-to-send-email-from-flutter-application-a1937730d15c
 
   @override
   Widget build(BuildContext context) {

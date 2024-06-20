@@ -94,8 +94,7 @@ class _TermsAndPrivacyScreenContentState
 
               dismissAllDialog();
               isAnyDialogShowing = true;
-              DialogHelper().showProgressDialog(
-                  context,
+              DialogHelper(context).showProgressDialog(
                   "Fetching ${widget.showUIForPrivacyPolicy ?
                   "Privacy Policy" : "Terms & Condition"} ",
                   () => isAnyDialogShowing = false
