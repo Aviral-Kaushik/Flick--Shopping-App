@@ -4,6 +4,7 @@ import 'package:flick/admin_panel/blocs/termsAndPrivacy/terms_and_privacy_state.
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/admin_panel/components/widgets/dialogs/SuccessfulAndErrorDialog.dart';
 import 'package:flick/admin_panel/helper/DialogHelper.dart';
+import 'package:flick/admin_panel/helper/SnackbarHelper.dart';
 import 'package:flick/locator.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
@@ -24,6 +25,7 @@ class TermsAndPrivacyScreenContent extends StatefulWidget {
 class _TermsAndPrivacyScreenContentState
     extends State<TermsAndPrivacyScreenContent> {
 
+  late DialogHelper dialogHelper;
   TextEditingController termsAndPrivacyController = TextEditingController();
   TermsAndPrivacyBloc termsAndPrivacyBloc = locator.get<TermsAndPrivacyBloc>();
   bool isAnyDialogShowing = false;
@@ -33,30 +35,32 @@ class _TermsAndPrivacyScreenContentState
   void initState() {
     super.initState();
 
+    dialogHelper = DialogHelper(context);
+
     termsAndPrivacyBloc.add(FetchTermsOrPrivacyPolicy(widget.showUIForPrivacyPolicy));
   }
 
   showSuccessfulDialog() {
     isAnyDialogShowing = true;
-    showDialog(context: context, builder: (BuildContext context) => SuccessfulAndErrorDialog(
-        title: "Success!",
-        description: "Successful! updated the "
-            "${widget.showUIForPrivacyPolicy ? "Privacy Policy" : "Terms & Condition"} ",
-        buttonText: "Okay",
-        showUIForErrorDialog: false)).then((value) => {
-            isAnyDialogShowing = false
-        });
+    dialogHelper.showSuccessfulOrErrorDialog("Success!", "Successful! updated the "
+        "${widget.showUIForPrivacyPolicy ? "Privacy Policy" : "Terms & Condition"} ",
+        "Okay", false, () {
+        isAnyDialogShowing = false;
+    });
   }
 
   showErrorDialog(String message) {
     isAnyDialogShowing = true;
-    showDialog(context: context, builder: (BuildContext context) => SuccessfulAndErrorDialog(
-        title: "Failed",
-        description: message,
-        buttonText: "Dismiss",
-        showUIForErrorDialog: true,
-    )).then((value) => {
-      isAnyDialogShowing = false
+    dialogHelper.showSuccessfulOrErrorDialog("Failed", message,
+        "Dismiss", true, () {
+        isAnyDialogShowing = false;
+    });
+  }
+
+  showProgressDialog(String message) {
+    isAnyDialogShowing = true;
+    dialogHelper.showProgressDialog(message, () {
+      isAnyDialogShowing = false;
     });
   }
 
@@ -80,6 +84,7 @@ class _TermsAndPrivacyScreenContentState
               dismissAllDialog();
               termsAndPrivacyController.text = state.termsAndPrivacy;
               fetchedTermsOrPolicy = state.termsAndPrivacy;
+
             } else if (state is TermsOrPrivacyPolicyUpdated) {
 
               dismissAllDialog();
@@ -94,11 +99,9 @@ class _TermsAndPrivacyScreenContentState
 
               dismissAllDialog();
               isAnyDialogShowing = true;
-              DialogHelper(context).showProgressDialog(
-                  "Fetching ${widget.showUIForPrivacyPolicy ?
-                  "Privacy Policy" : "Terms & Condition"} ",
-                  () => isAnyDialogShowing = false
-              );
+              showProgressDialog("Fetching ${widget.showUIForPrivacyPolicy ?
+              "Privacy Policy" : "Terms & Condition"} ");
+
             }
           },
           child: SafeArea(
@@ -171,14 +174,11 @@ class _TermsAndPrivacyScreenContentState
                               widget.showUIForPrivacyPolicy)
                           );
                         } else {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text('Please change ${widget.showUIForPrivacyPolicy ?
-                            "Privacy Policy" : "Terms & Conditions"} to update'),
-                            backgroundColor: blackColor,
-                            elevation: 10,
-                            behavior: SnackBarBehavior.floating,
-                            margin: const EdgeInsets.all(5),
-                          ));
+                          SnackBarHelper().showSnackBar(
+                              context,
+                              'Please change ${widget.showUIForPrivacyPolicy ?
+                              "Privacy Policy" : "Terms & Conditions"} to update'
+                          );
                         }
                       },
                       child: Container(

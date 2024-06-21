@@ -21,3 +21,9 @@ class DeleteMessage extends MessagesEvent {
   DeleteMessage(this.message);
 }
 
+class FilterMessages extends MessagesEvent {
+  final String query;
+
+  FilterMessages(this.query);
+}
+

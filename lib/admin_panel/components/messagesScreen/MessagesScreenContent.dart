@@ -5,6 +5,7 @@ import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/admin_panel/components/widgets/SerachBarWithButton.dart';
 import 'package:flick/admin_panel/components/widgets/dialogs/ViewMessageDialog.dart';
 import 'package:flick/admin_panel/helper/DialogHelper.dart';
+import 'package:flick/admin_panel/helper/SnackbarHelper.dart';
 import 'package:flick/locator.dart';
 import 'package:flick/models/Message.dart';
 import 'package:flick/utils/Colors.dart';
@@ -22,18 +23,27 @@ class MessagesScreenContent extends StatefulWidget {
 class _MessagesScreenContentState extends State<MessagesScreenContent> {
 
   late DialogHelper dialogHelper;
+  late SnackBarHelper snackBarHelper;
+
   late List<Message> messages;
+
   final MessagesBloc messagesBloc = locator.get<MessagesBloc>();
+
   TextEditingController searchController = TextEditingController();
+
   bool isAnyDialogShowing = false;
+  String query = "";
 
   @override
   void initState() {
     super.initState();
+
     messages = List.empty();
+
     messagesBloc.add(const FetchAllMessages());
     dialogHelper = DialogHelper(context);
-    // messages = getDummyMessages();
+
+    snackBarHelper = SnackBarHelper();
   }
 
   void _showPopupMenu(BuildContext context, Offset offset, Message message) async {
@@ -80,10 +90,17 @@ class _MessagesScreenContentState extends State<MessagesScreenContent> {
           showViewMessageDialog(message);
           break;
         case "2":
-          showDeleteMessageDialog();
+          showDeleteMessageDialog(message);
           break;
       }
     }
+  }
+
+  deleteMessage(Message message) {
+    dismissAllDialog();
+    messages.remove(message);
+    messagesBloc.add(DeleteMessage(message));
+    isAnyDialogShowing = false;
   }
 
   showViewMessageDialog(Message message) {
@@ -99,29 +116,19 @@ class _MessagesScreenContentState extends State<MessagesScreenContent> {
     });
   }
 
-  showDeleteMessageDialog() {
+  showDeleteMessageDialog(Message message) {
     isAnyDialogShowing = true;
     dialogHelper.showWarningDialog(
         "Are you sure want to delete this message?",
         "Delete",
         "Cancel",
-         () => deleteMessageAndShowSuccessfulDialog(),
-         Colors.redAccent, () {
-            isAnyDialogShowing = false;
-          });
-    // showDialog(context: context,
-    //     builder: (BuildContext context) => WarningDialog(
-    //         message: "Are you sure want to delete this message?",
-    //         firstBtnTitle: "Delete",
-    //         secondBtnTitle: "Cancel",
-    //         onPressed: () => deleteMessageAndShowSuccessfulDialog(),
-    //         firstButtonColor: Colors.redAccent,));
-  }
-
-  deleteMessageAndShowSuccessfulDialog() {
-    // TODO Add functionality for deleting message
-    Navigator.pop(context);
-    showSuccessfulOrErrorDialog("Message Deleted Successfully!", false);
+        () {
+          deleteMessage(message);
+        },
+        Colors.redAccent,
+        () {
+          isAnyDialogShowing = false;
+        });
   }
 
   showSuccessfulOrErrorDialog(String description, bool showUiForErrorMessage) {
@@ -131,11 +138,6 @@ class _MessagesScreenContentState extends State<MessagesScreenContent> {
         "Okay", showUiForErrorMessage, () {
           isAnyDialogShowing = false;
     });
-    // showDialog(context: context, builder: (BuildContext context) => SuccessfulAndErrorDialog(
-    //   title: "Success!",
-    //   description: description,
-    //   buttonText: "Okay",
-    //   showUIForErrorDialog: showUiForErrorMessage,));
   }
 
   showProgressDialog(String message) {
@@ -159,24 +161,40 @@ class _MessagesScreenContentState extends State<MessagesScreenContent> {
       child: BlocListener<MessagesBloc, MessagesState>(
         listener: (context, state) {
           if (state is MessageLoading) {
+
             dismissAllDialog();
             showProgressDialog(state.progressDisplayMessage);
+
           }
 
           if (state is MessageFetched) {
+
             messages = state.messages;
             setState(() {});
             dismissAllDialog();
+
           }
 
           if (state is MessageError) {
+
             dismissAllDialog();
             showSuccessfulOrErrorDialog(state.errorMessage, true);
+
           }
 
           if (state is ReplyEmailSentSuccessfully) {
+
             dismissAllDialog();
             showSuccessfulOrErrorDialog("Reply email! Sent Successfully", false);
+
+          }
+
+          if (state is MessageDeletedSuccessfully) {
+
+            setState(() {});
+            dismissAllDialog();
+            showSuccessfulOrErrorDialog("Message Deleted Successfully", false);
+
           }
         },
         child: SafeArea(
@@ -212,7 +230,7 @@ class _MessagesScreenContentState extends State<MessagesScreenContent> {
                   SearchBarWithButton(
                       searchController: searchController,
                       onPressed: () {
-                        // TODO : Implement search here
+                        messagesBloc.add(FilterMessages(searchController.text));
                       }
                   ),
 

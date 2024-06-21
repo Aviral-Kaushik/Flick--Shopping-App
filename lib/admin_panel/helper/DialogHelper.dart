@@ -48,7 +48,7 @@ class DialogHelper {
               message: message,
               firstBtnTitle: firstBtnTitle,
               secondBtnTitle: secondBtnTitle,
-              onPressed: () => onPressed,
+              onPressed: onPressed,
               firstButtonColor: firstButtonColor,
             )).then((value) => afterDismissCallBack);
   }

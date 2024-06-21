@@ -15,4 +15,21 @@ class Message {
   final String subject;
   final String message;
   final String dateAndTime;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (runtimeType != other.runtimeType) return false;
+    final Message otherMessage = other as Message;
+    return id == otherMessage.id;
+  }
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      name.hashCode ^
+      contactEmail.hashCode ^
+      subject.hashCode ^
+      message.hashCode ^
+      dateAndTime.hashCode;
 }
