@@ -25,7 +25,8 @@ class MessagesBloc extends Bloc<MessagesEvent, MessagesState> {
 
       final isReplySentSuccessfully = await messageRepository.sendReplyEmail(
         event.userEmail,
-        event.replyMessage
+        event.replyMessage,
+        event.messageSubject
       );
 
       if (isReplySentSuccessfully) {

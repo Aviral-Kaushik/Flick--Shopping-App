@@ -2,9 +2,8 @@ import 'package:flick/admin_panel/blocs/termsAndPrivacy/terms_and_privacy_bloc.d
 import 'package:flick/admin_panel/blocs/termsAndPrivacy/terms_and_privacy_event.dart';
 import 'package:flick/admin_panel/blocs/termsAndPrivacy/terms_and_privacy_state.dart';
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
-import 'package:flick/admin_panel/components/widgets/dialogs/SuccessfulAndErrorDialog.dart';
-import 'package:flick/admin_panel/helper/DialogHelper.dart';
-import 'package:flick/admin_panel/helper/SnackbarHelper.dart';
+import 'package:flick/helper/DialogHelper.dart';
+import 'package:flick/helper/SnackbarHelper.dart';
 import 'package:flick/locator.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';

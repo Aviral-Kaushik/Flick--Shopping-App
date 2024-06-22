@@ -201,10 +201,11 @@ List<User> getUsersData() {
 
 List<Message> getDummyMessages() {
   return [
-    Message(id: "1", name: "Jobye Phillipp", contactEmail: "jphillipp2@deviantart.com", subject: "Need details of flick", message: "What is Flick?", dateAndTime: DateTime.now().toString()),
-    Message(id: "2", name: "Ella Werendell", contactEmail: "ewerendell0@yandex.ru", subject: "Flick Working", message: "How does it work?", dateAndTime: DateTime.now().toString()),
-    Message(id: "3", name: "Donnajean Hawse", contactEmail: "dhawse3@printfriendly.com", subject: "Nike Special Edition" , message: "When will new nike new limited edition will come?", dateAndTime: DateTime.now().toString()),
-    Message(id: "4", name: "Ban Steutly", contactEmail: "bsteutly6@booking.com", subject: "Electronic reference" , message: "Does you deals in electronics?", dateAndTime: DateTime.now().toString()),
-    Message(id: "5", name: "Rosamond Fanning", contactEmail: "rfanning9@disqus.com", subject: "Sale information" , message: "When will the special festiv sale will come?", dateAndTime: DateTime.now().toString())
+    Message(id: "1", name: "Avichal Kaushik", contactEmail: "avichalkaushik0007@gmail.com", subject: "Become Seller at flick", message: "I want to be a new seller on flick and sell my products can you please specify the further process of becoming seller at flick", dateAndTime: DateTime.now().toString()),
+    Message(id: "2", name: "Jobye Phillipp", contactEmail: "jphillipp2@deviantart.com", subject: "Need details of flick", message: "What is Flick?", dateAndTime: DateTime.now().toString()),
+    Message(id: "3", name: "Ella Werendell", contactEmail: "ewerendell0@yandex.ru", subject: "Flick Working", message: "How does it work?", dateAndTime: DateTime.now().toString()),
+    Message(id: "4", name: "Donnajean Hawse", contactEmail: "dhawse3@printfriendly.com", subject: "Nike Special Edition" , message: "When will new nike new limited edition will come?", dateAndTime: DateTime.now().toString()),
+    Message(id: "5", name: "Ban Steutly", contactEmail: "bsteutly6@booking.com", subject: "Electronic reference" , message: "Does you deals in electronics?", dateAndTime: DateTime.now().toString()),
+    Message(id: "6", name: "Rosamond Fanning", contactEmail: "rfanning9@disqus.com", subject: "Sale information" , message: "When will the special festiv sale will come?", dateAndTime: DateTime.now().toString())
   ];
 }

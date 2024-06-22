@@ -28,6 +28,8 @@ class SearchBarWithButton extends StatelessWidget {
             child: TextField(
               keyboardType: TextInputType.text,
               controller: searchController,
+              textAlign: TextAlign.start,
+              textAlignVertical: TextAlignVertical.center,
               decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.search),
                   border: OutlineInputBorder(

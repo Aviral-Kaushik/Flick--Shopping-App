@@ -44,6 +44,7 @@ dependencies:
   flutter_statusbarcolor_ns: ^0.5.0
   get_it: ^7.7.0
   flutter_bloc: ^8.1.6
+  mailer: ^6.1.0
 
 dev_dependencies:
   flutter_test:

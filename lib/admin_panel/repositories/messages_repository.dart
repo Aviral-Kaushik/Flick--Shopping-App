@@ -1,6 +1,6 @@
 import 'package:flick/admin_panel/data/Data.dart';
+import 'package:flick/helper/MailHelper.dart';
 import 'package:flick/models/Message.dart';
-import 'package:flutter/cupertino.dart';
 
 class MessageRepository {
 
@@ -11,10 +11,21 @@ class MessageRepository {
     return messages;
   }
 
-  Future<bool> sendReplyEmail(String userEmail, String replyMessage) async {
+  Future<bool> sendReplyEmail(String userEmail, String replyMessage, String subject) async {
     // TODO Implement sharing mail functionality using App Password from link
     // TODO https://syedahmedusman2.medium.com/how-to-send-email-from-flutter-application-a1937730d15c
-    return true;
+
+    MailHelper mailHelper = MailHelper();
+    mailHelper.createSmtpServer();
+
+    final mailResponse = await mailHelper.sendMessageReplyEmail(
+        userEmail, replyMessage, subject);
+
+    if (mailResponse.isMailSentSuccessfully) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   Future<bool> deleteMessage(Message message) async {

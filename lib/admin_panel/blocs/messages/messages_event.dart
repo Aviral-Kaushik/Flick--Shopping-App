@@ -11,8 +11,9 @@ class FetchAllMessages extends MessagesEvent {
 class SendReplyEmail extends MessagesEvent {
   final String userEmail;
   final String replyMessage;
+  final String messageSubject;
 
-  SendReplyEmail(this.userEmail, this.replyMessage);
+  SendReplyEmail(this.userEmail, this.replyMessage, this.messageSubject);
 }
 
 class DeleteMessage extends MessagesEvent {

@@ -4,8 +4,8 @@ import 'package:flick/admin_panel/blocs/messages/messages_state.dart';
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/admin_panel/components/widgets/SerachBarWithButton.dart';
 import 'package:flick/admin_panel/components/widgets/dialogs/ViewMessageDialog.dart';
-import 'package:flick/admin_panel/helper/DialogHelper.dart';
-import 'package:flick/admin_panel/helper/SnackbarHelper.dart';
+import 'package:flick/helper/DialogHelper.dart';
+import 'package:flick/helper/SnackbarHelper.dart';
 import 'package:flick/locator.dart';
 import 'package:flick/models/Message.dart';
 import 'package:flick/utils/Colors.dart';
@@ -110,7 +110,11 @@ class _MessagesScreenContentState extends State<MessagesScreenContent> {
         builder: (BuildContext context) => ViewMessageDialog(
             message: message, shareReplyEmail: (String replyMessage) {
               Navigator.pop(context);
-              messagesBloc.add(SendReplyEmail(message.contactEmail, replyMessage));
+              messagesBloc.add(SendReplyEmail(
+                  message.contactEmail,
+                  replyMessage,
+                  message.subject
+              ));
         })).then((value) {
           isAnyDialogShowing = false;
     });
