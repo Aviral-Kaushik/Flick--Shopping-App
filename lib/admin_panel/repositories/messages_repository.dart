@@ -12,9 +12,6 @@ class MessageRepository {
   }
 
   Future<bool> sendReplyEmail(String userEmail, String replyMessage, String subject) async {
-    // TODO Implement sharing mail functionality using App Password from link
-    // TODO https://syedahmedusman2.medium.com/how-to-send-email-from-flutter-application-a1937730d15c
-
     MailHelper mailHelper = MailHelper();
     mailHelper.createSmtpServer();
 
@@ -42,13 +39,14 @@ class MessageRepository {
       caseSensitive: false,
     );
 
-    List<Message> queriedMessages = messages.where((message) =>
-        regex.hasMatch(message.name) ||
-        regex.hasMatch(message.contactEmail) ||
-        regex.hasMatch(message.subject) ||
-        regex.hasMatch(message.message)).toList();
-
-    List<Message> filteredMessages = queriedMessages.toSet().toList();
+    List<Message> filteredMessages = messages
+        .where((message) =>
+            regex.hasMatch(message.name) ||
+            regex.hasMatch(message.contactEmail) ||
+            regex.hasMatch(message.subject) ||
+            regex.hasMatch(message.message))
+        .toSet()
+        .toList();
 
     return filteredMessages;
   }

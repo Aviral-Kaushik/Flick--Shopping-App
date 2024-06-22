@@ -138,7 +138,7 @@ class _MessagesScreenContentState extends State<MessagesScreenContent> {
   showSuccessfulOrErrorDialog(String description, bool showUiForErrorMessage) {
     isAnyDialogShowing = true;
     dialogHelper.showSuccessfulOrErrorDialog(
-        "Success!", description,
+        showUiForErrorMessage ? "Oops" : "Success!", description,
         "Okay", showUiForErrorMessage, () {
           isAnyDialogShowing = false;
     });

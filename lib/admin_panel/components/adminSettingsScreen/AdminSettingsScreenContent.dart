@@ -1,14 +1,17 @@
+import 'package:flick/admin_panel/blocs/settings/settings_bloc.dart';
+import 'package:flick/admin_panel/blocs/settings/settings_event.dart';
+import 'package:flick/admin_panel/blocs/settings/settings_state.dart';
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/admin_panel/components/widgets/SerachBarWithButton.dart';
 import 'package:flick/admin_panel/components/widgets/dialogs/CreateNewAdminDialog.dart';
-import 'package:flick/admin_panel/components/widgets/dialogs/SuccessfulAndErrorDialog.dart';
-import 'package:flick/admin_panel/components/widgets/dialogs/WarningDialog.dart';
-import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/admin_panel/models/DetailsCardModel.dart';
+import 'package:flick/helper/DialogHelper.dart';
+import 'package:flick/locator.dart';
 import 'package:flick/models/User.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 class AdminSettingsScreenContent extends StatefulWidget {
@@ -20,42 +23,59 @@ class AdminSettingsScreenContent extends StatefulWidget {
 
 class _AdminSettingsScreenContentState extends State<AdminSettingsScreenContent> {
 
+  final SettingsBloc settingsBloc = locator.get<SettingsBloc>();
+  late DialogHelper dialogHelper;
+
   late DetailsCardModel adminCardModel;
   late int totalAdmins;
   late List<User> adminUsersList;
 
   TextEditingController searchController = TextEditingController();
 
+  bool isAnyDialogShowing = false;
+
   @override
   void initState() {
     super.initState();
     // TODO Fetch Admin Data Here
-    totalAdmins = 12;
+    dialogHelper = DialogHelper(context);
 
-    adminCardModel = DetailsCardModel(
-      title: "Total Admins",
-      count: totalAdmins,
-      svgSrc: "assets/icons/Subscribers.svg",
-      color: adminPanelPrimaryColor,
-    );
-
-    adminUsersList = getUsersData().where((element) => element.isAdmin).toList();
+    settingsBloc.add(const FetchAllAdmins());
+    // totalAdmins = 12;
+    //
+    // adminCardModel = DetailsCardModel(
+    //   title: "Total Admins",
+    //   count: totalAdmins,
+    //   svgSrc: "assets/icons/Subscribers.svg",
+    //   color: adminPanelPrimaryColor,
+    // );
+    //
+    // adminUsersList = getUsersData().where((element) => element.isAdmin).toList();
 
   }
 
-  showDeleteAdminDialog() {
-    showDialog(context: context,
-        builder: (BuildContext context) => WarningDialog(
-            message: "Are you sure want to remove this admin?",
-            firstBtnTitle: "Delete",
-            secondBtnTitle: "Cancel",
-            onPressed: () => deleteAdminAndShowSuccessfulDialog(),
-            firstButtonColor: Colors.redAccent,));
+  showDeleteAdminDialog(User user) {
+    isAnyDialogShowing = true;
+
+    dialogHelper.showWarningDialog(
+        "Are you sure want to remove this admin?",
+        "Delete",
+        "Cancel",
+        () => deleteAdmin(user),
+        Colors.redAccent, () {
+      isAnyDialogShowing = false;
+    });
+    // showDialog(context: context,
+    //     builder: (BuildContext context) => WarningDialog(
+    //         message: "Are you sure want to remove this admin?",
+    //         firstBtnTitle: "Delete",
+    //         secondBtnTitle: "Cancel",
+    //         onPressed: () => deleteAdminAndShowSuccessfulDialog(),
+    //         firstButtonColor: Colors.redAccent,));
   }
 
-  deleteAdminAndShowSuccessfulDialog() {
+  deleteAdmin(User user) {
     // TODO Add functionality for deleting admin
-    popAndShowSuccessfulDialog("Admin Deleted Successfully!");
     // showDialog(context: context, builder: (BuildContext context) => const SuccessfulAndErrorDialog(
     //     title: "Success!",
     //     description: "Admin Deleted Successfully!",
@@ -70,127 +90,192 @@ class _AdminSettingsScreenContentState extends State<AdminSettingsScreenContent>
             CreateNewAdminDialog(onPressed: (String email) {
               // TODO: Add functionality for giving admin access to this
               // TODO: email and sent a email template like daity
-              popAndShowSuccessfulDialog("Admin access given to $email");
+              settingsBloc.add(CreateNewAdmin(email));
             }));
   }
 
   popAndShowSuccessfulDialog(String description) {
     Navigator.pop(context);
-    showDialog(context: context, builder: (BuildContext context) => SuccessfulAndErrorDialog(
-        title: "Success!",
-        description: description,
-        buttonText: "Okay",
-        showUIForErrorDialog: false));
+
+    isAnyDialogShowing = true;
+
+    dialogHelper.showSuccessfulOrErrorDialog(
+        "Success!", description, "Okay", false, () {
+      isAnyDialogShowing = false;
+    });
+    // showDialog(context: context, builder: (BuildContext context) => SuccessfulAndErrorDialog(
+    //     title: "Success!",
+    //     description: description,
+    //     buttonText: "Okay",
+    //     showUIForErrorDialog: false));
+  }
+
+  showProgressDialog(String message) {
+    isAnyDialogShowing = true;
+    dialogHelper.showProgressDialog(message, () {
+      isAnyDialogShowing = false;
+    });
+  }
+
+  showSuccessfulOrErrorDialog(String description, bool showUiForErrorMessage) {
+    isAnyDialogShowing = true;
+    dialogHelper.showSuccessfulOrErrorDialog(
+        showUiForErrorMessage ? "Oops!" : "Success!", description,
+        "Okay", showUiForErrorMessage, () {
+      isAnyDialogShowing = false;
+    });
+  }
+
+  dismissAllDialog() {
+    if (isAnyDialogShowing) {
+      Navigator.pop(context);
+      isAnyDialogShowing = false;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.only(
-            left: appPadding, right: appPadding, bottom: appPadding),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+    return BlocProvider<SettingsBloc>(
+      create: (_) => settingsBloc,
+      child: BlocListener<SettingsBloc, SettingsState>(
+        listener: (context, state) {
 
-            const AdminAppBar(),
+          if (state is SettingsLoading) {
+            dismissAllDialog();
+            showProgressDialog(state.progressMessage);
+          }
 
-            const SizedBox(
-              height: appPadding,
-            ),
+          if (state is AdminFetched) {
+            dismissAllDialog();
+            adminUsersList = state.admins;
+            totalAdmins = state.admins.length;
+            setState(() {});
+          }
 
-            const Text("Settings", style: TextStyle(
-              color: textColor,
-              fontSize: 25,
-              fontWeight: FontWeight.bold
-            ),),
+          if (state is SettingsError) {
+            dismissAllDialog();
+            showSuccessfulOrErrorDialog(state.errorMessage, true);
+          }
 
-            const SizedBox(
-              height: appPadding,
-            ),
+          if (state is NewAdminCreatedSuccessfully) {
+            dismissAllDialog();
+            showSuccessfulOrErrorDialog("Admin Access given successfully!", false);
+          }
 
-            Row(
+          if (state is AdminDeleteSuccessfully) {
+            dismissAllDialog();
+            showSuccessfulOrErrorDialog("Admin Deleted Successfully!", false);
+          }
+
+        },
+        child: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.only(
+                left: appPadding, right: appPadding, bottom: appPadding),
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AdminChipCard(adminCardModel: adminCardModel),
 
-                GestureDetector(
-                  onTap: () {
-                    showCreateAdminDialog();
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(appPadding),
+                const AdminAppBar(),
 
-                    decoration: BoxDecoration(
-                      color: whiteColor,
-                      borderRadius: BorderRadius.circular(appPadding),
-                      boxShadow: [BoxShadow(
-                          color: Colors.black.withOpacity(0.5),
-                          blurRadius: 4.5,
-                          blurStyle: BlurStyle.outer,
-                        )]
-                    ),
+                const SizedBox(
+                  height: appPadding,
+                ),
 
-                    child: const Center(
-                      child: Icon(Icons.add, color: Colors.black)
-                    ),
+                const Text("Settings", style: TextStyle(
+                  color: textColor,
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold
+                ),),
+
+                const SizedBox(
+                  height: appPadding,
+                ),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    AdminChipCard(adminCardModel: adminCardModel),
+
+                    GestureDetector(
+                      onTap: () {
+                        showCreateAdminDialog();
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(appPadding),
+
+                        decoration: BoxDecoration(
+                          color: whiteColor,
+                          borderRadius: BorderRadius.circular(appPadding),
+                          boxShadow: [BoxShadow(
+                              color: Colors.black.withOpacity(0.5),
+                              blurRadius: 4.5,
+                              blurStyle: BlurStyle.outer,
+                            )]
+                        ),
+
+                        child: const Center(
+                          child: Icon(Icons.add, color: Colors.black)
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+
+                const SizedBox(
+                  height: appPadding * 2,
+                ),
+
+                SearchBarWithButton(
+                  searchController: searchController,
+                    onPressed: () {
+                    // TODO : Implement search here
+                      settingsBloc.add(SearchAdmin(searchController.text));
+                  }
+                ),
+
+                const SizedBox(
+                  height: appPadding,
+                ),
+
+                Container(
+                  padding: const EdgeInsets.all(appPadding),
+                  decoration: BoxDecoration(
+                    color: whiteColor,
+                    borderRadius: BorderRadius.circular(appPadding)
+                  ),
+                  child: Column(
+                    children: [
+
+                      Text("Admins List", style: TextStyle(
+                        color: blackColor,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold
+                      ),),
+
+                      const SizedBox(
+                        height: appPadding / 2,
+                      ),
+
+                      adminUsersList.isNotEmpty ? ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: adminUsersList.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) =>
+                              SingleAdminUserLayout(
+                                  user: adminUsersList[index],
+                                  onTap: () {
+                                    showDeleteAdminDialog(adminUsersList[index]);
+                                  }
+                              )) : const Text("No admins found!"),
+
+                    ],
                   ),
                 )
               ],
             ),
-
-            const SizedBox(
-              height: appPadding * 2,
-            ),
-
-            SearchBarWithButton(
-              searchController: searchController,
-                onPressed: () {
-                // TODO : Implement search here
-              }
-            ),
-
-            const SizedBox(
-              height: appPadding,
-            ),
-
-            Container(
-              padding: const EdgeInsets.all(appPadding),
-              decoration: BoxDecoration(
-                color: whiteColor,
-                borderRadius: BorderRadius.circular(appPadding)
-              ),
-              child: Column(
-                children: [
-
-                  Text("Admins List", style: TextStyle(
-                    color: blackColor,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold
-                  ),),
-
-                  const SizedBox(
-                    height: appPadding / 2,
-                  ),
-
-                  ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: adminUsersList.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) =>
-                          SingleAdminUserLayout(
-                              user: adminUsersList[index],
-                              onTap: () {
-                               // TODO Show Remove Admin Dialog Here
-                                showDeleteAdminDialog();
-                              }
-                          )),
-
-                ],
-              ),
-            )
-          ],
+          ),
         ),
       ),
     );
