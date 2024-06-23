@@ -4,11 +4,15 @@ import 'package:flick/admin_panel/blocs/termsAndPrivacy/terms_and_privacy_bloc.d
 import 'package:flick/admin_panel/repositories/messages_repository.dart';
 import 'package:flick/admin_panel/repositories/settings_repository.dart';
 import 'package:flick/admin_panel/repositories/terms_and_privacy_repository.dart';
+import 'package:flick/helper/MailHelper.dart';
 import 'package:get_it/get_it.dart';
 
 final locator = GetIt.instance;
 
 void setup() {
+
+  locator.registerLazySingleton<MailHelper>(() => MailHelper());
+
   locator.registerLazySingleton<TermsAndPrivacyRepository>(
       () => TermsAndPrivacyRepository());
 

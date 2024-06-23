@@ -1,5 +1,6 @@
 import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/helper/MailHelper.dart';
+import 'package:flick/locator.dart';
 import 'package:flick/models/Message.dart';
 
 class MessageRepository {
@@ -12,7 +13,7 @@ class MessageRepository {
   }
 
   Future<bool> sendReplyEmail(String userEmail, String replyMessage, String subject) async {
-    MailHelper mailHelper = MailHelper();
+    MailHelper mailHelper = locator.get<MailHelper>();
     mailHelper.createSmtpServer();
 
     final mailResponse = await mailHelper.sendMessageReplyEmail(

@@ -26,9 +26,9 @@ class _AdminSettingsScreenContentState extends State<AdminSettingsScreenContent>
   final SettingsBloc settingsBloc = locator.get<SettingsBloc>();
   late DialogHelper dialogHelper;
 
-  late DetailsCardModel adminCardModel;
+  late DetailsCardModel? adminCardModel;
   late int totalAdmins;
-  late List<User> adminUsersList;
+  late List<User>? adminUsersList = List.empty();
 
   TextEditingController searchController = TextEditingController();
 
@@ -37,21 +37,16 @@ class _AdminSettingsScreenContentState extends State<AdminSettingsScreenContent>
   @override
   void initState() {
     super.initState();
-    // TODO Fetch Admin Data Here
     dialogHelper = DialogHelper(context);
 
     settingsBloc.add(const FetchAllAdmins());
-    // totalAdmins = 12;
-    //
-    // adminCardModel = DetailsCardModel(
-    //   title: "Total Admins",
-    //   count: totalAdmins,
-    //   svgSrc: "assets/icons/Subscribers.svg",
-    //   color: adminPanelPrimaryColor,
-    // );
-    //
-    // adminUsersList = getUsersData().where((element) => element.isAdmin).toList();
 
+    adminCardModel = DetailsCardModel(
+      title: "Total Admins",
+      count: 0,
+      svgSrc: "assets/icons/Subscribers.svg",
+      color: adminPanelPrimaryColor,
+    );
   }
 
   showDeleteAdminDialog(User user) {
@@ -64,23 +59,12 @@ class _AdminSettingsScreenContentState extends State<AdminSettingsScreenContent>
         () => deleteAdmin(user),
         Colors.redAccent, () {
       isAnyDialogShowing = false;
-    });
-    // showDialog(context: context,
-    //     builder: (BuildContext context) => WarningDialog(
-    //         message: "Are you sure want to remove this admin?",
-    //         firstBtnTitle: "Delete",
-    //         secondBtnTitle: "Cancel",
-    //         onPressed: () => deleteAdminAndShowSuccessfulDialog(),
-    //         firstButtonColor: Colors.redAccent,));
+    });;
   }
 
   deleteAdmin(User user) {
-    // TODO Add functionality for deleting admin
-    // showDialog(context: context, builder: (BuildContext context) => const SuccessfulAndErrorDialog(
-    //     title: "Success!",
-    //     description: "Admin Deleted Successfully!",
-    //     buttonText: "Okay",
-    //     showUIForErrorDialog: false));
+    adminUsersList?.remove(user);
+    settingsBloc.add(DeleteAdmin(user));
   }
 
   showCreateAdminDialog() {
@@ -88,8 +72,6 @@ class _AdminSettingsScreenContentState extends State<AdminSettingsScreenContent>
         context: context,
         builder: (BuildContext context) =>
             CreateNewAdminDialog(onPressed: (String email) {
-              // TODO: Add functionality for giving admin access to this
-              // TODO: email and sent a email template like daity
               settingsBloc.add(CreateNewAdmin(email));
             }));
   }
@@ -103,11 +85,6 @@ class _AdminSettingsScreenContentState extends State<AdminSettingsScreenContent>
         "Success!", description, "Okay", false, () {
       isAnyDialogShowing = false;
     });
-    // showDialog(context: context, builder: (BuildContext context) => SuccessfulAndErrorDialog(
-    //     title: "Success!",
-    //     description: description,
-    //     buttonText: "Okay",
-    //     showUIForErrorDialog: false));
   }
 
   showProgressDialog(String message) {
@@ -147,8 +124,11 @@ class _AdminSettingsScreenContentState extends State<AdminSettingsScreenContent>
 
           if (state is AdminFetched) {
             dismissAllDialog();
+
             adminUsersList = state.admins;
             totalAdmins = state.admins.length;
+            adminCardModel?.count = totalAdmins;
+
             setState(() {});
           }
 
@@ -165,6 +145,7 @@ class _AdminSettingsScreenContentState extends State<AdminSettingsScreenContent>
           if (state is AdminDeleteSuccessfully) {
             dismissAllDialog();
             showSuccessfulOrErrorDialog("Admin Deleted Successfully!", false);
+            setState(() {});
           }
 
         },
@@ -196,7 +177,7 @@ class _AdminSettingsScreenContentState extends State<AdminSettingsScreenContent>
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    AdminChipCard(adminCardModel: adminCardModel),
+                    AdminChipCard(adminCardModel: adminCardModel!),
 
                     GestureDetector(
                       onTap: () {
@@ -230,7 +211,6 @@ class _AdminSettingsScreenContentState extends State<AdminSettingsScreenContent>
                 SearchBarWithButton(
                   searchController: searchController,
                     onPressed: () {
-                    // TODO : Implement search here
                       settingsBloc.add(SearchAdmin(searchController.text));
                   }
                 ),
@@ -258,15 +238,15 @@ class _AdminSettingsScreenContentState extends State<AdminSettingsScreenContent>
                         height: appPadding / 2,
                       ),
 
-                      adminUsersList.isNotEmpty ? ListView.builder(
+                      (adminUsersList != null && adminUsersList!.isNotEmpty) ? ListView.builder(
                           physics: const BouncingScrollPhysics(),
-                          itemCount: adminUsersList.length,
+                          itemCount: adminUsersList!.length,
                           shrinkWrap: true,
                           itemBuilder: (context, index) =>
                               SingleAdminUserLayout(
-                                  user: adminUsersList[index],
+                                  user: adminUsersList![index],
                                   onTap: () {
-                                    showDeleteAdminDialog(adminUsersList[index]);
+                                    showDeleteAdminDialog(adminUsersList![index]);
                                   }
                               )) : const Text("No admins found!"),
 

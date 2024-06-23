@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class DetailsCardModel {
   final String? svgSrc, title;
-  final int? count;
+  int? count;
   final Color? color;
 
   DetailsCardModel({

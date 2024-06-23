@@ -45,4 +45,17 @@ class MailHelper {
     final mailResponse = await sendEmail(message);
     return mailResponse;
   }
+
+  Future<MailResponse> sendAdminAccessEmail(String userEmail) async {
+
+    final message = Message()
+        ..from = Address(username, "Aviral Kaushik")
+        ..recipients.add(userEmail)
+        ..subject = "Admin Access Privileges"
+        ..html = MailTemplates().getAdminAccessMailHtmlContent();
+
+    final mailResponse = await sendEmail(message);
+    return mailResponse;
+  }
+
 }
