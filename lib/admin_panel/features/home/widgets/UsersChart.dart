@@ -1,11 +1,14 @@
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flick/admin_panel/models/dashboard/MonthWiseUserData.dart';
 import 'package:flick/utils/ChartsData.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
 
 class UsersChart extends StatelessWidget {
-  const UsersChart({super.key});
+  const UsersChart({super.key, required this.monthWiseUserData});
+
+  final List<MonthWiseUserData> monthWiseUserData;
 
   @override
   Widget build(BuildContext context) {

@@ -1,14 +1,22 @@
 import 'dart:math';
 
+import 'package:flick/admin_panel/models/dashboard/DeviceWiseUserData.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
 
 class UserByDevicePieChart extends StatelessWidget {
-  const UserByDevicePieChart({super.key});
+  const UserByDevicePieChart({super.key, required this.deviceWiseUserData});
+
+  final DeviceWiseUserData deviceWiseUserData;
 
   @override
   Widget build(BuildContext context) {
+
+    var totalUser = deviceWiseUserData.androidDeviceUserCount + deviceWiseUserData.iOSDeviceUserCount;
+
+    var androidUsersPercentage = (deviceWiseUserData.androidDeviceUserCount / totalUser) * 100;
+
     return Container(
       height: 350,
       decoration: BoxDecoration(
@@ -35,12 +43,12 @@ class UserByDevicePieChart extends StatelessWidget {
               foregroundPainter: RadialPainter(
                 backgroundColor: textColor.withOpacity(0.1),
                 lineColor: adminPanelPrimaryColor,
-                percentage: 0.7,
+                percentage: androidUsersPercentage / 100,
                 width: 18.0,
               ),
 
-              child: const Center(
-                child: Text("70%", style: TextStyle(
+              child: Center(
+                child: Text("${androidUsersPercentage.toInt()}%", style: const TextStyle(
                   color: textColor,
                   fontWeight: FontWeight.w600,
                   fontSize: 36

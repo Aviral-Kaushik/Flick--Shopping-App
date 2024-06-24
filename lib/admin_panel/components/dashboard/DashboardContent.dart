@@ -1,17 +1,15 @@
-import 'dart:convert';
-
 import 'package:flick/admin_panel/blocs/dashboard/dashboard_bloc.dart';
 import 'package:flick/admin_panel/blocs/dashboard/dashboard_event.dart';
 import 'package:flick/admin_panel/blocs/dashboard/dashboard_state.dart';
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/admin_panel/components/widgets/DetailsChipCard.dart';
 import 'package:flick/admin_panel/constants/Responsive.dart';
-import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/admin_panel/features/home/widgets/TopSellersList.dart';
 import 'package:flick/admin_panel/features/home/widgets/UserByDevicePieChart.dart';
 import 'package:flick/admin_panel/features/home/widgets/UsersChart.dart';
 import 'package:flick/admin_panel/features/home/widgets/ViewersLineChart.dart';
-import 'package:flick/admin_panel/models/dashboard/MonthWiseUserData.dart';
+import 'package:flick/admin_panel/models/dashboard/DashboardRepositoryResponse.dart';
+import 'package:flick/helper/DialogHelper.dart';
 import 'package:flick/locator.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,12 +27,43 @@ class DashboardContent extends StatefulWidget {
 class _DashboardContentState extends State<DashboardContent> {
 
   DashboardBloc dashboardBloc = locator.get<DashboardBloc>();
+  late DialogHelper dialogHelper;
+  DashboardRepositoryResponse? dashboardRepositoryResponse;
+
+  bool isAnyDialogShowing = false;
 
   @override
   void initState() {
     super.initState();
 
+    dialogHelper = DialogHelper(context);
     dashboardBloc.add(const LoadDashboardData());
+  }
+
+  showProgressDialog(String message) {
+    isAnyDialogShowing = true;
+
+    dialogHelper.showProgressDialog(message, () {
+      isAnyDialogShowing = false;
+    });
+  }
+
+  showErrorDialog(String message) {
+    isAnyDialogShowing = true;
+
+    dialogHelper.showSuccessfulOrErrorDialog("Oops!", message, "Dismiss", true,
+        () {
+      isAnyDialogShowing = false;
+    });
+  }
+
+  dismissAllDialogs() {
+    if (isAnyDialogShowing) {
+
+      isAnyDialogShowing = false;
+
+      Navigator.pop(context);
+    }
   }
 
   @override
@@ -44,16 +73,25 @@ class _DashboardContentState extends State<DashboardContent> {
       child: BlocListener<DashboardBloc, DashboardState>(
         listener: (context, state) {
 
+          if (state is DashboardLoading) {
+
+            dismissAllDialogs();
+            showProgressDialog(state.progressMessage);
+
+          }
+
           if (state is DashboardDataLoaded) {
-            print("Aviral Admin Data Loaded");
-            final monthWiseUserData = state.dashboardRepositoryResponse.monthWiseUserData;
-            print("Aviral Month Wise User Data");
-            for (MonthWiseUserData userData in monthWiseUserData) {
-              print("${userData.month} : ${userData.usersCount}");
-            }
-            print("Aviral Device Wise User Data");
-            print("Android: ${state.dashboardRepositoryResponse.deviceWiseUserData.androidDeviceUserCount}");
-            print("iOS: ${state.dashboardRepositoryResponse.deviceWiseUserData.iOSDeviceUserCount}");
+            dashboardRepositoryResponse = state.dashboardRepositoryResponse;
+            setState(() {});
+
+            dismissAllDialogs();
+          }
+
+          if (state is DashboardError) {
+
+            dismissAllDialogs();
+            showErrorDialog(state.errorMessage);
+
           }
 
         },
@@ -76,11 +114,24 @@ class _DashboardContentState extends State<DashboardContent> {
                           flex: 5,
                           child: Column(
                             children: [
-                              DetailsChipCard(detailsCardData: detailsCardData,),
+                              dashboardRepositoryResponse != null
+                              ? DetailsChipCard(
+                                  detailsCardData: dashboardRepositoryResponse?.detailsCardModel,
+                                )
+                              : const SizedBox(
+                                  height: 0,
+                                ),
 
                               const SizedBox(height: appPadding * 1.7,),
 
-                              const UsersChart(),
+                              dashboardRepositoryResponse != null
+                                  ? UsersChart(
+                                      monthWiseUserData:
+                                          dashboardRepositoryResponse!
+                                              .monthWiseUserData)
+                                  : const SizedBox(
+                                      height: 0,
+                                    ),
 
                               // TODO This Top User list is not visible in phone we can show
                               // TODO this in different screen in the drawer or below.
@@ -93,17 +144,24 @@ class _DashboardContentState extends State<DashboardContent> {
                     ],
                   ),
 
-                  const Row(
+                  Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                        Expanded(child: Column(
                         children: [
 
-                          ViewersLineChart(),
+                          const ViewersLineChart(),
 
-                          SizedBox(height: appPadding * 1.7,),
+                          const SizedBox(height: appPadding * 1.7,),
 
-                          UserByDevicePieChart(),
+                          dashboardRepositoryResponse != null
+                          ? UserByDevicePieChart(
+                              deviceWiseUserData: dashboardRepositoryResponse!
+                                  .deviceWiseUserData,
+                            )
+                          : const SizedBox(
+                              height: 0,
+                            ),
                         ],
                       ))
                     ],
