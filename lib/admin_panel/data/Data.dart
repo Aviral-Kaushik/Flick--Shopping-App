@@ -209,3 +209,12 @@ List<Message> getDummyMessages() {
     Message(id: "6", name: "Rosamond Fanning", contactEmail: "rfanning9@disqus.com", subject: "Sale information" , message: "When will the special festiv sale will come?", dateAndTime: DateTime.now().toString())
   ];
 }
+
+
+String referralMessageFromFirebase =  "Flick is an innovative e-commerce application designed to revolutionize online shopping experiences. With a sleek interface and user-friendly features, Flick empowers users to browse, discover, and purchase products effortlessly.";
+
+
+int facebookReferralsCountFromFirebase = 240;
+int twitterReferralsCountFromFirebase = 195;
+int linkedinReferralsCountFromFirebase = 135;
+int othersReferralsCountFromFirebase = 95;
