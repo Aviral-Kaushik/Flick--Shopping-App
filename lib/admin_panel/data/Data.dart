@@ -179,16 +179,16 @@ If you have any questions about this Privacy Policy, please contact us at [suppo
 List<User> getUsersData() {
   List<User> usersList = [];
 
-  String jsonData = """[{"id":"1","username":"ewerendell0","password":"123456","email":"ewerendell0@yandex.ru","name":"Ella Werendell","device":"Android","isAdmin":true,"joiningDate":"17-Oct-2023","profilePhoto":"assets/images/photo1.jpg","country":"Russia"},
-{"id":"2","username":"psauter1","password":"123456","email":"psauter1@gov.uk","name":"Peria Sauter","device":"iOS","isAdmin":true,"joiningDate":"27-Jul-2023","profilePhoto":"assets/images/photo5.jpg","country":"Thailand"},
-{"id":"3","username":"jphillipp2","password":"123456","email":"jphillipp2@deviantart.com","name":"Jobye Phillipp","device":"iOS","isAdmin":false,"joiningDate":"21-Jul-2023","profilePhoto":"assets/images/photo6.jpg","country":"Philippines"},
-{"id":"4","username":"dhawse3","password":"123456","email":"dhawse3@printfriendly.com","name":"Donnajean Hawse","device":"Android","isAdmin":false,"joiningDate":"16-Oct-2023","profilePhoto":"assets/images/photo2.jpg","country":"Marshall Islands"},
-{"id":"5","username":"lrandalson4","password":"123456","email":"lrandalson4@merriam-webster.com","name":"Linda Randalson","device":"Android","isAdmin":false,"joiningDate":"07-Nov-2023","profilePhoto":"assets/images/photo3.jpg","country":"Brazil"},
-{"id":"6","username":"omcgrath5","password":"123456","email":"omcgrath5@gravatar.com","name":"Ogdan McGrath","device":"Android","isAdmin":false,"joiningDate":"29-Jul-2023","profilePhoto":"assets/images/photo6.jpg","country":"Poland"},
-{"id":"7","username":"bsteutly6","password":"123456","email":"bsteutly6@booking.com","name":"Ban Steutly","device":"Android","isAdmin":true,"joiningDate":"04-Jun-2023","profilePhoto":"assets/images/photo4.jpg","country":"Somalia"},
-{"id":"8","username":"owestphal7","password":"123456","email":"owestphal7@altervista.org","name":"Olivia Westphal","device":"iOS","isAdmin":true,"joiningDate":"05-May-2024","profilePhoto":"assets/images/photo5.jpg","country":"Russia"},
-{"id":"9","username":"snixon8","password":"123456","email":"snixon8@ameblo.jp","name":"Sarajane Nixon","device":"iOS","isAdmin":false,"joiningDate":"16-Mar-2024","profilePhoto":"assets/images/photo4.jpg","country":"China"},
-{"id":"10","username":"rfanning9","password":"123456","email":"rfanning9@disqus.com","name":"Rosamond Fanning","device":"iOS","isAdmin":false,"joiningDate":"25-Oct-2023","profilePhoto":"assets/images/photo6.jpg","country":"China"}]""";
+  String jsonData = """[{"id":"1","username":"ewerendell0","password":"123456","email":"ewerendell0@yandex.ru","name":"Ella Werendell","device":"Android","isAdmin":true,"joiningDate":"09-17-2023","profilePhoto":"assets/images/photo1.jpg","country":"Russia"},
+{"id":"2","username":"psauter1","password":"123456","email":"psauter1@gov.uk","name":"Peria Sauter","device":"iOS","isAdmin":true,"joiningDate":"07-27-2023","profilePhoto":"assets/images/photo5.jpg","country":"Thailand"},
+{"id":"3","username":"jphillipp2","password":"123456","email":"jphillipp2@deviantart.com","name":"Jobye Phillipp","device":"iOS","isAdmin":false,"joiningDate":"07-21-2023","profilePhoto":"assets/images/photo6.jpg","country":"Philippines"},
+{"id":"4","username":"dhawse3","password":"123456","email":"dhawse3@printfriendly.com","name":"Donnajean Hawse","device":"Android","isAdmin":false,"joiningDate":"09-16-2023","profilePhoto":"assets/images/photo2.jpg","country":"Marshall Islands"},
+{"id":"5","username":"lrandalson4","password":"123456","email":"lrandalson4@merriam-webster.com","name":"Linda Randalson","device":"Android","isAdmin":false,"joiningDate":"11-07-2023","profilePhoto":"assets/images/photo3.jpg","country":"Brazil"},
+{"id":"6","username":"omcgrath5","password":"123456","email":"omcgrath5@gravatar.com","name":"Ogdan McGrath","device":"Android","isAdmin":false,"joiningDate":"07-29-2023","profilePhoto":"assets/images/photo6.jpg","country":"Poland"},
+{"id":"7","username":"bsteutly6","password":"123456","email":"bsteutly6@booking.com","name":"Ban Steutly","device":"Android","isAdmin":true,"joiningDate":"06-04-2023","profilePhoto":"assets/images/photo4.jpg","country":"Somalia"},
+{"id":"8","username":"owestphal7","password":"123456","email":"owestphal7@altervista.org","name":"Olivia Westphal","device":"iOS","isAdmin":true,"joiningDate":"05-05-2024","profilePhoto":"assets/images/photo5.jpg","country":"Russia"},
+{"id":"9","username":"snixon8","password":"123456","email":"snixon8@ameblo.jp","name":"Sarajane Nixon","device":"iOS","isAdmin":false,"joiningDate":"03-16-2024","profilePhoto":"assets/images/photo4.jpg","country":"China"},
+{"id":"10","username":"rfanning9","password":"123456","email":"rfanning9@disqus.com","name":"Rosamond Fanning","device":"iOS","isAdmin":false,"joiningDate":"09-25-2023","profilePhoto":"assets/images/photo6.jpg","country":"China"}]""";
 
   List<dynamic> decodedUsersData = jsonDecode(jsonData);
 
