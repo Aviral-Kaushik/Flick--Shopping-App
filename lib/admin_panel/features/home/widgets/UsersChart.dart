@@ -19,17 +19,17 @@ class UsersChart extends StatelessWidget {
       decoration: BoxDecoration(
           color: secondaryColor, borderRadius: BorderRadius.circular(10)),
 
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
 
-          Text(
+          const Text(
             "Users",
             style: TextStyle(
                 fontWeight: FontWeight.w700, fontSize: 15, color: textColor),
           ),
 
-          Expanded(child: BarChartUsers())
+          Expanded(child: BarChartUsers(monthWiseUserData: monthWiseUserData))
         ],
       ),
     );
@@ -37,14 +37,15 @@ class UsersChart extends StatelessWidget {
 }
 
 class BarChartUsers extends StatelessWidget {
-  const BarChartUsers({super.key});
+  const BarChartUsers({super.key, required this.monthWiseUserData});
 
-
+  final List<MonthWiseUserData> monthWiseUserData;
 
   @override
   Widget build(BuildContext context) {
     return BarChart(BarChartData(
-      backgroundColor: secondaryColor,
+        maxY: 5,
+        backgroundColor: secondaryColor,
         borderData: FlBorderData(border: Border.all(width: 0)),
         groupsSpace: 15,
         titlesData: FlTitlesData(
@@ -57,17 +58,19 @@ class BarChartUsers extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 12),
                 margin: appPadding,
-                getTitles: (double value) => ChartsData().getMonthsLabelsFromValue(value)),
+                getTitles: (double value) =>
+                    ChartsData().getMonthsLabelsFromValue(value)),
 
-        leftTitles: SideTitles(
-            showTitles: true,
-            getTextStyles: (context, value) => const TextStyle(
-                color: lightTextColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 12),
-            margin: appPadding,
-            getTitles: (double value) => ChartsData().getUsersLabelsFromValue(value))),
+            leftTitles: SideTitles(
+                showTitles: true,
+                getTextStyles: (context, value) => const TextStyle(
+                    color: lightTextColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12),
+                margin: appPadding,
+                getTitles: (double value) =>
+                    ChartsData().getUsersLabelsFromValue(value))),
 
-        barGroups: ChartsData().getBarChartData()));
+        barGroups: ChartsData().getBarChartData(monthWiseUserData)));
   }
 }
