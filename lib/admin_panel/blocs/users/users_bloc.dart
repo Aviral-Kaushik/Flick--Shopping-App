@@ -7,10 +7,12 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
   final UsersRepository usersRepository;
 
   UsersBloc(this.usersRepository) : super(UsersStateInitial()) {
-    on<FetchAllUsers>((event, emit) {});
+    on<FetchAllUsers>((event, emit) async {});
 
-    on<SearchUser>((event, emit) {});
+    on<SearchUser>((event, emit) async {});
 
-    on<EditUser>((event, emit) {});
+    on<EditUser>((event, emit) async {});
+
+    on<ApplyFilter>((event, emit) async {});
   }
 }

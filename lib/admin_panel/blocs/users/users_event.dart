@@ -1,3 +1,4 @@
+import 'package:flick/admin_panel/helper/UserFilter.dart';
 import 'package:flick/models/User.dart';
 
 abstract class UsersEvent {
@@ -18,4 +19,10 @@ class EditUser extends UsersEvent {
   final User userToBeEdited;
 
   const EditUser(this.userToBeEdited);
+}
+
+class ApplyFilter extends UsersEvent {
+  final UserFilter userFilter;
+
+  const ApplyFilter(this.userFilter);
 }

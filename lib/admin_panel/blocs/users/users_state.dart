@@ -6,10 +6,10 @@ abstract class UsersState {
 
 class UsersStateInitial extends UsersState {}
 
-class UserLoading extends UsersState {
+class UsersLoading extends UsersState {
   final String progressMessage;
 
-  const UserLoading(this.progressMessage);
+  const UsersLoading(this.progressMessage);
 }
 
 class FetchedAllUsers extends UsersState {
