@@ -42,6 +42,10 @@ class _UsersListContentState extends State<UsersListContent> {
     usersData = List.empty();
 
     usersBloc.add(const FetchAllUsers());
+
+    searchController.addListener(() {
+      usersBloc.add(SearchUser(searchController.text));
+    });
   }
 
   showProgressDialog(String progressMessage) {

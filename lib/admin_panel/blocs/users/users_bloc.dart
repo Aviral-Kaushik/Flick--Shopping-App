@@ -24,7 +24,7 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
     });
 
     on<SearchUser>((event, emit) async {
-      emit(const UsersLoading("Searching ..."));
+      // emit(const UsersLoading("Searching ..."));
 
       List<User> users = await usersRepository.searchUsers(event.searchQuery);
 
@@ -48,10 +48,15 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
     on<ApplyFilter>((event, emit) async {
       emit(const UsersLoading("Applying filter! Please Wait"));
 
-      List<User> filteredUsers =
+      Tuple3<List<User>, bool, String> usersResponse =
           await usersRepository.applyUserFilter(event.userFilter);
 
-      emit(FetchedAllUsers(filteredUsers));
+      if (usersResponse.item2) {
+        emit(UsersError("Error: ${usersResponse.item3}"));
+      } else {
+        emit(FetchedAllUsers(usersResponse.item1));
+      }
+
     });
 
     on<DeleteUser>((event, emit) async {
