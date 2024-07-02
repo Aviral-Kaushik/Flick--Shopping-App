@@ -27,3 +27,7 @@ class UsersError extends UsersState {
 class UserEditedSuccessfully extends UsersState {
   const UserEditedSuccessfully();
 }
+
+class UserDeletedSuccessfully extends UsersState {
+  const UserDeletedSuccessfully();
+}

@@ -20,4 +20,8 @@ class UsersRepository {
   Future<List<User>> applyUserFilter(UserFilter userFilter) async {
     return List.empty();
   }
+
+  Future<bool> deleteUser(User user) async {
+    return true;
+  }
 }

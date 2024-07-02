@@ -14,5 +14,7 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
     on<EditUser>((event, emit) async {});
 
     on<ApplyFilter>((event, emit) async {});
+
+    on<DeleteUser>((event, emit) async {});
   }
 }

@@ -3,7 +3,6 @@ import 'package:flick/admin_panel/blocs/users/users_event.dart';
 import 'package:flick/admin_panel/blocs/users/users_state.dart';
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/admin_panel/components/widgets/dialogs/FilterUserDialog.dart';
-import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/admin_panel/helper/UserFilter.dart';
 import 'package:flick/helper/DialogHelper.dart';
 import 'package:flick/locator.dart';
@@ -39,6 +38,8 @@ class _UsersListContentState extends State<UsersListContent> {
     // totalNumberOfUsers = 10;
 
     dialogHelper = DialogHelper(context);
+
+    usersData = List.empty();
 
     usersBloc.add(const FetchAllUsers());
   }
@@ -76,6 +77,7 @@ class _UsersListContentState extends State<UsersListContent> {
         builder: (BuildContext context) => FilterUserDialog(
             filterToBeApplied: (UserFilter userFilter) {
               // TODO Fetch and apply user filter logic
+              usersBloc.add(ApplyFilter(userFilter));
             }
         ));
   }
@@ -88,19 +90,30 @@ class _UsersListContentState extends State<UsersListContent> {
         listener: (context, state) {
 
           if (state is UsersLoading) {
-
+            dismissAllDialog();
+            showProgressDialog(state.progressMessage);
           }
 
           if (state is FetchedAllUsers) {
-
+            dismissAllDialog();
+            usersData = state.users;
+            totalNumberOfUsers = state.users.length;
+            setState(() {});
           }
 
           if (state is UsersError) {
-
+            dismissAllDialog();
+            showSuccessAndErrorDialog(state.errorMessage, true);
           }
 
           if (state is UserEditedSuccessfully) {
+            dismissAllDialog();
+            showSuccessAndErrorDialog("User Updated Successfully!", false);
+          }
 
+          if (state is UserDeletedSuccessfully) {
+            dismissAllDialog();
+            showSuccessAndErrorDialog("User Deleted Successfully!", false);
           }
 
         },
@@ -201,17 +214,22 @@ class _UsersListContentState extends State<UsersListContent> {
 
                             const SizedBox(height: appPadding,),
 
-                            ListView.builder(
-                              physics: const BouncingScrollPhysics(),
+                            usersData.isNotEmpty
+                            ? ListView.builder(
+                                physics: const BouncingScrollPhysics(),
                                 shrinkWrap: true,
                                 itemCount: usersData.length,
-                                itemBuilder: (context, index) => SingleUserListLayout(
-                                  user: usersData[index],
-                                  onTap: () {
-                                    // TODO Open Edit User Page Here
-                                  },
-                                )),
-                          ],
+                                itemBuilder: (context, index) =>
+                                    SingleUserListLayout(
+                                      user: usersData[index],
+                                      onTap: () {
+                                        // TODO Open Edit User Page Here
+                                      },
+                                    ))
+                            : const Center(
+                                child: Text("No Users Found!"),
+                              ),
+                      ],
                         ),
                       ),
 

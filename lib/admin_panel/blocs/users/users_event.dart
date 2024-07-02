@@ -26,3 +26,9 @@ class ApplyFilter extends UsersEvent {
 
   const ApplyFilter(this.userFilter);
 }
+
+class DeleteUser extends UsersEvent {
+  final User user;
+
+  const DeleteUser(this.user);
+}
