@@ -58,10 +58,6 @@ class UsersRepository {
     bool errorOccurred = false;
     String errorMessage = "";
 
-    print("Aviral UserFilter: ");
-    print("Aviral FilterName: ${userFilter.filterName}");
-    print("Aviral filterInAscendingOrder: ${userFilter.filterInAscendingOrder}");
-
     String filterName = userFilter.filterName;
     bool filterUserInAscendingOrder = userFilter.filterInAscendingOrder;
 
@@ -71,8 +67,6 @@ class UsersRepository {
       filteredUsers.sort((a, b) {
         return a.name.toLowerCase().compareTo(b.name.toLowerCase());
       });
-
-      print("Aviral sort list size: ${filteredUsers.length}");
 
       if (!filterUserInAscendingOrder) {
         filteredUsers = filteredUsers.reversed.toList();

@@ -80,7 +80,6 @@ class _UsersListContentState extends State<UsersListContent> {
         context: context,
         builder: (BuildContext context) => FilterUserDialog(
             filterToBeApplied: (UserFilter userFilter) {
-              // TODO Fetch and apply user filter logic
               usersBloc.add(ApplyFilter(userFilter));
             }
         ));
