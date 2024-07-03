@@ -1,3 +1,4 @@
+import 'package:flick/admin_panel/helper/ProductFilter.dart';
 import 'package:flick/models/Product.dart';
 
 abstract class ProductsEvent {
@@ -21,7 +22,9 @@ class EditProduct extends ProductsEvent {
 }
 
 class ApplyFilter extends ProductsEvent {
-  const ApplyFilter();
+  final ProductFilter productFilter;
+
+  const ApplyFilter(this.productFilter);
 }
 
 class DeleteProduct extends ProductsEvent {

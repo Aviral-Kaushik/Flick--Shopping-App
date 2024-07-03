@@ -4,6 +4,7 @@ import 'package:flick/admin_panel/models/DetailsCardModel.dart';
 import 'package:flick/admin_panel/models/TopSellersModel.dart';
 import 'package:flick/admin_panel/models/ReferralInfoModel.dart';
 import 'package:flick/models/Message.dart';
+import 'package:flick/models/Product.dart';
 import 'package:flick/models/User.dart';
 import 'package:flick/utils/Colors.dart';
 
@@ -218,3 +219,8 @@ int facebookReferralsCountFromFirebase = 240;
 int twitterReferralsCountFromFirebase = 195;
 int linkedinReferralsCountFromFirebase = 135;
 int othersReferralsCountFromFirebase = 95;
+
+
+List<Product> getDummyProducts() {
+  return List.empty();
+}

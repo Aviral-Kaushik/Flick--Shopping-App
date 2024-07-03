@@ -13,31 +13,62 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
     on<FetchAllProducts>((event, emit) async {
       emit(const ProductLoading("Please Wait! Fetching Products"));
 
-      Tuple3<List<Product>, bool, String> products =
+      Tuple3<List<Product>, bool, String> productsResponse =
           await productsRepository.fetchAllProduct();
+
+      if (productsResponse.item2) {
+        emit(ProductsError(
+            "Cannot fetch products at this moment: ${productsResponse.item3}"));
+      } else {
+        emit(FetchedAllProducts(productsResponse.item1));
+      }
     });
 
     on<SearchProducts>((event, emit) async {
       emit(const ProductLoading("Searching...."));
 
-      List<Product> products =
+      List<Product> filteredProducts =
           await productsRepository.searchProduct(event.query);
 
-      emit(FetchedAllProducts(products));
+      emit(FetchedAllProducts(filteredProducts));
     });
 
     on<EditProduct>((event, emit) async {
       emit(const ProductLoading("Updating User! Please wait"));
 
-      Tuple2<bool, String> isUserUpdatedSuccessfully =
+      Tuple2<bool, String> userUpdateResponse =
           await productsRepository.editProduct(event.productToBeUpdated);
+
+      if (userUpdateResponse.item1) {
+        emit(const ProductEditedSuccessfully());
+      } else {
+        emit(ProductsError(
+            "Cannot update product at this moment: ${userUpdateResponse.item2}"));
+      }
     });
 
     on<DeleteProduct>((event, emit) async {
       emit(const ProductLoading("Deleting Product! Please Wait"));
 
-      Tuple2<bool, String> isProductDeletedSuccessfully =
+      Tuple2<bool, String> productDeletionResponse =
           await productsRepository.deleteProduct(event.productToBeDeleted);
+
+      if (productDeletionResponse.item1) {
+        emit(const ProductDeletedSuccessfully());
+      } else {
+        emit(ProductsError(
+            "Cannot Delete product at this moment: ${productDeletionResponse.item2}"));
+      }
+    });
+
+    on<ApplyFilter>((event, emit) async {
+      emit(const ProductLoading("Applying Filter! Please Wait"));
+
+      List<Product> filteredProducts =
+          await productsRepository.applyProductsFilter(event.productFilter);
+
+      emit(FetchedAllProducts(filteredProducts));
+
     });
 
   }

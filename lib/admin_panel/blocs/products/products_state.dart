@@ -18,10 +18,10 @@ class FetchedAllProducts extends ProductsState {
   const FetchedAllProducts(this.products);
 }
 
-class ProductError extends ProductsState {
+class ProductsError extends ProductsState {
   final String errorMessage;
 
-  const ProductError(this.errorMessage);
+  const ProductsError(this.errorMessage);
 }
 
 class ProductEditedSuccessfully extends ProductsState {
