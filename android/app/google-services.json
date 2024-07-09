@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "309882973800",
+    "project_id": "flick-2b7c4",
+    "storage_bucket": "flick-2b7c4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:309882973800:android:d8becc69e8f0b1681455dd",
+        "android_client_info": {
+          "package_name": "com.aviral.flick.flick"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyKmkI1lssw2N40afh2KbXvjgQLvDTbpA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
