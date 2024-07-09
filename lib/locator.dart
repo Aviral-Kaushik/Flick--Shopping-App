@@ -10,27 +10,31 @@ import 'package:flick/admin_panel/repositories/referrals_repository.dart';
 import 'package:flick/admin_panel/repositories/settings_repository.dart';
 import 'package:flick/admin_panel/repositories/terms_and_privacy_repository.dart';
 import 'package:flick/admin_panel/repositories/users_repository.dart';
+import 'package:flick/admin_panel/services/firebase_services.dart';
 import 'package:flick/helper/MailHelper.dart';
 import 'package:get_it/get_it.dart';
 
 final locator = GetIt.instance;
 
 void setup() {
+  locator.registerLazySingleton<FirebaseServices>(() => FirebaseServices());
   locator.registerLazySingleton<MailHelper>(() => MailHelper());
+
+  final firebaseServices = locator.get<FirebaseServices>();
 
   // Get it initialization for Admin Panel Blocs
   locator.registerLazySingleton<TermsAndPrivacyRepository>(
-      () => TermsAndPrivacyRepository());
+      () => TermsAndPrivacyRepository(firebaseServices));
   locator.registerLazySingleton<TermsAndPrivacyBloc>(
-      () => TermsAndPrivacyBloc(TermsAndPrivacyRepository()));
+      () => TermsAndPrivacyBloc(TermsAndPrivacyRepository(firebaseServices)));
   locator.registerLazySingleton<MessagesBloc>(
-      () => MessagesBloc(MessageRepository()));
+      () => MessagesBloc(MessageRepository(firebaseServices)));
   locator.registerLazySingleton<SettingsBloc>(
-      () => SettingsBloc(SettingsRepository()));
+      () => SettingsBloc(SettingsRepository(firebaseServices)));
   locator.registerLazySingleton<ReferralsBloc>(
-      () => ReferralsBloc(ReferralsRepository()));
+      () => ReferralsBloc(ReferralsRepository(firebaseServices)));
   locator.registerLazySingleton<DashboardBloc>(
-      () => DashboardBloc(DashboardRepository()));
+      () => DashboardBloc(DashboardRepository(firebaseServices)));
   locator.registerLazySingleton<UsersBloc>(
-      () => UsersBloc(UsersRepository()));
+      () => UsersBloc(UsersRepository(firebaseServices)));
 }

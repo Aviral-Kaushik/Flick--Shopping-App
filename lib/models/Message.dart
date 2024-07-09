@@ -10,7 +10,7 @@ class Message {
     required this.dateAndTime,
   });
 
-  final String id;
+  String id;
   final String name;
   final String contactEmail;
   final String subject;

@@ -32,16 +32,20 @@ class Product {
       SnapshotOptions? options) {
     final data = snapshot.data();
     return Product(
-        id: data?["product_id"],
-        productName: data?["product_name"],
-        productDescription: data?["product_description"],
-        productImages: data?["product_images"],
-        productRating: data?["product_rating"],
-        productPrice: data?["product_price"],
-        totalPurchases: data?["total_purchases"],
-        stock: data?["stock"],
-        sellerName: data?["seller_name"],
-        productFeatures: data?["product_features"],
+      id: data?["product_id"],
+      productName: data?["product_name"],
+      productDescription: data?["product_description"],
+      productImages: data?['product_images'] is Iterable
+          ? List.from(data?['product_images'])
+          : List.empty(),
+      productRating: data?["product_rating"],
+      productPrice: data?["product_price"],
+      totalPurchases: data?["total_purchases"],
+      stock: data?["stock"],
+      sellerName: data?["seller_name"],
+      productFeatures: data?["product_features"] is Iterable
+          ? List.from(data?["product_features"])
+          : List.empty(),
     );
   }
 

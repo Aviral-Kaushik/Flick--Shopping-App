@@ -1,4 +1,5 @@
 import 'package:flick/admin_panel/data/Data.dart';
+import 'package:flick/admin_panel/services/firebase_services.dart';
 import 'package:flick/helper/MailHelper.dart';
 import 'package:flick/locator.dart';
 import 'package:flick/models/User.dart';
@@ -6,6 +7,10 @@ import 'package:flick/models/User.dart';
 class SettingsRepository {
 
   late List<User> admins;
+
+  FirebaseServices firebaseServices;
+
+  SettingsRepository(this.firebaseServices);
 
   Future<List<User>> fetchAllAdmins() async {
     admins = getUsersData().where(

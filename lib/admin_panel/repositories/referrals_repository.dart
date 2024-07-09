@@ -1,9 +1,14 @@
 import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/admin_panel/models/ReferralInfoModel.dart';
 import 'package:flick/admin_panel/models/referrals/ui_related_referral_data.dart';
+import 'package:flick/admin_panel/services/firebase_services.dart';
 import 'package:flick/utils/Colors.dart';
 
 class ReferralsRepository {
+
+  FirebaseServices firebaseServices;
+
+  ReferralsRepository(this.firebaseServices);
 
   Future<UIRelatedReferralData> fetchReferralData() async {
     // TODO As in firebase all referral counts and message will be stored in

@@ -1,5 +1,6 @@
 import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/admin_panel/helper/UserFilter.dart';
+import 'package:flick/admin_panel/services/firebase_services.dart';
 import 'package:flick/models/User.dart';
 import 'package:intl/intl.dart';
 import 'package:tuple/tuple.dart';
@@ -7,6 +8,10 @@ import 'package:tuple/tuple.dart';
 class UsersRepository {
 
   late List<User> users;
+
+  FirebaseServices firebaseServices;
+
+  UsersRepository(this.firebaseServices);
 
   Future<Tuple3<List<User>, bool, String>> fetchAllUsers() async {
     bool hasErrorOccurred = false;

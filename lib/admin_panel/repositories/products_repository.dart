@@ -1,11 +1,16 @@
 import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/admin_panel/helper/ProductFilter.dart';
+import 'package:flick/admin_panel/services/firebase_services.dart';
 import 'package:flick/models/Product.dart';
 import 'package:tuple/tuple.dart';
 
 class ProductsRepository {
 
   late List<Product> products;
+
+  FirebaseServices firebaseServices;
+
+  ProductsRepository(this.firebaseServices);
 
   Future<Tuple3<List<Product>, bool, String>> fetchAllProduct() async {
     bool isErrorOccurred = false;

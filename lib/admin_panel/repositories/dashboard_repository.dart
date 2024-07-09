@@ -3,11 +3,17 @@ import 'package:flick/admin_panel/models/DetailsCardModel.dart';
 import 'package:flick/admin_panel/models/dashboard/DashboardRepositoryResponse.dart';
 import 'package:flick/admin_panel/models/dashboard/DeviceWiseUserData.dart';
 import 'package:flick/admin_panel/models/dashboard/MonthWiseUserData.dart';
+import 'package:flick/admin_panel/services/firebase_services.dart';
 import 'package:flick/models/User.dart';
 import 'package:intl/intl.dart';
 
 class DashboardRepository {
+
   late List<User> users;
+
+  FirebaseServices firebaseServices;
+
+  DashboardRepository(this.firebaseServices);
 
   Future<DashboardRepositoryResponse> getDashboardData() async {
     users = getUsersData();
