@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Product {
 
   Product({
@@ -23,4 +25,39 @@ class Product {
   int stock;
   int sellerName;
   List<String> productFeatures;
+
+
+  factory Product.fromFirestore(
+      DocumentSnapshot<Map<String, dynamic>> snapshot,
+      SnapshotOptions? options) {
+    final data = snapshot.data();
+    return Product(
+        id: data?["product_id"],
+        productName: data?["product_name"],
+        productDescription: data?["product_description"],
+        productImages: data?["product_images"],
+        productRating: data?["product_rating"],
+        productPrice: data?["product_price"],
+        totalPurchases: data?["total_purchases"],
+        stock: data?["stock"],
+        sellerName: data?["seller_name"],
+        productFeatures: data?["product_features"],
+    );
+  }
+
+  Map<String, dynamic> toFirestore() {
+    return {
+      "product_id": id,
+      "product_name": productName,
+      "product_description": productDescription,
+      "product_images": productImages,
+      "product_rating": productRating,
+      "product_price": productPrice,
+      "total_purchases": totalPurchases,
+      "stock": stock,
+      "seller_name": sellerName,
+      "product_features": productFeatures,
+    };
+  }
+
 }

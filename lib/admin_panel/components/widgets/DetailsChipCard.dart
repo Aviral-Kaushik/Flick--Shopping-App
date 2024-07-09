@@ -1,4 +1,4 @@
-import 'package:flick/admin_panel/constants/Responsive.dart';
+import 'package:flick/admin_panel/utils/Responsive.dart';
 import 'package:flick/admin_panel/models/DetailsCardModel.dart';
 import 'package:flick/admin_panel/models/ReferralInfoModel.dart';
 import 'package:flick/utils/Colors.dart';

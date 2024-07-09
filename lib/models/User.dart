@@ -1,5 +1,4 @@
-import 'package:flick/models/Address.dart';
-import 'package:flick/models/Product.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
 
@@ -34,6 +33,39 @@ class User {
   // List<Product> pastProducts;
   String country;
   // List<Product> ratedProduct;
+
+  factory User.fromFirestore(
+      DocumentSnapshot<Map<String, dynamic>> snapshot,
+      SnapshotOptions? options) {
+    final data = snapshot.data();
+    return User(
+      id: data?["user_id"],
+      username: data?["username"],
+      password: data?["password"],
+      email: data?["email"],
+      name: data?["name"],
+      device: data?["device"],
+      isAdmin: data?["is_admin"],
+      joiningDate: data?["joining_date"],
+      profilePhoto: data?["profile_photo"],
+      country: data?["country"],
+    );
+  }
+
+  Map<String, dynamic> toFirestore() {
+    return {
+      "user_id": id,
+      "username": username,
+      "password": password,
+      "email": email,
+      "name": name,
+      "device": device,
+      "is_admin": isAdmin,
+      "joining_date": joiningDate,
+      "profile_photo": profilePhoto,
+      "country": country,
+    };
+  }
 
   factory User.fromJson(Map<String, dynamic> json) => User(
     id: json['id'] as String,

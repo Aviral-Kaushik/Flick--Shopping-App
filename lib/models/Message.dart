@@ -1,5 +1,6 @@
-class Message {
+import 'package:cloud_firestore/cloud_firestore.dart';
 
+class Message {
   Message({
     required this.id,
     required this.name,
@@ -15,6 +16,30 @@ class Message {
   final String subject;
   final String message;
   final String dateAndTime;
+
+  factory Message.fromFirestore(
+      DocumentSnapshot<Map<String, dynamic>> snapshot,
+      SnapshotOptions? options) {
+    final data = snapshot.data();
+    return Message(
+        id: data?["message_id"],
+        name: data?["name"],
+        contactEmail: data?["contact_email"],
+        subject: data?["subject"],
+        message: data?["message"],
+        dateAndTime: data?["date_and_time"]);
+  }
+
+  Map<String, dynamic> toFirestore() {
+    return {
+      "id": id,
+      "name": name,
+      "contact_email": contactEmail,
+      "subject": subject,
+      "message": message,
+      "date_and_time": dateAndTime,
+    };
+  }
 
   @override
   bool operator ==(Object other) {

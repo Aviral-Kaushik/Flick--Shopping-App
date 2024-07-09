@@ -1,4 +1,4 @@
-import 'package:flick/admin_panel/constants/Responsive.dart';
+import 'package:flick/admin_panel/utils/Responsive.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/cupertino.dart';

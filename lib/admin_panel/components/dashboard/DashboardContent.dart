@@ -3,7 +3,7 @@ import 'package:flick/admin_panel/blocs/dashboard/dashboard_event.dart';
 import 'package:flick/admin_panel/blocs/dashboard/dashboard_state.dart';
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/admin_panel/components/widgets/DetailsChipCard.dart';
-import 'package:flick/admin_panel/constants/Responsive.dart';
+import 'package:flick/admin_panel/utils/Responsive.dart';
 import 'package:flick/admin_panel/features/home/widgets/TopSellersList.dart';
 import 'package:flick/admin_panel/features/home/widgets/UserByDevicePieChart.dart';
 import 'package:flick/admin_panel/features/home/widgets/UsersChart.dart';

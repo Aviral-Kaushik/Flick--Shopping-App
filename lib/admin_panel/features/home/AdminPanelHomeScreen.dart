@@ -3,7 +3,7 @@ import 'package:flick/admin_panel/components/drawerMenu/AdminDrawerMenu.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flutter/material.dart';
 
-import '../../constants/Responsive.dart';
+import '../../utils/Responsive.dart';
 
 class AdminPanelHomeScreen extends StatefulWidget {
   const AdminPanelHomeScreen({super.key});
