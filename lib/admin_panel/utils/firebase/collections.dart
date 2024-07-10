@@ -1,4 +1,4 @@
 /// List of all Collection Names in firebase cloud database.
 //
-String messagesCollection = "messages";
+String messagesCollection = "Messages";
 String rulesAndRegulationCollection = "Rules & Regulation";

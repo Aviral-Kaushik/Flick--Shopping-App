@@ -42,6 +42,44 @@ class FirebaseServices {
     return Tuple2(hasErrorOccurred, errorMessage);
   }
 
+  Future<String> fetchTermsOrPrivacy(
+      bool shouldFetchPrivacyPolicy) async {
+
+    String docName =
+    shouldFetchPrivacyPolicy ? "Privacy Policy" : "Terms & Conditions";
+
+    DocumentSnapshot<Map<String, dynamic>> snapshot = await database
+        .collection(rulesAndRegulationCollection)
+        .doc(docName)
+        .get();
+
+    return RulesAndRegulationHelper().fetchTermsAndPrivacyFromMap(
+        snapshot.data(), shouldFetchPrivacyPolicy);
+  }
+
+  Future<Tuple2<bool, String>> updateTermsOrPrivacy(
+      String termsAndPrivacy, bool updatePrivacyPolicy) async {
+    bool hasErrorOccurred = false;
+    String errorMessage = "";
+
+    String documentName =
+    updatePrivacyPolicy ? "Privacy Policy" : "Terms & Conditions";
+
+    DocumentReference rulesAndRegulationDocumentReference =
+    database.collection(rulesAndRegulationCollection).doc(documentName);
+
+    rulesAndRegulationDocumentReference
+        .update(RulesAndRegulationHelper().generateMapForStoringInFirebase(
+        termsAndPrivacy, updatePrivacyPolicy))
+        .then((value) => debugPrint("Rules & Regulation Updated Successfully"),
+        onError: (e) {
+          hasErrorOccurred = true;
+          errorMessage = e;
+        });
+
+    return Tuple2(hasErrorOccurred, errorMessage);
+  }
+
   Future<Tuple2<bool, String>> storeAllMessagesInFirebase(List<Message> messages) async {
     for (Message message in messages) {
       DocumentReference documentReference = database.collection(messagesCollection).doc();
@@ -61,50 +99,6 @@ class FirebaseServices {
 
     await rulesAndRegulationDocumentReference.set(RulesAndRegulationHelper()
         .generateMapForStoringInFirebase(termsOrPrivacy, storePrivacyPolicy));
-
-    print("Aviral termsOrPrivacy added successfully");
   }
 
-  Future<String> fetchTermsOrPrivacy(
-      bool shouldFetchPrivacyPolicy) async {
-
-    String docName =
-        shouldFetchPrivacyPolicy ? "Privacy Policy" : "Terms & Condition";
-
-    QuerySnapshot<Map<String, dynamic>> snapshot = await database
-        .collection(rulesAndRegulationCollection)
-        .doc(docName)
-        .get();
-
-    String termsOrPrivacy = RulesAndRegulationHelper().fetchTermsAndPrivacyFromMap(
-        snapshot.docs.first, shouldFetchPrivacyPolicy);
-
-    print("Aviral termsOrPrivacy: $termsOrPrivacy");
-
-    return RulesAndRegulationHelper().fetchTermsAndPrivacyFromMap(
-        snapshot.docs.first, shouldFetchPrivacyPolicy);
-  }
-
-  Future<Tuple2<bool, String>> updateTermsOrPrivacy(
-      String termsAndPrivacy, bool updatePrivacyPolicy) async {
-    bool hasErrorOccurred = false;
-    String errorMessage = "";
-
-    String documentName =
-        updatePrivacyPolicy ? "Privacy Policy" : "Terms & Condition";
-
-    DocumentReference rulesAndRegulationDocumentReference =
-        database.collection(rulesAndRegulationCollection).doc(documentName);
-
-    rulesAndRegulationDocumentReference
-        .update(RulesAndRegulationHelper().generateMapForStoringInFirebase(
-            termsAndPrivacy, updatePrivacyPolicy))
-        .then((value) => debugPrint("Rules & Regulation Updated Successfully"),
-            onError: (e) {
-      hasErrorOccurred = true;
-      errorMessage = e;
-    });
-
-    return Tuple2(hasErrorOccurred, errorMessage);
-  }
 }

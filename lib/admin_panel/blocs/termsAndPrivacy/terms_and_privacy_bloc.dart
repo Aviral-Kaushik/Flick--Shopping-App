@@ -2,6 +2,7 @@ import 'package:flick/admin_panel/blocs/termsAndPrivacy/terms_and_privacy_event.
 import 'package:flick/admin_panel/blocs/termsAndPrivacy/terms_and_privacy_state.dart';
 import 'package:flick/admin_panel/repositories/terms_and_privacy_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tuple/tuple.dart';
 
 class TermsAndPrivacyBloc
     extends Bloc<TermsAndPrivacyEvent, TermsAndPrivacyState> {
@@ -24,8 +25,16 @@ class TermsAndPrivacyBloc
         (event, emit) async {
           emit(TermsAndPrivacyLoading());
 
-          await termsAndPrivacyRepository.updateTermsOrPolicy(
-              event.termsOrPrivacyPolicyToBeUpdated, event.shouldUpdatePrivacyPolicy);
+          Tuple2<bool, String> rulesAndRegulationUpdateResponse =
+                await termsAndPrivacyRepository.updateTermsOrPolicy(
+                    event.termsOrPrivacyPolicyToBeUpdated,
+                    event.shouldUpdatePrivacyPolicy);
+
+          if (rulesAndRegulationUpdateResponse.item1) {
+            emit(TermsOrPrivacyPolicyUpdateFailed(
+                rulesAndRegulationUpdateResponse.item2));
+            return;
+          }
 
           emit(const TermsOrPrivacyPolicyUpdated());
         }

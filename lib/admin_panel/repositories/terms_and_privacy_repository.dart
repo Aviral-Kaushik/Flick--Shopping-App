@@ -1,5 +1,5 @@
-import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/admin_panel/services/firebase_services.dart';
+import 'package:tuple/tuple.dart';
 
 class TermsAndPrivacyRepository {
 
@@ -9,22 +9,36 @@ class TermsAndPrivacyRepository {
 
 
   Future<String> getTermsAndCondition(bool fetchPrivacyPolicy) async {
-    if (fetchPrivacyPolicy) {
-      firebaseServices.storeTermsOrPrivacy(privacyPolicy, true);
-      return privacyPolicy;
-    }
-    firebaseServices.storeTermsOrPrivacy(termsAndCondition, false);
-    return termsAndCondition;
+
+    String termsOrPrivacy;
+
+    termsOrPrivacy = await firebaseServices.fetchTermsOrPrivacy(fetchPrivacyPolicy);
+
+    return termsOrPrivacy;
+    // if (fetchPrivacyPolicy) {
+    //   // firebaseServices.storeTermsOrPrivacy(privacyPolicy, true);
+    //   return privacyPolicy;
+    // }
+    // firebaseServices.storeTermsOrPrivacy(termsAndCondition, false);
   }
 
-  Future<void> updateTermsOrPolicy(String termsOrPrivacyPolicy,
+  Future<Tuple2<bool, String>> updateTermsOrPolicy(String termsOrPrivacyPolicy,
       bool updatePrivacyPolicy) async {
-    if (updatePrivacyPolicy) {
-      privacyPolicy = termsOrPrivacyPolicy;
-      return;
+
+    Tuple2<bool, String> rulesAndRegulationUpdateResponse = await
+        firebaseServices.updateTermsOrPrivacy(termsOrPrivacyPolicy, updatePrivacyPolicy);
+
+    if (rulesAndRegulationUpdateResponse.item1) {
+      return rulesAndRegulationUpdateResponse;
     }
-    termsAndCondition = termsOrPrivacyPolicy;
-    return;
+
+    return const Tuple2(false, "");
+    // if (updatePrivacyPolicy) {
+    //   privacyPolicy = termsOrPrivacyPolicy;
+    //   return;
+    // }
+    // termsAndCondition = termsOrPrivacyPolicy;
+    // return;
   }
 
 }

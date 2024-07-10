@@ -11,14 +11,13 @@ class RulesAndRegulationHelper {
   }
 
   String fetchTermsAndPrivacyFromMap(
-      DocumentSnapshot<Map<String, dynamic>> snapshot,
+      Map<String, dynamic>? snapshot,
       bool shouldFetchPrivacyPolicy) {
-    final data = snapshot.data();
 
     if (shouldFetchPrivacyPolicy) {
-      return data?["Privacy Policy"];
+      return snapshot?["Privacy Policy"];
     }
 
-    return data?["Terms & Conditions"];
+    return snapshot?["Terms & Conditions"];
   }
 }
