@@ -1,8 +1,8 @@
-import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/admin_panel/services/firebase_services.dart';
 import 'package:flick/helper/MailHelper.dart';
 import 'package:flick/locator.dart';
 import 'package:flick/models/Message.dart';
+import 'package:tuple/tuple.dart';
 
 class MessageRepository {
 
@@ -13,9 +13,11 @@ class MessageRepository {
   MessageRepository(this.firebaseServices);
 
   Future<List<Message>> fetchAllMessages() async {
-    messages = getDummyMessages();
-    firebaseServices.storeAllMessagesInFirebase(messages);
+
+    messages = await firebaseServices.getAllMessagesFromFirebase();
     return messages;
+    // messages = getDummyMessages();
+    // firebaseServices.storeAllMessagesInFirebase(messages);
   }
 
   Future<bool> sendReplyEmail(String userEmail, String replyMessage, String subject) async {
@@ -32,8 +34,16 @@ class MessageRepository {
     }
   }
 
-  Future<bool> deleteMessage(Message message) async {
-    return messages.remove(message);
+  Future<Tuple2<bool, String>> deleteMessage(Message message) async {
+    Tuple2<bool, String> messageDeleteResponse =
+            await firebaseServices.deleteMessageInFirebase(message);
+
+    if (messageDeleteResponse.item1) {
+      return messageDeleteResponse;
+    } else {
+      messages.remove(message);
+      return messageDeleteResponse;
+    }
   }
 
   Future<List<Message>> filterMessages(String query) async {

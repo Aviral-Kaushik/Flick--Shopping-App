@@ -49,13 +49,13 @@ class MessagesBloc extends Bloc<MessagesEvent, MessagesState> {
     on<DeleteMessage>((event, emit) async {
       emit(MessageLoading("Deleting Message! Please Wait"));
 
-      final isMessageDeletedSuccessfully =
-      await messageRepository.deleteMessage(event.message);
+      final messageDeletedResponse =
+            await messageRepository.deleteMessage(event.message);
 
-      if (isMessageDeletedSuccessfully) {
-        emit(MessageDeletedSuccessfully());
+      if (messageDeletedResponse.item1) {
+        emit(MessageError(messageDeletedResponse.item2, false));
       } else {
-        emit(MessageError("Cannot Delete Message at this moment", false));
+        emit(MessageDeletedSuccessfully());
       }
     });
   }

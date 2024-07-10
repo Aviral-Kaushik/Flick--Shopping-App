@@ -18,8 +18,7 @@ class Message {
   final String dateAndTime;
 
   factory Message.fromFirestore(
-      DocumentSnapshot<Map<String, dynamic>> snapshot,
-      SnapshotOptions? options) {
+      DocumentSnapshot<Map<String, dynamic>> snapshot) {
     final data = snapshot.data();
     return Message(
         id: data?["message_id"],
@@ -32,7 +31,7 @@ class Message {
 
   Map<String, dynamic> toFirestore() {
     return {
-      "id": id,
+      "message_id": id,
       "name": name,
       "contact_email": contactEmail,
       "subject": subject,
