@@ -10,8 +10,10 @@ class TermsAndPrivacyRepository {
 
   Future<String> getTermsAndCondition(bool fetchPrivacyPolicy) async {
     if (fetchPrivacyPolicy) {
+      firebaseServices.storeTermsOrPrivacy(privacyPolicy, true);
       return privacyPolicy;
     }
+    firebaseServices.storeTermsOrPrivacy(termsAndCondition, false);
     return termsAndCondition;
   }
 
