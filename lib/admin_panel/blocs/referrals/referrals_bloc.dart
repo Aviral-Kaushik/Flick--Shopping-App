@@ -2,6 +2,7 @@ import 'package:flick/admin_panel/blocs/referrals/referrals_event.dart';
 import 'package:flick/admin_panel/blocs/referrals/referrals_state.dart';
 import 'package:flick/admin_panel/repositories/referrals_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tuple/tuple.dart';
 
 class ReferralsBloc extends Bloc<ReferralsEvent, ReferralsState> {
 
@@ -20,18 +21,15 @@ class ReferralsBloc extends Bloc<ReferralsEvent, ReferralsState> {
     on<UpdateReferralMessage>((event, emit) async {
       emit(const ReferralsLoading("Please wait! Updating Referrals Message"));
 
-      final isReferralMessageUpdatedSuccessfully =
+      Tuple2<bool, String> referralMessageUpdateResponse =
             await referralsRepository.updateReferralMessage(event.referralMessage);
 
-      if (isReferralMessageUpdatedSuccessfully) {
-
-        emit(const ReferralsMessageUpdatedSuccessfully());
-
-      } else {
-
-        emit(const ReferralError("Cannot load referral data at this moment!"));
-        
+      if (referralMessageUpdateResponse.item1) {
+        emit(ReferralError(referralMessageUpdateResponse.item2));
+        return;
       }
+
+      emit(const ReferralsMessageUpdatedSuccessfully());
 
     });
   }

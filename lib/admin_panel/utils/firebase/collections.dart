@@ -2,3 +2,4 @@
 //
 String messagesCollection = "Messages";
 String rulesAndRegulationCollection = "Rules & Regulation";
+String referralsCollection = "Referrals";

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flick/admin_panel/helper/RulesAndRegulationHelper.dart';
+import 'package:flick/admin_panel/models/referrals/referral_data.dart';
 import 'package:flick/admin_panel/utils/firebase/collections.dart';
 import 'package:flick/models/Message.dart';
 import 'package:flutter/cupertino.dart';
@@ -80,6 +81,49 @@ class FirebaseServices {
     return Tuple2(hasErrorOccurred, errorMessage);
   }
 
+  Future<ReferralData> fetchReferralData() async {
+    DocumentSnapshot<Map<String, dynamic>> snapshot = await database
+        .collection(referralsCollection).doc("Referrals Data").get();
+
+    return ReferralData.fromFirestore(snapshot);
+  }
+
+  Future<Tuple2<bool, String>> incrementReferralsCount(String referralType) async {
+    bool hasErrorOccurred = false;
+    String errorMessage = "";
+
+    await database
+        .collection(referralsCollection)
+        .doc("Referrals Data")
+        .update({
+      ReferralData.mapFieldNameToFirebase(referralType): FieldValue.increment(1)
+    }).then((value) => debugPrint("Referral Count Incremented Successfully"),
+        onError: (e) {
+          hasErrorOccurred = true;
+          errorMessage = e;
+        });
+    ;
+
+    return Tuple2(hasErrorOccurred, errorMessage);
+  }
+
+  Future<Tuple2<bool, String>> updateReferralMessage(String referralMessage) async {
+    bool hasErrorOccurred = false;
+    String errorMessage = "";
+
+    await database
+        .collection(referralsCollection)
+        .doc("Referrals Data")
+        .update({"referral_message": referralMessage})
+        .then((value) => debugPrint("Referral Message Updated Successfully"),
+        onError: (e) {
+          hasErrorOccurred = true;
+          errorMessage = e;
+        });;
+
+    return Tuple2(hasErrorOccurred, errorMessage);
+  }
+
   Future<Tuple2<bool, String>> storeAllMessagesInFirebase(List<Message> messages) async {
     for (Message message in messages) {
       DocumentReference documentReference = database.collection(messagesCollection).doc();
@@ -99,6 +143,14 @@ class FirebaseServices {
 
     await rulesAndRegulationDocumentReference.set(RulesAndRegulationHelper()
         .generateMapForStoringInFirebase(termsOrPrivacy, storePrivacyPolicy));
+  }
+
+  void storeReferralData(ReferralData referralData) async {
+
+    DocumentReference referralsReference =
+        database.collection(referralsCollection).doc("Referrals Data");
+
+    await referralsReference.set(referralData.toFirestore());
   }
 
 }

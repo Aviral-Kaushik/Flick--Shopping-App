@@ -1,11 +1,11 @@
-import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/admin_panel/models/ReferralInfoModel.dart';
+import 'package:flick/admin_panel/models/referrals/referral_data.dart';
 import 'package:flick/admin_panel/models/referrals/ui_related_referral_data.dart';
 import 'package:flick/admin_panel/services/firebase_services.dart';
 import 'package:flick/utils/Colors.dart';
+import 'package:tuple/tuple.dart';
 
 class ReferralsRepository {
-
   FirebaseServices firebaseServices;
 
   ReferralsRepository(this.firebaseServices);
@@ -14,54 +14,56 @@ class ReferralsRepository {
     // TODO As in firebase all referral counts and message will be stored in
     // TODO one collection then we need fetch that model only in this function
 
-    return generateUiRelatedReferralDataFromReferralData(
-        referralMessageFromFirebase,
-        facebookReferralsCountFromFirebase,
-        twitterReferralsCountFromFirebase,
-        linkedinReferralsCountFromFirebase,
-        othersReferralsCountFromFirebase);
+    ReferralData referralData = await firebaseServices.fetchReferralData();
+
+    return generateUiRelatedReferralDataFromReferralData(referralData);
+    // firebaseServices.storeReferralData(ReferralData(
+    //     referralMessage: referralMessageFromFirebase,
+    //     facebookReferralsCount: facebookReferralsCountFromFirebase,
+    //     twitterReferralsCount: twitterReferralsCountFromFirebase,
+    //     linkedinReferralsCount: linkedinReferralsCountFromFirebase,
+    //     otherReferralsCount: othersReferralsCountFromFirebase));
   }
 
-  Future<bool> updateReferralMessage(String referralMessage) async {
-    referralMessageFromFirebase = referralMessage;
-    return true;
+  Future<Tuple2<bool, String>> updateReferralMessage(
+      String referralMessage) async {
+    Tuple2<bool, String> referralMessageUpdateResponse =
+        await firebaseServices.updateReferralMessage(referralMessage);
+
+    return referralMessageUpdateResponse;
   }
 
   UIRelatedReferralData generateUiRelatedReferralDataFromReferralData(
-      String referralMessage,
-      int facebookReferralsCount,
-      int twitterReferralsCount,
-      int linkedinReferralsCount,
-      int othersReferralsCount,
-      ) {
-    List<ReferralInfoModel> referralData = [
+      ReferralData referralData) {
+    List<ReferralInfoModel> referralInfoModels = [
+
       ReferralInfoModel(
         title: "Facebook",
-        count: facebookReferralsCount,
+        count: referralData.facebookReferralsCount,
         svgSrc: "assets/icons/Facebook.svg",
         color: adminPanelPrimaryColor,
       ),
       ReferralInfoModel(
         title: "Twitter",
-        count: twitterReferralsCount,
+        count: referralData.twitterReferralsCount,
         svgSrc: "assets/icons/Twitter.svg",
         color: adminPanelPrimaryColor,
       ),
       ReferralInfoModel(
         title: "Linkedin",
-        count: linkedinReferralsCount,
+        count: referralData.linkedinReferralsCount,
         svgSrc: "assets/icons/Linkedin.svg",
         color: adminPanelPrimaryColor,
       ),
-
       ReferralInfoModel(
         title: "Dribble",
-        count: othersReferralsCount,
+        count: referralData.otherReferralsCount,
         svgSrc: "assets/icons/Dribbble.svg",
         color: red,
       ),
     ];
 
-    return UIRelatedReferralData(referralMessage, referralData);
+    return UIRelatedReferralData(
+        referralData.referralMessage, referralInfoModels);
   }
 }
