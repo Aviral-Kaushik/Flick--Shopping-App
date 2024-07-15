@@ -44,6 +44,41 @@ class FirebaseServices {
     return Tuple2(hasErrorOccurred, errorMessage);
   }
 
+  Future<List<User>> fetchAllAdmins() async {
+    List<User> admins = [];
+    QuerySnapshot<Map<String, dynamic>> snapshot =
+    await database.collection(adminsCollection).get();
+
+    admins = snapshot.docs.map((admin) {
+      return User.fromFirestore(admin);
+    }).toList();
+
+    return admins;
+  }
+
+  Future<Tuple2<bool, String>> deleteAdmin(User user) async {
+    // TODO this is also okay but we need to make is admin to false in users collection to take off admin privileges
+    bool hasErrorOccurred = false;
+    String errorMessage = "";
+
+    database
+        .collection(adminsCollection)
+        .doc(user.id)
+        .delete()
+        .then((doc) => debugPrint("Admin Deleted Successfully"), onError: (e) {
+      hasErrorOccurred = true;
+      errorMessage = e;
+    });
+
+    return Tuple2(hasErrorOccurred, errorMessage);
+  }
+
+  void createNewAdmin(String email) {
+    /**TODO
+     * Firstly we need to fetch the user from user collection with this mail, then we have to create admin
+     * */
+  }
+
   Future<String> fetchTermsOrPrivacy(
       bool shouldFetchPrivacyPolicy) async {
 
@@ -162,41 +197,6 @@ class FirebaseServices {
       await adminReference.set(admin.toFirestore());
     }
 
-  }
-
-  Future<List<User>> fetchAllAdmins() async {
-    List<User> admins = [];
-    QuerySnapshot<Map<String, dynamic>> snapshot =
-        await database.collection(adminsCollection).get();
-
-    admins = snapshot.docs.map((admin) {
-      return User.fromFirestore(admin);
-    }).toList();
-
-    return admins;
-  }
-
-  Future<Tuple2<bool, String>> deleteAdmin(User user) async {
-    // TODO this is also okay but we need to make is admin to false in users collection to take off admin privileges
-    bool hasErrorOccurred = false;
-    String errorMessage = "";
-
-    database
-        .collection(adminsCollection)
-        .doc(user.id)
-        .delete()
-        .then((doc) => debugPrint("Admin Deleted Successfully"), onError: (e) {
-      hasErrorOccurred = true;
-      errorMessage = e;
-    });
-
-    return Tuple2(hasErrorOccurred, errorMessage);
-  }
-
-  void createNewAdmin(String email) {
-    /**TODO
-     * Firstly we need to fetch the user from user collection with this mail, then we have to create admin
-     * */
   }
 
 }

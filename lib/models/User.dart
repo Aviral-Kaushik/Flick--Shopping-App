@@ -28,10 +28,10 @@ class User {
   bool isAdmin;
   String joiningDate;
   String profilePhoto;
+  String country;
   // List<Product> itemsInCart;
   // List<Address> addresses;
   // List<Product> pastProducts;
-  String country;
   // List<Product> ratedProduct;
 
   factory User.fromFirestore(
