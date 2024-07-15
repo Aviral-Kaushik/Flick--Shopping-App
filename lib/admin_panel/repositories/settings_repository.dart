@@ -1,8 +1,8 @@
-import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/admin_panel/services/firebase_services.dart';
 import 'package:flick/helper/MailHelper.dart';
 import 'package:flick/locator.dart';
 import 'package:flick/models/User.dart';
+import 'package:tuple/tuple.dart';
 
 class SettingsRepository {
 
@@ -13,9 +13,11 @@ class SettingsRepository {
   SettingsRepository(this.firebaseServices);
 
   Future<List<User>> fetchAllAdmins() async {
-    admins = getUsersData().where(
-            (user) => user.isAdmin).toList();
+    admins = await firebaseServices.fetchAllAdmins();
     return admins;
+    // admins = getUsersData().where(
+    //         (user) => user.isAdmin).toList();
+    // firebaseServices.storeAdminsData(admins);
   }
 
   Future<bool> createNewAdmin(String email) async {
@@ -33,8 +35,11 @@ class SettingsRepository {
     }
   }
 
-  Future<bool> deleteAdmin(User user) async {
-    return admins.remove(user);
+  Future<Tuple2<bool, String>> deleteAdmin(User user) async {
+    Tuple2<bool, String> adminDeletionResponse =
+        await firebaseServices.deleteAdmin(user);
+
+    return adminDeletionResponse;
   }
 
   Future<List<User>> searchAdmin(String query) async {

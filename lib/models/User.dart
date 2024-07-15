@@ -35,8 +35,7 @@ class User {
   // List<Product> ratedProduct;
 
   factory User.fromFirestore(
-      DocumentSnapshot<Map<String, dynamic>> snapshot,
-      SnapshotOptions? options) {
+      DocumentSnapshot<Map<String, dynamic>> snapshot) {
     final data = snapshot.data();
     return User(
       id: data?["user_id"],

@@ -145,6 +145,7 @@ class _AdminSettingsScreenContentState extends State<AdminSettingsScreenContent>
           if (state is AdminDeleteSuccessfully) {
             dismissAllDialog();
             showSuccessfulOrErrorDialog("Admin Deleted Successfully!", false);
+            totalAdmins--;
             setState(() {});
           }
 

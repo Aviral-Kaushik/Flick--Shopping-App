@@ -2,6 +2,7 @@ import 'package:flick/admin_panel/blocs/settings/settings_event.dart';
 import 'package:flick/admin_panel/blocs/settings/settings_state.dart';
 import 'package:flick/admin_panel/repositories/settings_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tuple/tuple.dart';
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 
@@ -31,13 +32,13 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<DeleteAdmin>((event, emit) async {
       emit(const SettingsLoading("Please wait! Deleting admin"));
 
-      final isAdminDeletedSuccessfully = await settingsRepository.deleteAdmin(event.user);
+      Tuple2<bool, String> adminDeletionResponse = await settingsRepository.deleteAdmin(event.user);
 
-      if (isAdminDeletedSuccessfully) {
-        emit(const AdminDeleteSuccessfully());
-      } else {
-        emit(const SettingsError("Cannot create admin at this moment"));
+      if (adminDeletionResponse.item1) {
+        emit(SettingsError(adminDeletionResponse.item2));
       }
+
+      emit(const AdminDeleteSuccessfully());
 
     });
 
