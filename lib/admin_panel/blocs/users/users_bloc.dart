@@ -17,9 +17,9 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
 
       if (usersResponse.item2) {
         emit(UsersError("Cannot Load User: ${usersResponse.item3}"));
-      } else {
-        emit(FetchedAllUsers(usersResponse.item1));
       }
+
+      emit(FetchedAllUsers(usersResponse.item1));
 
     });
 
@@ -38,10 +38,10 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
           await usersRepository.editUser(event.userToBeEdited);
 
       if (userUpdateResponse.item1) {
-        emit(const UserEditedSuccessfully());
-      } else {
         emit(const UsersError("Cannot Update User at this moment"));
       }
+
+      emit(const UserEditedSuccessfully());
 
     });
 
@@ -53,9 +53,9 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
 
       if (usersResponse.item2) {
         emit(UsersError("Error: ${usersResponse.item3}"));
-      } else {
-        emit(FetchedAllUsers(usersResponse.item1));
       }
+
+      emit(FetchedAllUsers(usersResponse.item1));
 
     });
 
@@ -66,11 +66,11 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
           await usersRepository.deleteUser(event.user);
 
       if (deletedResponse.item1) {
-        emit(const UserDeletedSuccessfully());
-      } else {
         emit(UsersError(
             "Cannot Delete User at this moment ${deletedResponse.item2}"));
       }
+
+      emit(const UserDeletedSuccessfully());
 
     });
   }

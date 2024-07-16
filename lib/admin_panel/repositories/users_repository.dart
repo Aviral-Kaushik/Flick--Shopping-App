@@ -1,4 +1,3 @@
-import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/admin_panel/helper/UserFilter.dart';
 import 'package:flick/admin_panel/services/firebase_services.dart';
 import 'package:flick/models/User.dart';
@@ -6,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:tuple/tuple.dart';
 
 class UsersRepository {
-
   late List<User> users;
 
   FirebaseServices firebaseServices;
@@ -17,9 +15,11 @@ class UsersRepository {
     bool hasErrorOccurred = false;
     String errorMessage = "";
 
-    users = getUsersData();
+    users = await firebaseServices.fetchAllUsers();
 
     return Tuple3(users, hasErrorOccurred, errorMessage);
+    // users = getUsersData();
+    // firebaseServices.storeAllUsersData(users);
   }
 
   Future<List<User>> searchUsers(String query) async {
@@ -27,10 +27,7 @@ class UsersRepository {
       return users;
     }
 
-    RegExp regExp = RegExp(
-        query,
-        caseSensitive: false
-    );
+    RegExp regExp = RegExp(query, caseSensitive: false);
 
     List<User> filteredUser = users
         .where((user) =>
@@ -45,21 +42,27 @@ class UsersRepository {
   }
 
   Future<Tuple2<bool, String>> editUser(User user) async {
-    bool isUserUpdatedSuccessfully = true;
+    bool hasErrorOccurred = false;
     String errorMessage = "";
 
     if (!users.contains(user)) {
-        isUserUpdatedSuccessfully = false;
-        errorMessage = "User not exists";
-        return Tuple2(isUserUpdatedSuccessfully, errorMessage);
+      hasErrorOccurred = true;
+      errorMessage = "User not exists";
+      return Tuple2(hasErrorOccurred, errorMessage);
     }
-    
-    users[users.indexWhere((element) => element.id == user.id)] = user;
-    
-    return Tuple2(isUserUpdatedSuccessfully, errorMessage);
+
+    Tuple2<bool, String> updateUserResponse =
+        await firebaseServices.updateUser(user);
+
+    if (!updateUserResponse.item1) {
+      users[users.indexWhere((element) => element.id == user.id)] = user;
+    }
+
+    return updateUserResponse;
   }
 
-  Future<Tuple3<List<User>, bool, String>> applyUserFilter(UserFilter userFilter) async {
+  Future<Tuple3<List<User>, bool, String>> applyUserFilter(
+      UserFilter userFilter) async {
     bool errorOccurred = false;
     String errorMessage = "";
 
@@ -76,46 +79,43 @@ class UsersRepository {
       if (!filterUserInAscendingOrder) {
         filteredUsers = filteredUsers.reversed.toList();
       }
-
     } else if (filterName == "Date Created") {
-        filteredUsers.sort((a, b) {
-          DateFormat dateFormat = DateFormat('MM-dd-yyyy');
+      filteredUsers.sort((a, b) {
+        DateFormat dateFormat = DateFormat('MM-dd-yyyy');
 
-          DateTime dateTime1 = dateFormat.parse(a.joiningDate);
-          DateTime dateTime2 = dateFormat.parse(b.joiningDate);
+        DateTime dateTime1 = dateFormat.parse(a.joiningDate);
+        DateTime dateTime2 = dateFormat.parse(b.joiningDate);
 
-          return dateTime1.compareTo(dateTime2);
-        });
+        return dateTime1.compareTo(dateTime2);
+      });
 
-        if (!filterUserInAscendingOrder) {
-          filteredUsers = filteredUsers.reversed.toList();
-        }
-
+      if (!filterUserInAscendingOrder) {
+        filteredUsers = filteredUsers.reversed.toList();
+      }
     } else {
-
       errorOccurred = true;
       errorMessage = "Invalid Filter";
       return Tuple3(filteredUsers, errorOccurred, errorMessage);
-
     }
 
     return Tuple3(filteredUsers, errorOccurred, errorMessage);
   }
 
   Future<Tuple2<bool, String>> deleteUser(User user) async {
-    bool isUserDeletedSuccessfully = false;
+    bool hasErrorOccurred = false;
     String errorMessage = "Firebase Exception";
 
-    bool isDeletionSuccessful = users.remove(user);
+    Tuple2<bool, String> deleteUserResponse =
+        await firebaseServices.deleteUser(user);
 
-    if (isDeletionSuccessful) {
-        isUserDeletedSuccessfully = true;
-        errorMessage = "";
+    if (deleteUserResponse.item1) {
+      hasErrorOccurred = true;
+      errorMessage = "Firebase Exception";
     } else {
-        isUserDeletedSuccessfully = false;
-        errorMessage = "Firebase Exception";
+      hasErrorOccurred = false;
+      errorMessage = "";
     }
 
-    return Tuple2(isUserDeletedSuccessfully, errorMessage);
+    return Tuple2(hasErrorOccurred, errorMessage);
   }
 }

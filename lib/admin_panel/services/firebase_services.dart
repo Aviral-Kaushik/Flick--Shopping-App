@@ -15,6 +15,71 @@ class FirebaseServices {
     database = FirebaseFirestore.instance;
   }
 
+  Future<List<User>> fetchAllUsers() async {
+    List<User> users = [];
+
+    QuerySnapshot<Map<String, dynamic>> snapshot =
+    await database.collection(usersCollection).get();
+
+    users = snapshot.docs.map((snapshot) {
+      return User.fromFirestore(snapshot);
+    }).toList();
+
+    return users;
+  }
+
+  Future<Tuple2<bool, String>> updateUser(User user) async  {
+    bool hasErrorOccurred = false;
+    String errorMessage = "";
+
+    await database
+        .collection(usersCollection)
+        .doc(user.id)
+        .update(user.toFirestore())
+        .then((value) => debugPrint("User Updated Successfully"), onError: (e) {
+      hasErrorOccurred = true;
+      errorMessage = e;
+    });
+
+    return Tuple2(hasErrorOccurred, errorMessage);
+  }
+
+  Future<Tuple2<bool, String>> deleteUser(User user) async {
+    bool hasErrorOccurred = false;
+    String errorMessage = "";
+
+    await database
+        .collection(usersCollection)
+        .doc(user.id)
+        .delete()
+        .then((value) => debugPrint("User Deleted Successfully"), onError: (e) {
+      hasErrorOccurred = true;
+      errorMessage = e;
+    });
+
+    return Tuple2(hasErrorOccurred, errorMessage);
+  }
+
+  Future<Tuple2<bool, String>> changeAdminAccessForUserInUsersCollection(
+      User user, bool hasAdminAccess) async {
+    bool hasErrorOccurred = false;
+    String errorMessage = "";
+
+    await database
+        .collection(usersCollection)
+        .doc(user.id)
+        .update({"is_admin": hasAdminAccess})
+        .then(
+            (value) =>
+            debugPrint("Admin Access changed for user in users collection"),
+        onError: (e) {
+          hasErrorOccurred = true;
+          errorMessage = e;
+        });
+
+    return Tuple2(hasErrorOccurred, errorMessage);
+  }
+
 
   Future<List<Message>> getAllMessagesFromFirebase() async {
     List<Message> messages = [];
@@ -47,7 +112,7 @@ class FirebaseServices {
   Future<List<User>> fetchAllAdmins() async {
     List<User> admins = [];
     QuerySnapshot<Map<String, dynamic>> snapshot =
-    await database.collection(adminsCollection).get();
+        await database.collection(adminsCollection).get();
 
     admins = snapshot.docs.map((admin) {
       return User.fromFirestore(admin);
@@ -195,6 +260,17 @@ class FirebaseServices {
       DocumentReference adminReference = database.collection(adminsCollection).doc();
       admin.id = adminReference.id;
       await adminReference.set(admin.toFirestore());
+    }
+
+  }
+
+  void storeAllUsersData(List<User> users) async {
+
+    for (User user in users) {
+      DocumentReference userReference =
+          database.collection(usersCollection).doc();
+      user.id = userReference.id;
+      await userReference.set(user.toFirestore());
     }
 
   }
