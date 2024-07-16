@@ -3,6 +3,7 @@ import 'package:flick/admin_panel/helper/RulesAndRegulationHelper.dart';
 import 'package:flick/admin_panel/models/referrals/referral_data.dart';
 import 'package:flick/admin_panel/utils/firebase/collections.dart';
 import 'package:flick/models/Message.dart';
+import 'package:flick/models/Product.dart';
 import 'package:flick/models/User.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:tuple/tuple.dart';
@@ -80,6 +81,84 @@ class FirebaseServices {
     return Tuple2(hasErrorOccurred, errorMessage);
   }
 
+  Future<List<Product>> fetchAllProducts() async {
+    List<Product> products = [];
+
+    QuerySnapshot<Map<String, dynamic>> snapshot =
+        await database.collection(productsCollection).get();
+
+    products = snapshot.docs.map((product) {
+      return Product.fromFirestore(product);
+    }).toList();
+
+    return products;
+  }
+
+  Future<Tuple2<bool, String>> updateProduct(Product product) async {
+    bool hasErrorOccurred = false;
+    String errorMessage = "";
+
+    await database
+        .collection(productsCollection)
+        .doc(product.id)
+        .update(product.toFirestore())
+        .then((e) => debugPrint("Product Updated Successfully"), onError: (e) {
+      hasErrorOccurred = true;
+      errorMessage = e;
+    });
+
+    return Tuple2(hasErrorOccurred, errorMessage);
+  }
+
+  Future<Tuple2<bool, String>> deleteProduct(Product product) async {
+    bool hasErrorOccurred = false;
+    String errorMessage = "";
+
+    await database
+        .collection(productsCollection)
+        .doc(product.id)
+        .delete()
+        .then((e) => debugPrint("Product Updated Successfully"), onError: (e) {
+      hasErrorOccurred = true;
+      errorMessage = e;
+    });
+
+    return Tuple2(hasErrorOccurred, errorMessage);
+  }
+
+  Future<Tuple2<bool, String>> updateProductStock(
+      String productId, int stock) async {
+    bool hasErrorOccurred = false;
+    String errorMessage = "";
+
+    await database
+        .collection(productsCollection)
+        .doc(productId)
+        .update({"stock": stock}).then(
+            (e) => debugPrint("Product Updated Successfully"), onError: (e) {
+      hasErrorOccurred = true;
+      errorMessage = e;
+    });
+
+    return Tuple2(hasErrorOccurred, errorMessage);
+  }
+
+  Future<Tuple2<bool, String>> updateProductPrice(
+      String productId, int newPrice) async {
+    bool hasErrorOccurred = false;
+    String errorMessage = "";
+
+    await database
+        .collection(productsCollection)
+        .doc(productId)
+        .update({"product_price": newPrice}).then(
+            (e) => debugPrint("Product Updated Successfully"), onError: (e) {
+      hasErrorOccurred = true;
+      errorMessage = e;
+    });
+
+    return Tuple2(hasErrorOccurred, errorMessage);
+  }
 
   Future<List<Message>> getAllMessagesFromFirebase() async {
     List<Message> messages = [];
@@ -269,10 +348,22 @@ class FirebaseServices {
     for (User user in users) {
       DocumentReference userReference =
           database.collection(usersCollection).doc();
+
       user.id = userReference.id;
       await userReference.set(user.toFirestore());
     }
 
   }
 
+  void storeAllProducts(List<Product> products) async {
+
+    for (Product product in products) {
+      DocumentReference productReference =
+          database.collection(productsCollection).doc();
+
+      product.id = productReference.id;
+      await productReference.set(product.toFirestore());
+    }
+
+  }
 }

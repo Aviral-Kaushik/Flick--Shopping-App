@@ -28,8 +28,7 @@ class Product {
 
 
   factory Product.fromFirestore(
-      DocumentSnapshot<Map<String, dynamic>> snapshot,
-      SnapshotOptions? options) {
+      DocumentSnapshot<Map<String, dynamic>> snapshot) {
     final data = snapshot.data();
     return Product(
       id: data?["product_id"],
