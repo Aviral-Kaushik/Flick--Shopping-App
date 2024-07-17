@@ -16,6 +16,12 @@ class DashboardRepository {
   DashboardRepository(this.firebaseServices);
 
   Future<DashboardRepositoryResponse> getDashboardData() async {
+    // TODO Firstly store top seller data and miscellaneous data in firebase and
+    //  replace DashboardRepositoryResponse with DashboardData everywhere and
+    //  update the functionality in the same way
+
+    // firebaseServices.storeAllTopSellers(topSellersData);
+    // firebaseServices.storeMiscellaneousData(miscellaneousDataModel);
     users = getUsersData();
 
     return DashboardRepositoryResponse(getMonthWiseUserData(),

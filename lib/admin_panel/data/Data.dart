@@ -35,7 +35,7 @@ List<DetailsCardModel> detailsCardData = [
   ),
 ];
 
-List topSellersData = [
+List<TopSellersModel> topSellersData = [
   TopSellersModel(
     imageSrc: "assets/images/photo1.jpg",
     name: "Lutfhi Chan",

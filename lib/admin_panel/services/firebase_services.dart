@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flick/admin_panel/helper/RulesAndRegulationHelper.dart';
+import 'package:flick/admin_panel/models/MiscellaneousDataModel.dart';
 import 'package:flick/admin_panel/models/referrals/referral_data.dart';
 import 'package:flick/admin_panel/utils/firebase/collections.dart';
 import 'package:flick/models/Message.dart';
@@ -357,6 +358,30 @@ class FirebaseServices {
         .generateMapForStoringInFirebase(termsOrPrivacy, storePrivacyPolicy));
   }
 
+  Future<MiscellaneousDataModel> fetchMiscellaneousData() async {
+
+    DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+    await database.collection(miscellaneousCollection).get();
+
+    return MiscellaneousDataModel.fromFirestore(documentSnapshot);
+  }
+
+  Future<Tuple2<bool, String>> incrementMiscellaneousField(String miscellaneousType) async {
+    bool hasErrorOccurred = false;
+    String errorMessage = "";
+
+    await database.collection(miscellaneousCollection).update({
+      MiscellaneousDataModel.mapFieldNameToFirebase(miscellaneousType):
+      FieldValue.increment(1)
+    }).then((value) => debugPrint("Miscellaneous Data Updated Successfully"),
+        onError: (e) {
+          hasErrorOccurred = true;
+          errorMessage = e;
+        });
+
+    return Tuple2(hasErrorOccurred, errorMessage);
+  }
+
   void storeReferralData(ReferralData referralData) async {
 
     DocumentReference referralsReference =
@@ -411,4 +436,13 @@ class FirebaseServices {
     }
 
   }
+
+  void storeMiscellaneousData(MiscellaneousDataModel miscellaneousDataModel) async {
+
+    await database
+        .collection(miscellaneousCollection)
+        .set(miscellaneousDataModel.toFirestore());
+
+  }
+
 }

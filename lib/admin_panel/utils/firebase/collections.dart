@@ -7,3 +7,6 @@ String adminsCollection = "Admins";
 String usersCollection = "Users";
 String productsCollection = "Products";
 String topSellersCollection = "Top Sellers";
+String dashboardCollection = "Dashboard";
+// Collection for handling collection like total sale, total product, total user
+String miscellaneousCollection = "Miscellaneous";
