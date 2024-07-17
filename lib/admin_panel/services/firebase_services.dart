@@ -29,6 +29,22 @@ class FirebaseServices {
     return users;
   }
 
+  Future<bool> createNewUser(User user) async {
+    bool userCreatedSuccessfully = false;
+
+    DocumentReference newUserReference =
+        database.collection(usersCollection).doc();
+    user.id = newUserReference.id;
+
+    await newUserReference.set(user.toFirestore()).then((value) {
+      userCreatedSuccessfully = true;
+    }).catchError((error) {
+      userCreatedSuccessfully = false;
+    });
+
+    return userCreatedSuccessfully;
+  }
+
   Future<Tuple2<bool, String>> updateUser(User user) async  {
     bool hasErrorOccurred = false;
     String errorMessage = "";
@@ -62,14 +78,14 @@ class FirebaseServices {
   }
 
   Future<Tuple2<bool, String>> changeAdminAccessForUserInUsersCollection(
-      User user, bool hasAdminAccess) async {
+      User user, bool provideAdminAccess) async {
     bool hasErrorOccurred = false;
     String errorMessage = "";
 
     await database
         .collection(usersCollection)
         .doc(user.id)
-        .update({"is_admin": hasAdminAccess})
+        .update({"is_admin": provideAdminAccess})
         .then(
             (value) =>
             debugPrint("Admin Access changed for user in users collection"),
@@ -92,6 +108,22 @@ class FirebaseServices {
     }).toList();
 
     return products;
+  }
+
+  Future<bool> createNewProduct(Product product) async {
+    bool productCreateSuccessfully = false;
+
+    DocumentReference newProductReference =
+        database.collection(productsCollection).doc();
+    product.id = newProductReference.id;
+
+    newProductReference.set(product.toFirestore()).then((value) {
+      productCreateSuccessfully = true;
+    }).catchError((error) {
+      productCreateSuccessfully = false;
+    });
+
+    return productCreateSuccessfully;
   }
 
   Future<Tuple2<bool, String>> updateProduct(Product product) async {
@@ -363,6 +395,19 @@ class FirebaseServices {
 
       product.id = productReference.id;
       await productReference.set(product.toFirestore());
+    }
+
+  }
+
+  void storeAllTopSellers(List<User> topSellers) async {
+
+    for (User topSeller in topSellers) {
+
+      DocumentReference topSellerReference =
+          database.collection(topSellersCollection).doc();
+      topSeller.id = topSellerReference.id;
+
+      await topSellerReference.set(topSeller);
     }
 
   }
