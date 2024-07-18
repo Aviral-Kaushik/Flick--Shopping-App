@@ -1,6 +1,6 @@
-import 'package:flick/admin_panel/data/Data.dart';
-import 'package:flick/admin_panel/models/DetailsCardModel.dart';
-import 'package:flick/admin_panel/models/dashboard/DashboardRepositoryResponse.dart';
+import 'package:flick/admin_panel/converter/converter.dart';
+import 'package:flick/admin_panel/models/MiscellaneousDataModel.dart';
+import 'package:flick/admin_panel/models/dashboard/DashboardData.dart';
 import 'package:flick/admin_panel/models/dashboard/DeviceWiseUserData.dart';
 import 'package:flick/admin_panel/models/dashboard/MonthWiseUserData.dart';
 import 'package:flick/admin_panel/services/firebase_services.dart';
@@ -15,22 +15,34 @@ class DashboardRepository {
 
   DashboardRepository(this.firebaseServices);
 
-  Future<DashboardRepositoryResponse> getDashboardData() async {
-    // TODO Firstly store top seller data and miscellaneous data in firebase and
-    //  replace DashboardRepositoryResponse with DashboardData everywhere and
-    //  update the functionality in the same way
+  Future<DashboardData> getDashboardData() async {
 
-    // firebaseServices.storeAllTopSellers(topSellersData);
-    // firebaseServices.storeMiscellaneousData(miscellaneousDataModel);
-    users = getUsersData();
+    users = await firebaseServices.fetchAllUsers();
 
-    return DashboardRepositoryResponse(getMonthWiseUserData(),
-        getDeviceWisePhoneData(), await getDetailsCardData());
+    MiscellaneousDataModel miscellaneousDataModel =
+        await firebaseServices.fetchMiscellaneousData();
+
+    List<User> topSellers = await firebaseServices.fetchTopSellers();
+
+    return DashboardData(
+      miscellaneousData: miscellaneousDataModel,
+      monthWiseUserData: getMonthWiseUserData(),
+      topSellersModel: Converter.convertUserToTopSellerModel(topSellers),
+      deviceWiseUserData: getDeviceWisePhoneData(),
+      detailsCardModel: Converter.convertMiscellaneousDataToDetailsCardModel(
+          miscellaneousDataModel),
+    );
+
+    // return DashboardRepositoryResponse(getMonthWiseUserData(),
+    //     getDeviceWisePhoneData(), Converter.convertMiscellaneousDataToDetailsCardModel(miscellaneousDataModel));
+    // users = getUsersData();
+    // firebaseServices.storeMiscellaneousData(MiscellaneousDataModel(users.length, 35, 2596, 15));
+    // firebaseServices.storeAllTopSellers(getTopSellerUsersData());
   }
 
-  Future<List<DetailsCardModel>> getDetailsCardData() async {
-    return detailsCardData;
-  }
+  // Future<List<DetailsCardModel>> getDetailsCardData() async {
+  //   return detailsCardData;
+  // }
 
   List<MonthWiseUserData> getMonthWiseUserData() {
     for (User user in users) {

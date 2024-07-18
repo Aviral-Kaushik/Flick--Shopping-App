@@ -1,16 +1,17 @@
-import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/admin_panel/models/TopSellersModel.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
 
 class TopSellersList extends StatelessWidget {
-  const TopSellersList({super.key});
+  const TopSellersList({super.key, required this.topSellersList});
+
+  final List<TopSellersModel> topSellersList;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: topSellersData.length * 80,
+      height: topSellersList.length * 80,
       padding: const EdgeInsets.all(appPadding),
       decoration: BoxDecoration(
           color: secondaryColor, borderRadius: BorderRadius.circular(10)),
@@ -47,9 +48,9 @@ class TopSellersList extends StatelessWidget {
               child: ListView.builder(
                   physics: const BouncingScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: topSellersData.length,
+                  itemCount: topSellersList.length,
                   itemBuilder: (context, index) => TopSellerListLayout(
-                        sellerModel: topSellersData[index],
+                        sellerModel: topSellersList[index],
                       )))
         ],
       ),

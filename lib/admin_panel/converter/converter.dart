@@ -1,3 +1,5 @@
+import 'package:flick/admin_panel/models/DetailsCardModel.dart';
+import 'package:flick/admin_panel/models/MiscellaneousDataModel.dart';
 import 'package:flick/admin_panel/models/ReferralInfoModel.dart';
 import 'package:flick/admin_panel/models/TopSellersModel.dart';
 import 'package:flick/admin_panel/models/referrals/referral_data.dart';
@@ -7,7 +9,7 @@ import 'package:flick/utils/Colors.dart';
 
 class Converter {
 
-  List<TopSellersModel> convertUserToTopSellerModel(List<User> topSellers) {
+  static List<TopSellersModel> convertUserToTopSellerModel(List<User> topSellers) {
     List<TopSellersModel> topSellerModelList = [];
 
     topSellerModelList = topSellers.map((topSeller) {
@@ -53,6 +55,35 @@ class Converter {
 
     return UIRelatedReferralData(
         referralData.referralMessage, referralInfoModels);
+  }
+
+  static List<DetailsCardModel> convertMiscellaneousDataToDetailsCardModel(MiscellaneousDataModel miscellaneousData) {
+    return [
+      DetailsCardModel(
+        title: "Users",
+        count: miscellaneousData.totalUsers,
+        svgSrc: "assets/icons/Subscribers.svg",
+        color: adminPanelPrimaryColor,
+      ),
+      DetailsCardModel(
+        title: "Products",
+        count: miscellaneousData.totalProducts,
+        svgSrc: "assets/icons/Post.svg",
+        color: purple,
+      ),
+      DetailsCardModel(
+        title: "Sales",
+        count: miscellaneousData.totalSales,
+        svgSrc: "assets/icons/Pages.svg",
+        color: orange,
+      ),
+      DetailsCardModel(
+        title: "Seller",
+        count: miscellaneousData.totalSellers,
+        svgSrc: "assets/icons/Comments.svg",
+        color: green,
+      ),
+    ];
   }
 
 }

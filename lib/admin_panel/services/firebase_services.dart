@@ -234,7 +234,8 @@ class FirebaseServices {
   }
 
   Future<Tuple2<bool, String>> deleteAdmin(User user) async {
-    // TODO this is also okay but we need to make is admin to false in users collection to take off admin privileges
+    // TODO this is also okay but we need to make is admin to false in users
+    //  collection to take off admin privileges
     bool hasErrorOccurred = false;
     String errorMessage = "";
 
@@ -252,7 +253,8 @@ class FirebaseServices {
 
   void createNewAdmin(String email) {
     /**TODO
-     * Firstly we need to fetch the user from user collection with this mail, then we have to create admin
+     * Firstly we need to fetch the user from user collection with this mail,
+     * then we have to create admin
      * */
   }
 
@@ -301,7 +303,8 @@ class FirebaseServices {
     return ReferralData.fromFirestore(snapshot);
   }
 
-  Future<Tuple2<bool, String>> incrementReferralsCount(String referralType) async {
+  Future<Tuple2<bool, String>> incrementReferralsCount(
+      String referralType) async {
     bool hasErrorOccurred = false;
     String errorMessage = "";
 
@@ -311,16 +314,16 @@ class FirebaseServices {
         .update({
       ReferralData.mapFieldNameToFirebase(referralType): FieldValue.increment(1)
     }).then((value) => debugPrint("Referral Count Incremented Successfully"),
-        onError: (e) {
-          hasErrorOccurred = true;
-          errorMessage = e;
-        });
-    ;
+            onError: (e) {
+      hasErrorOccurred = true;
+      errorMessage = e;
+    });
 
     return Tuple2(hasErrorOccurred, errorMessage);
   }
 
-  Future<Tuple2<bool, String>> updateReferralMessage(String referralMessage) async {
+  Future<Tuple2<bool, String>> updateReferralMessage(
+      String referralMessage) async {
     bool hasErrorOccurred = false;
     String errorMessage = "";
 
@@ -332,14 +335,17 @@ class FirebaseServices {
         onError: (e) {
           hasErrorOccurred = true;
           errorMessage = e;
-        });;
+        });
 
     return Tuple2(hasErrorOccurred, errorMessage);
   }
 
-  Future<Tuple2<bool, String>> storeAllMessagesInFirebase(List<Message> messages) async {
+  Future<Tuple2<bool, String>> storeAllMessagesInFirebase(
+      List<Message> messages) async {
+
     for (Message message in messages) {
-      DocumentReference documentReference = database.collection(messagesCollection).doc();
+      DocumentReference documentReference =
+          database.collection(messagesCollection).doc();
       message.id = documentReference.id;
 
       await documentReference.set(message.toFirestore());
@@ -360,26 +366,45 @@ class FirebaseServices {
 
   Future<MiscellaneousDataModel> fetchMiscellaneousData() async {
 
-    DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-    await database.collection(miscellaneousCollection).get();
+    DocumentSnapshot<Map<String, dynamic>> documentSnapshot = await database
+        .collection(miscellaneousCollection)
+        .doc("Miscellaneous")
+        .get();
 
     return MiscellaneousDataModel.fromFirestore(documentSnapshot);
   }
 
-  Future<Tuple2<bool, String>> incrementMiscellaneousField(String miscellaneousType) async {
+  Future<Tuple2<bool, String>> incrementMiscellaneousField(
+      String miscellaneousType) async {
     bool hasErrorOccurred = false;
     String errorMessage = "";
 
-    await database.collection(miscellaneousCollection).update({
+    await database
+        .collection(miscellaneousCollection)
+        .doc("Miscellaneous")
+        .update({
       MiscellaneousDataModel.mapFieldNameToFirebase(miscellaneousType):
-      FieldValue.increment(1)
+          FieldValue.increment(1)
     }).then((value) => debugPrint("Miscellaneous Data Updated Successfully"),
-        onError: (e) {
-          hasErrorOccurred = true;
-          errorMessage = e;
-        });
+            onError: (e) {
+      hasErrorOccurred = true;
+      errorMessage = e;
+    });
 
     return Tuple2(hasErrorOccurred, errorMessage);
+  }
+
+  Future<List<User>> fetchTopSellers() async {
+    List<User> users = [];
+
+    QuerySnapshot<Map<String, dynamic>> snapshot =
+    await database.collection(topSellersCollection).get();
+
+    users = snapshot.docs.map((snapshot) {
+      return User.fromFirestore(snapshot);
+    }).toList();
+
+    return users;
   }
 
   void storeReferralData(ReferralData referralData) async {
@@ -393,7 +418,8 @@ class FirebaseServices {
   void storeAdminsData(List<User> admins) async {
 
     for (User admin in admins) {
-      DocumentReference adminReference = database.collection(adminsCollection).doc();
+      DocumentReference adminReference =
+          database.collection(adminsCollection).doc();
       admin.id = adminReference.id;
       await adminReference.set(admin.toFirestore());
     }
@@ -432,15 +458,17 @@ class FirebaseServices {
           database.collection(topSellersCollection).doc();
       topSeller.id = topSellerReference.id;
 
-      await topSellerReference.set(topSeller);
+      await topSellerReference.set(topSeller.toFirestore());
     }
 
   }
 
-  void storeMiscellaneousData(MiscellaneousDataModel miscellaneousDataModel) async {
+  void storeMiscellaneousData(
+      MiscellaneousDataModel miscellaneousDataModel) async {
 
     await database
         .collection(miscellaneousCollection)
+        .doc("Miscellaneous")
         .set(miscellaneousDataModel.toFirestore());
 
   }

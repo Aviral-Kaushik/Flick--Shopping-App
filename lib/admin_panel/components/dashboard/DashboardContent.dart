@@ -3,12 +3,12 @@ import 'package:flick/admin_panel/blocs/dashboard/dashboard_event.dart';
 import 'package:flick/admin_panel/blocs/dashboard/dashboard_state.dart';
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/admin_panel/components/widgets/DetailsChipCard.dart';
+import 'package:flick/admin_panel/models/dashboard/DashboardData.dart';
 import 'package:flick/admin_panel/utils/Responsive.dart';
 import 'package:flick/admin_panel/features/home/widgets/TopSellersList.dart';
 import 'package:flick/admin_panel/features/home/widgets/UserByDevicePieChart.dart';
 import 'package:flick/admin_panel/features/home/widgets/UsersChart.dart';
 import 'package:flick/admin_panel/features/home/widgets/ViewersLineChart.dart';
-import 'package:flick/admin_panel/models/dashboard/DashboardRepositoryResponse.dart';
 import 'package:flick/helper/DialogHelper.dart';
 import 'package:flick/locator.dart';
 import 'package:flick/utils/Constants.dart';
@@ -28,7 +28,7 @@ class _DashboardContentState extends State<DashboardContent> {
 
   DashboardBloc dashboardBloc = locator.get<DashboardBloc>();
   late DialogHelper dialogHelper;
-  DashboardRepositoryResponse? dashboardRepositoryResponse;
+  DashboardData? dashboardData;
 
   bool isAnyDialogShowing = false;
 
@@ -81,7 +81,7 @@ class _DashboardContentState extends State<DashboardContent> {
           }
 
           if (state is DashboardDataLoaded) {
-            dashboardRepositoryResponse = state.dashboardRepositoryResponse;
+            dashboardData = state.dashboardData;
             setState(() {});
 
             dismissAllDialogs();
@@ -114,9 +114,9 @@ class _DashboardContentState extends State<DashboardContent> {
                           flex: 5,
                           child: Column(
                             children: [
-                              dashboardRepositoryResponse != null
+                              dashboardData != null
                               ? DetailsChipCard(
-                                  detailsCardData: dashboardRepositoryResponse?.detailsCardModel,
+                                  detailsCardData: dashboardData?.detailsCardModel,
                                 )
                               : const SizedBox(
                                   height: 0,
@@ -124,22 +124,24 @@ class _DashboardContentState extends State<DashboardContent> {
 
                               const SizedBox(height: appPadding * 1.7,),
 
-                              dashboardRepositoryResponse != null
+                              dashboardData != null
                                   ? UsersChart(
                                       monthWiseUserData:
-                                          dashboardRepositoryResponse!
+                                          dashboardData!
                                               .monthWiseUserData)
                                   : const SizedBox(
                                       height: 0,
                                     ),
 
-                              // TODO This Top User list is not visible in phone we can show
-                              // TODO this in different screen in the drawer or below.
                               if (Responsive.isMobile(context))
                                 const SizedBox(height: appPadding * 1.7,),
-                                const TopSellersList()
-
-                            ],
+                                TopSellersList(
+                                  topSellersList:
+                                      dashboardData?.topSellersModel != null
+                                          ? dashboardData!.topSellersModel
+                                          : [],
+                                )
+                        ],
                           )),
                     ],
                   ),
@@ -154,9 +156,9 @@ class _DashboardContentState extends State<DashboardContent> {
 
                           const SizedBox(height: appPadding * 1.7,),
 
-                          dashboardRepositoryResponse != null
+                          dashboardData != null
                           ? UserByDevicePieChart(
-                              deviceWiseUserData: dashboardRepositoryResponse!
+                              deviceWiseUserData: dashboardData!
                                   .deviceWiseUserData,
                             )
                           : const SizedBox(

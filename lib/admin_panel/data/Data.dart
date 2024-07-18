@@ -177,6 +177,92 @@ String privacyPolicy = """Flick ("we", "our", or "us") is committed to protectin
 If you have any questions about this Privacy Policy, please contact us at [support@flick.com].
 """;
 
+List<User> getTopSellerUsersData() {
+  List<User> usersList = [];
+
+  String jsonDat = """
+[
+  {
+    "id": "1",
+    "username": "john_doe",
+    "password": "password123",
+    "email": "john.doe@example.com",
+    "name": "John Doe",
+    "device": "Android",
+    "isAdmin": false,
+    "joiningDate": "01-05-2024",
+    "profilePhoto": "assets/images/photo1.jpg",
+    "country": "USA"
+  },
+  {
+    "id": "2",
+    "username": "jane_smith",
+    "password": "pass456",
+    "email": "jane.smith@example.com",
+    "name": "Jane Smith",
+    "device": "iOS",
+    "isAdmin": true,
+    "joiningDate": "01-18-2024",
+    "profilePhoto": "assets/images/photo2.jpg",
+    "country": "Canada"
+  },
+  {
+    "id": "3",
+    "username": "alex_jones",
+    "password": "alex789",
+    "email": "alex.jones@example.com",
+    "name": "Alex Jones",
+    "device": "Android",
+    "isAdmin": false,
+    "joiningDate": "02-07-2024",
+    "profilePhoto": "assets/images/photo3.jpg",
+    "country": "UK"
+  },
+  {
+    "id": "4",
+    "username": "emma_watson",
+    "password": "emma234",
+    "email": "emma.watson@example.com",
+    "name": "Emma Watson",
+    "device": "iOS",
+    "isAdmin": false,
+    "joiningDate": "02-15-2024",
+    "profilePhoto": "assets/images/photo4.jpg",
+    "country": "Australia"
+  },
+  {
+    "id": "5",
+    "username": "michael_brown",
+    "password": "mike567",
+    "email": "michael.brown@example.com",
+    "name": "Michael Brown",
+    "device": "Android",
+    "isAdmin": true,
+    "joiningDate": "03-03-2024",
+    "profilePhoto": "assets/images/photo5.jpg",
+    "country": "Germany"
+  },{
+    "id": "26",
+    "username": "avichal1106",
+    "password": "avi1106",
+    "email": "avichalkaushik0007@gmail.com",
+    "name": "Avichal Kaushik",
+    "device": "Android",
+    "isAdmin": true,
+    "joiningDate": "04-16-2024",
+    "profilePhoto": "assets/images/photo1.jpg",
+    "country": "India"
+  }]""";
+
+  List<dynamic> decodedUsersData = jsonDecode(jsonDat);
+
+  for (var userData in decodedUsersData) {
+    usersList.add(User.fromJson(userData as Map<String, dynamic>));
+  }
+
+  return usersList;
+}
+
 List<User> getUsersData() {
   List<User> usersList = [];
 

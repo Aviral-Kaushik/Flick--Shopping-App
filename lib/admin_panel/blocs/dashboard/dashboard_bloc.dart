@@ -1,5 +1,6 @@
 import 'package:flick/admin_panel/blocs/dashboard/dashboard_event.dart';
 import 'package:flick/admin_panel/blocs/dashboard/dashboard_state.dart';
+import 'package:flick/admin_panel/models/dashboard/DashboardData.dart';
 import 'package:flick/admin_panel/repositories/dashboard_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,9 +12,9 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     on<LoadDashboardData>((event, emit) async {
       emit(const DashboardLoading("Please wait! Loading Data"));
 
-      final dashboardRepositoryResponse = await dashboardRepository.getDashboardData();
+      DashboardData dashboardData = await dashboardRepository.getDashboardData();
 
-      emit(DashboardDataLoaded(dashboardRepositoryResponse));
+      emit(DashboardDataLoaded(dashboardData));
     });
   }
 

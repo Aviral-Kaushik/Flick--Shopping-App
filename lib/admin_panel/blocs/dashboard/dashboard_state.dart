@@ -1,4 +1,4 @@
-import 'package:flick/admin_panel/models/dashboard/DashboardRepositoryResponse.dart';
+import 'package:flick/admin_panel/models/dashboard/DashboardData.dart';
 
 abstract class DashboardState {
 
@@ -17,9 +17,9 @@ class DashboardLoading extends DashboardState {
 }
 
 class DashboardDataLoaded extends DashboardState {
-  final DashboardRepositoryResponse dashboardRepositoryResponse;
+  final DashboardData dashboardData;
 
-  const DashboardDataLoaded(this.dashboardRepositoryResponse);
+  const DashboardDataLoaded(this.dashboardData);
 }
 
 class DashboardError extends DashboardState {
