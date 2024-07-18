@@ -19,11 +19,11 @@ class Product {
   String productName;
   String productDescription;
   List<String> productImages;
-  int productRating;
+  double productRating;
   int productPrice;
   int totalPurchases;
   int stock;
-  int sellerName;
+  String sellerName;
   List<String> productFeatures;
 
 

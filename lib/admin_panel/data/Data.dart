@@ -63,7 +63,7 @@ List<TopSellersModel> topSellersData = [
   ),
   TopSellersModel(
     imageSrc: "assets/images/photo1.jpg",
-    name: "Lutfhi Chan",
+    name: "Avichal Kaushik",
     date: "Jan 25,2021",
   ),
 ];
@@ -624,5 +624,70 @@ int othersReferralsCountFromFirebase = 95;
 
 
 List<Product> getDummyProducts() {
-  return List.empty();
+  return [
+    Product(
+        id: "1",
+        productName: "Zoom Freak",
+        productDescription:
+            "The forward-thinking design of his latest signature shoe",
+        productImages: ["lib/images/zoom_freak.png"],
+        productRating: 4.5,
+        productPrice: 236,
+        totalPurchases: 415,
+        stock: 153,
+        sellerName: "Danar Comel",
+        productFeatures: [""]),
+
+    Product(
+        id: "2",
+        productName: "Air Jordan",
+        productDescription:
+            "You\'ve got the hops and the speed lace up that enhances.",
+        productImages: ["lib/images/air_jordan.png"],
+        productRating: 3,
+        productPrice: 220,
+        totalPurchases: 317,
+        stock: 217,
+        sellerName: "Lutfhi Chan",
+        productFeatures: [""]),
+
+    Product(
+        id: "3",
+        productName: "KD Treys",
+        productDescription:
+            "A secure midfoot strap is suited for scoring binges and defensive",
+        productImages: ["lib/images/kd_treys.png"],
+        productRating: 4,
+        productPrice: 240,
+        totalPurchases: 153,
+        stock: 57,
+        sellerName: "Devi Carlos",
+        productFeatures: [""]),
+
+    Product(
+        id: "4",
+        productName: "Kyrie 6",
+        productDescription:
+            "Bouncy cushioning is paired with soft yet supportive foam.",
+        productImages: ["lib/images/kyrie.jpeg"],
+        productRating: 3.5,
+        productPrice: 190,
+        totalPurchases: 267,
+        stock: 35,
+        sellerName: "Karin Lumina",
+        productFeatures: [""]),
+
+    Product(
+        id: "5",
+        productName: "Nike",
+        productDescription:
+            "Designed for comfortable wear for sports and street style, NIKE is always fun to wear. Upgrade in style with a wide range from the world’s leading and much-loved sports brand, NIKE.",
+        productImages: ["lib/images/nike.png"],
+        productRating: 4.5,
+        productPrice: 399,
+        totalPurchases: 357,
+        stock: 295,
+        sellerName: "Avichal Kaushik",
+        productFeatures: [""]),
+  ];
 }
