@@ -1,18 +1,18 @@
 import 'package:flick/admin_panel/components/drawerMenu/AdminDrawerMenu.dart';
-import 'package:flick/admin_panel/components/termsAndPrivacyScreen/TermsAndPrivacyScreenContent.dart';
+import 'package:flick/admin_panel/components/termsAndPrivacyAdminScreen/TermsAndPrivacyAdminScreenContent.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flutter/material.dart';
 
-class TermsAndPrivacyScreen extends StatefulWidget {
-  const TermsAndPrivacyScreen({super.key, this.showUIForPrivacyPolicy});
+class TermsAndPrivacyAdminScreen extends StatefulWidget {
+  const TermsAndPrivacyAdminScreen({super.key, this.showUIForPrivacyPolicy});
 
   final bool? showUIForPrivacyPolicy;
 
   @override
-  State<TermsAndPrivacyScreen> createState() => _TermsAndPrivacyState();
+  State<TermsAndPrivacyAdminScreen> createState() => _TermsAndPrivacyState();
 }
 
-class _TermsAndPrivacyState extends State<TermsAndPrivacyScreen> {
+class _TermsAndPrivacyState extends State<TermsAndPrivacyAdminScreen> {
   late bool showUiForPrivacyPolicy;
 
   @override
@@ -31,7 +31,7 @@ class _TermsAndPrivacyState extends State<TermsAndPrivacyScreen> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(child: TermsAndPrivacyScreenContent(showUIForPrivacyPolicy: showUiForPrivacyPolicy,))
+              Expanded(child: TermsAndPrivacyAdminScreenContent(showUIForPrivacyPolicy: showUiForPrivacyPolicy,))
             ],
           ),
         ),

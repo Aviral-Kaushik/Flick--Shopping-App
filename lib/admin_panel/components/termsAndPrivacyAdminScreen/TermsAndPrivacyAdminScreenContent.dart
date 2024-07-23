@@ -10,19 +10,19 @@ import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class TermsAndPrivacyScreenContent extends StatefulWidget {
-  const TermsAndPrivacyScreenContent(
+class TermsAndPrivacyAdminScreenContent extends StatefulWidget {
+  const TermsAndPrivacyAdminScreenContent(
       {super.key, required this.showUIForPrivacyPolicy});
 
   final bool showUIForPrivacyPolicy;
 
   @override
-  State<TermsAndPrivacyScreenContent> createState() =>
-      _TermsAndPrivacyScreenContentState();
+  State<TermsAndPrivacyAdminScreenContent> createState() =>
+      _TermsAndPrivacyAdminScreenContentState();
 }
 
-class _TermsAndPrivacyScreenContentState
-    extends State<TermsAndPrivacyScreenContent> {
+class _TermsAndPrivacyAdminScreenContentState
+    extends State<TermsAndPrivacyAdminScreenContent> {
 
   late DialogHelper dialogHelper;
   TextEditingController termsAndPrivacyController = TextEditingController();

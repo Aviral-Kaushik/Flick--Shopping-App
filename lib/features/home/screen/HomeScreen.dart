@@ -1,3 +1,4 @@
+import 'package:flick/components/UserAppBar.dart';
 import 'package:flick/components/UserAppDrawer.dart';
 import 'package:flick/components/UserBottomNavigation.dart';
 import 'package:flick/features/cart/screen/CartScreen.dart';
@@ -36,20 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onTabChanged: (index) => navigateBottomNavBar(index),
       ),
       body: _bottomNavPages[_bottomNavSelectedIndex],
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: Builder(
-            builder: (context) => IconButton(
-                  icon: const Padding(
-                    padding: EdgeInsets.only(left: 8.0),
-                    child: Icon(Icons.menu, color: Colors.black),
-                  ),
-                  onPressed: () {
-                    Scaffold.of(context).openDrawer();
-                  },
-                )),
-      ),
+      appBar: const UserAppBar(),
       drawer: const UserAppDrawer(),
     );
   }

@@ -43,6 +43,35 @@ class _UserAppDrawerState extends State<UserAppDrawer> {
               Padding(
                 padding: const EdgeInsets.only(left: 25.0),
                 child: ListTile(
+                  onTap: () =>
+                      Navigator.pushNamed(context, "/termsAndConditions"),
+                  leading: Icon(
+                    Icons.supervised_user_circle_outlined,
+                    color: whiteTextColor,
+                  ),
+                  title: Text(
+                    "Terms & Condition",
+                    style: TextStyle(color: whiteTextColor),
+                  ),
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.only(left: 25.0),
+                child: ListTile(
+                  onTap: () => Navigator.pushNamed(context, "/privacyPolicy"),
+                  leading:
+                      Icon(Icons.privacy_tip_outlined, color: whiteTextColor),
+                  title: Text(
+                    "Privacy Policy",
+                    style: TextStyle(color: whiteTextColor),
+                  ),
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.only(left: 25.0),
+                child: ListTile(
                   leading: Icon(Icons.info, color: whiteTextColor),
                   title: Text(
                     "About",

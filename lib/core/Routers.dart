@@ -3,12 +3,13 @@ import 'package:flick/admin_panel/features/adminSettings/AdminSettingsScreen.dar
 import 'package:flick/admin_panel/features/home/AdminPanelHomeScreen.dart';
 import 'package:flick/admin_panel/features/messages/MessagesScreen.dart';
 import 'package:flick/admin_panel/features/referral/ReferralsScreen.dart';
-import 'package:flick/admin_panel/features/termsAndPrivacy/TermsAndPrivacyScreeen.dart';
+import 'package:flick/admin_panel/features/termsAndPrivacy/TermsAndPrivacyAdminScreeen.dart';
 import 'package:flick/admin_panel/features/users/UsersListScreen.dart';
 import 'package:flick/features/cart/screen/CartScreen.dart';
 import 'package:flick/features/home/screen/HomeScreen.dart';
 import 'package:flick/features/intro/IntroScreen.dart';
 import 'package:flick/features/profile/screens/profile_home/ProfileHome.dart';
+import 'package:flick/features/terms_and_privacy/screens/terms_and_privacy_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -35,15 +36,21 @@ class Routers {
       case "/adminReferralsScreen":
         return MaterialPageRoute(builder: (_) => const ReferralsScreen());
       case "/adminTermsAndCondition":
-        return MaterialPageRoute(builder: (_) => const TermsAndPrivacyScreen());
+        return MaterialPageRoute(builder: (_) => const TermsAndPrivacyAdminScreen());
       case "/adminPrivacyPolicyScreen":
-        return MaterialPageRoute(builder: (_) => const TermsAndPrivacyScreen(showUIForPrivacyPolicy: true));
+        return MaterialPageRoute(builder: (_) => const TermsAndPrivacyAdminScreen(showUIForPrivacyPolicy: true));
       case "/adminUsersListScreen":
         return MaterialPageRoute(builder: (_) => const UsersListScreen());
       case "/adminMessagesScreen":
         return MaterialPageRoute(builder: (_) => const MessagesScreen());
       case "/adminSettingsScreen":
         return MaterialPageRoute(builder: (_) => const AdminSettingsScreen());
+      case "/termsAndConditions":
+        return MaterialPageRoute(builder: (_) => const TermsAndPrivacyScreen());
+      case "/privacyPolicy":
+        return MaterialPageRoute(
+            builder: (_) =>
+                const TermsAndPrivacyScreen(showUiForPrivacyPolicy: true));
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(
