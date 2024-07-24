@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
-Color? primaryColor = Colors.grey[300];
+Color? primaryColor = const Color(0xffFAF9F6);
 
 // Button Background Colors
 Color? darkGreyButtonBackground = Colors.grey[900];
 const btnYellowBackground = Color.fromRGBO(250, 225, 4, 1);
+Color? vanillaButtonColor = const Color(0xffF3E5AB);
 
 // Text Colors
 Color? subTitleTextColor = Colors.grey;

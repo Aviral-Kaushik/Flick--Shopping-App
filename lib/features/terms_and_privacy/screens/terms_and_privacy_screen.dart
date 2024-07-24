@@ -116,7 +116,7 @@ class _TermsAndPrivacyScreenState extends State<TermsAndPrivacyScreen> {
                       "Last Updated: ${getLastUpdatedDate()}",
                       style: const TextStyle(
                         color: textColor,
-                        fontSize: 14,
+                        fontSize: 18,
                         fontWeight: FontWeight.w600
                       ),
                     ),
@@ -128,7 +128,7 @@ class _TermsAndPrivacyScreenState extends State<TermsAndPrivacyScreen> {
                       style: const TextStyle(
                         color: textColor,
                         fontWeight: FontWeight.w400,
-                        fontSize: 12
+                        fontSize: 16
                       ),
                     )
                   ],
