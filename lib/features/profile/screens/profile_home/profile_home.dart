@@ -2,6 +2,7 @@ import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class ProfileHome extends StatefulWidget {
   const ProfileHome({super.key});
@@ -72,32 +73,65 @@ class _ProfileHomeState extends State<ProfileHome> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            profileButton("Your Orders"),
 
-            profileButton("Favorite")
+            SizedBox(
+              width: 150,
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: greenButtonColor,
+                    side: BorderSide.none,
+                    shape: const StadiumBorder()),
+                child: Text(
+                  "Your Orders",
+                  style: GoogleFonts.roboto(color: whiteTextColor),
+                  // style: TextStyle(color: whiteTextColor),
+                ),
+              ),
+            ),
+
+            SizedBox(
+              width: 150,
+              child: OutlinedButton(
+                onPressed: () {},
+                style: OutlinedButton.styleFrom(
+                    shape: StadiumBorder(side: BorderSide(
+                      color: greenButtonColor,
+                      width: 1.0
+                    ))),
+                child: Text(
+                  "Favorite",
+                  style: GoogleFonts.roboto(color: darkGreyButtonBackground),
+                ),
+              ),
+            ),
+
           ],
         )
     );
   }
-  
-  profileButton(String buttonTitle) {
-    return SizedBox(
-      width: 150,
-      child: ElevatedButton(
-          onPressed: () {},
-          style: ElevatedButton.styleFrom(
-              backgroundColor: vanillaButtonColor,
-              side: BorderSide.none,
-              shape: const StadiumBorder()),
-          child: Text(
-            buttonTitle,
-            style: TextStyle(color: darkGreyButtonBackground),
-          ),
-        ),
+
+  getProfileOptionsListLayout() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        profileMenuWidget("Upcoming Sales", LineAwesomeIcons.shopping_basket, () {}),
+
+        profileMenuWidget("Tell Your Friends", Icons.share, () {}),
+
+        profileMenuWidget("Settings", Icons.settings, () {}),
+
+        profileMenuWidget("Promotions", Icons.settings, () {}),
+
+        profileMenuWidget("Contact us", Icons.message_outlined, () {}),
+
+        profileMenuWidget("Sign out", Icons.logout, () {}),
+      ],
     );
   }
 
-  getProfileOptionsListLayout() {
+  profileMenuWidget(String title, IconData icon, Function() onPressed) {
 
   }
 
@@ -116,6 +150,10 @@ class _ProfileHomeState extends State<ProfileHome> {
               const SizedBox(height: appPadding * 2,),
 
               getCenterButtonsLayout(),
+
+              const SizedBox(height: appPadding * 2,),
+
+              getProfileOptionsListLayout(),
 
               const SizedBox(height: appPadding * 2,),
 

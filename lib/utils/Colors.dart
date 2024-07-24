@@ -48,3 +48,4 @@ const green = Color.fromRGBO(51, 173, 127, 1);
 const red = Colors.red;
 
 Color textFieldGreyBorder = const Color(0xffDFE5EE);
+Color greenButtonColor = const Color(0xff097969);
