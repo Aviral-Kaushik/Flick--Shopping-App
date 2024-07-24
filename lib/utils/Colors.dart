@@ -49,3 +49,4 @@ const red = Colors.red;
 
 Color textFieldGreyBorder = const Color(0xffDFE5EE);
 Color greenButtonColor = const Color(0xff097969);
+Color brightBlueColor = const Color(0xff0096FF);

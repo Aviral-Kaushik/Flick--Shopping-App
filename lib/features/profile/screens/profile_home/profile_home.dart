@@ -1,6 +1,7 @@
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
@@ -26,7 +27,7 @@ class _ProfileHomeState extends State<ProfileHome> {
             radius: 56,
             backgroundColor: adminPanelPrimaryColor,
             child: Padding(
-              padding: EdgeInsets.all(appPadding / 8),
+              padding: EdgeInsets.all(appPadding / 16),
               child: ClipOval(
                 child: Image(image: AssetImage("assets/images/photo8.jpg")),
               ),
@@ -37,6 +38,7 @@ class _ProfileHomeState extends State<ProfileHome> {
 
           Padding(
             padding: const EdgeInsets.only(top: appPadding),
+
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -69,6 +71,7 @@ class _ProfileHomeState extends State<ProfileHome> {
   getCenterButtonsLayout() {
     return Padding(
         padding: const EdgeInsets.only(top: appPadding, left: appPadding / 2),
+
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,10 +81,12 @@ class _ProfileHomeState extends State<ProfileHome> {
               width: 150,
               child: ElevatedButton(
                 onPressed: () {},
+
                 style: ElevatedButton.styleFrom(
                     backgroundColor: greenButtonColor,
                     side: BorderSide.none,
                     shape: const StadiumBorder()),
+
                 child: Text(
                   "Your Orders",
                   style: GoogleFonts.roboto(color: whiteTextColor),
@@ -94,11 +99,13 @@ class _ProfileHomeState extends State<ProfileHome> {
               width: 150,
               child: OutlinedButton(
                 onPressed: () {},
+
                 style: OutlinedButton.styleFrom(
                     shape: StadiumBorder(side: BorderSide(
                       color: greenButtonColor,
                       width: 1.0
                     ))),
+
                 child: Text(
                   "Favorite",
                   style: GoogleFonts.roboto(color: darkGreyButtonBackground),
@@ -112,27 +119,86 @@ class _ProfileHomeState extends State<ProfileHome> {
   }
 
   getProfileOptionsListLayout() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        profileMenuWidget("Upcoming Sales", LineAwesomeIcons.shopping_basket, () {}),
+    return Padding(
+      padding: const EdgeInsets.only(top: appPadding, left: appPadding / 2),
 
-        profileMenuWidget("Tell Your Friends", Icons.share, () {}),
+      child: Column(
 
-        profileMenuWidget("Settings", Icons.settings, () {}),
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
 
-        profileMenuWidget("Promotions", Icons.settings, () {}),
+          profileMenuWidget(
+              "Upcoming Sales", LineAwesomeIcons.shopping_basket, false, "", () {}),
 
-        profileMenuWidget("Contact us", Icons.message_outlined, () {}),
+          const SizedBox(
+            height: 4.0,
+          ),
 
-        profileMenuWidget("Sign out", Icons.logout, () {}),
-      ],
+          profileMenuWidget("Tell Your Friends", LineAwesomeIcons.share_square, false, "", () {}),
+
+          const SizedBox(
+            height: 4.0,
+          ),
+
+          profileMenuWidget("Settings", Icons.settings_outlined, false, "", () {}),
+
+          const SizedBox(
+            height: 4.0,
+          ),
+
+          profileMenuWidget("Promotions", LineAwesomeIcons.product_hunt, true, "assets/icons/Announcement.svg", () {}),
+
+          const SizedBox(
+            height: 4.0,
+          ),
+
+          profileMenuWidget("Contact us", Icons.message_outlined, false, "", () {}),
+
+          const SizedBox(
+            height: 4.0,
+          ),
+
+          profileMenuWidget("Sign out", LineAwesomeIcons.alternate_sign_out, false, "", () {}),
+        ],
+      ),
     );
   }
 
-  profileMenuWidget(String title, IconData icon, Function() onPressed) {
+  profileMenuWidget(String title, IconData icon, bool showAssetIcon, String iconAssetPath, Function() onPressed) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Padding(
+        padding: const EdgeInsets.only(top: appPadding, left: appPadding),
 
+        child: Row(
+          children: [
+
+            showAssetIcon ? SvgPicture.asset(
+              iconAssetPath,
+              color: adminPanelPrimaryColor,
+              height: 30,
+            ) : Icon(
+              icon,
+              size: 30,
+              color: brightBlueColor,
+            ),
+
+            const SizedBox(
+              width: appPadding * 2,
+            ),
+
+            Text(
+              title,
+              style: GoogleFonts.lato(
+                  color: blackColor,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -142,6 +208,7 @@ class _ProfileHomeState extends State<ProfileHome> {
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(16),
+
           child: Column(
             children: [
 
@@ -151,11 +218,11 @@ class _ProfileHomeState extends State<ProfileHome> {
 
               getCenterButtonsLayout(),
 
-              const SizedBox(height: appPadding * 2,),
+              const SizedBox(height: appPadding,),
 
               getProfileOptionsListLayout(),
 
-              const SizedBox(height: appPadding * 2,),
+              // const SizedBox(height: appPadding * 2,),
 
             ]
           )
