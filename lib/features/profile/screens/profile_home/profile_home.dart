@@ -68,7 +68,7 @@ class _ProfileHomeState extends State<ProfileHome> {
     );
   }
 
-  getCenterButtonsLayout() {
+  profileCenterButtonsLayout() {
     return Padding(
         padding: const EdgeInsets.only(top: appPadding, left: appPadding / 2),
 
@@ -118,7 +118,7 @@ class _ProfileHomeState extends State<ProfileHome> {
     );
   }
 
-  getProfileOptionsListLayout() {
+  profileMenuOptionsListLayout() {
     return Padding(
       padding: const EdgeInsets.only(top: appPadding, left: appPadding / 2),
 
@@ -135,31 +135,39 @@ class _ProfileHomeState extends State<ProfileHome> {
             height: 4.0,
           ),
 
-          profileMenuWidget("Tell Your Friends", LineAwesomeIcons.share_square, false, "", () {}),
+          profileMenuWidget("Tell Your Friends", LineAwesomeIcons.share_square,
+              false, "", () {}),
 
           const SizedBox(
             height: 4.0,
           ),
 
-          profileMenuWidget("Settings", Icons.settings_outlined, false, "", () {}),
+          profileMenuWidget(
+              "Settings", Icons.settings_outlined, false, "", () {
+                Navigator.pushNamed(context, "/settingsScreen");
+          }),
 
           const SizedBox(
             height: 4.0,
           ),
 
-          profileMenuWidget("Promotions", LineAwesomeIcons.product_hunt, true, "assets/icons/Announcement.svg", () {}),
+          profileMenuWidget("Promotions", LineAwesomeIcons.product_hunt, true,
+              "assets/icons/Announcement.svg", () {}),
 
           const SizedBox(
             height: 4.0,
           ),
 
-          profileMenuWidget("Contact us", Icons.message_outlined, false, "", () {}),
+          profileMenuWidget("Contact us", Icons.message_outlined, true,
+              "assets/icons/ContactUs.svg", () {}),
 
           const SizedBox(
             height: 4.0,
           ),
 
-          profileMenuWidget("Sign out", LineAwesomeIcons.alternate_sign_out, false, "", () {}),
+          profileMenuWidget("Sign out", LineAwesomeIcons.alternate_sign_out,
+              false, "", () {}),
+
         ],
       ),
     );
@@ -216,13 +224,11 @@ class _ProfileHomeState extends State<ProfileHome> {
 
               const SizedBox(height: appPadding * 2,),
 
-              getCenterButtonsLayout(),
+              profileCenterButtonsLayout(),
 
               const SizedBox(height: appPadding,),
 
-              getProfileOptionsListLayout(),
-
-              // const SizedBox(height: appPadding * 2,),
+              profileMenuOptionsListLayout(),
 
             ]
           )
