@@ -1,6 +1,5 @@
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -25,43 +24,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
 
-          // Row(
-          //   children: [
-          //     const Icon(
-          //       Icons.account_box_rounded,
-          //       color: adminPanelPrimaryColor,
-          //       size: 30,
-          //     ),
-          //
-          //     const SizedBox(width: appPadding,),
-          //
-          //     Text(
-          //       "Account",
-          //         style: GoogleFonts.poppins(
-          //             color: adminPanelPrimaryColor,
-          //             fontSize: 22,
-          //             fontWeight: FontWeight.w500)
-          //     )
-          //   ],
-          // ),
-
           settingsOptionTitle(Icons.account_box_rounded, "Account"),
 
           const SizedBox(height: appPadding,),
 
-          settingOptionText("Edit Profile", () => null, false),
+          settingsOptionListTile("Edit Profile", () => null, false),
 
           const SizedBox(height: appPadding,),
 
-          settingOptionText("Your Addresses", () => null, false),
+          settingsOptionListTile("Your Addresses", () => null, false),
 
           const SizedBox(height: appPadding,),
 
-          settingOptionText("Change Password", () => null, false),
+          settingsOptionListTile("Change Password", () => null, false),
 
           const SizedBox(height: appPadding,),
 
-          settingOptionText("Privacy", () => null, false),
+          settingsOptionListTile("Privacy", () => null, false),
 
         ],
       ),
@@ -81,7 +60,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           const SizedBox(height: appPadding,),
 
-          settingOptionText("Notification", () {
+          settingsOptionListTile("Notification", () {
             setState(() {
               notificationSwitchSelected = !notificationSwitchSelected;
             });
@@ -89,7 +68,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           const SizedBox(height: appPadding,),
 
-          settingOptionText("Updates on mail", () {
+          settingsOptionListTile("Updates on mail", () {
             setState(() {
               updatesOnMailSwitchSelected = !updatesOnMailSwitchSelected;
             });
@@ -100,10 +79,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   othersSettingsOptionsListLayout() {
-    return Column();
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: appPadding * 2),
+
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+
+          settingsOptionTitle(Icons.miscellaneous_services_sharp, "Others"),
+
+          const SizedBox(height: appPadding,),
+
+          settingsOptionListTileWith2Titles("Language", "English"),
+
+          const SizedBox(height: appPadding,),
+
+          settingsOptionListTileWith2Titles("Region", "India"),
+        ],
+      ),
+    );
   }
 
-  settingOptionText(String optionTitle, Function()? onPressed, bool showSwitch) {
+  settingsOptionListTile(
+      String optionTitle, Function()? onPressed, bool showSwitch) {
     bool selected;
     if (optionTitle == "Notification") {
       selected = notificationSwitchSelected;
@@ -144,6 +143,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 borderRadius: 30.0,
                 padding: 4.0,
                 showOnOff: false,
+                activeSwitchBorder: Border.all(color: Colors.grey.withOpacity(0.9), width: 1.0),
+                inactiveSwitchBorder: Border.all(color: Colors.grey.withOpacity(0.9), width: 1.0),
                 onToggle: (val) {
                   onPressed!();
                 },
@@ -172,6 +173,36 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 fontSize: 22,
                 fontWeight: FontWeight.w500)
         )
+      ],
+    );
+  }
+
+  settingsOptionListTileWith2Titles(String primaryText, String secondaryText) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+
+        settingsOptionListTile(primaryText, () => null, false),
+
+        Container(
+          width: 90,
+          padding: const EdgeInsets.symmetric(horizontal: appPadding, vertical: appPadding / 4),
+          decoration: BoxDecoration(
+            color: Colors.grey.withOpacity(0.2),
+            border: Border.all(color: Colors.grey.withOpacity(0.9), width: 1.0)
+          ),
+          child: Center(
+            child: Text(
+              secondaryText,
+              style: GoogleFonts.poppins(
+                color: Colors.grey.withOpacity(0.9),
+                fontSize: 14
+              ),
+            ),
+          ),
+        )
+
       ],
     );
   }
@@ -234,11 +265,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
               accountSettingsOptionsListLayout(),
 
               const SizedBox(
-                height: appPadding * 2,
+                height: appPadding * 2.5,
               ),
 
               // Notification Settings Options
               notificationSettingsOptionsListLayout(),
+
+              const SizedBox(
+                height: appPadding * 2.5,
+              ),
 
               // Others Settings Options
               othersSettingsOptionsListLayout()
