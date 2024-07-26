@@ -135,9 +135,11 @@ class _ProfileHomeState extends State<ProfileHome> {
             height: 4.0,
           ),
 
-          profileMenuWidget("Tell Your Friends", LineAwesomeIcons.share_square,
-              false, "", () {}),
-
+          profileMenuWidget(
+              "Tell Your Friends", LineAwesomeIcons.share_square, false, "",
+              () {
+                Navigator.pushNamed(context, "/referralScreen");
+          }),
           const SizedBox(
             height: 4.0,
           ),

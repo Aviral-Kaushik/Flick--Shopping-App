@@ -1,3 +1,4 @@
+import 'package:flick/components/small_profile_photo.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
@@ -221,27 +222,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             children: [
 
               // Profile Photo
-              const Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: appPadding * 2),
-                    child: CircleAvatar(
-                      radius: 20,
-                      backgroundColor: adminPanelPrimaryColor,
-                      child: Padding(
-                        padding: EdgeInsets.all(0.5),
-                        child: ClipOval(
-                          child: Image(
-                              image: AssetImage("assets/images/photo8.jpg"),
-                              width: 40,
-                              height: 40
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              const SmallProfilePhoto(
+                  profilePhotoPath: "assets/images/photo8.jpg"),
 
               const SizedBox(
                 height: appPadding * 2,

@@ -3,7 +3,6 @@ import 'package:flick/admin_panel/blocs/referrals/referrals_event.dart';
 import 'package:flick/admin_panel/blocs/referrals/referrals_state.dart';
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/admin_panel/components/widgets/DetailsChipCard.dart';
-import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/admin_panel/models/ReferralInfoModel.dart';
 import 'package:flick/helper/DialogHelper.dart';
 import 'package:flick/locator.dart';
@@ -12,14 +11,14 @@ import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ReferralsScreenContent extends StatefulWidget {
-  const ReferralsScreenContent({super.key});
+class AdminReferralsScreenContent extends StatefulWidget {
+  const AdminReferralsScreenContent({super.key});
 
   @override
-  State<ReferralsScreenContent> createState() => _ReferralsScreenContentState();
+  State<AdminReferralsScreenContent> createState() => _AdminReferralsScreenContentState();
 }
 
-class _ReferralsScreenContentState extends State<ReferralsScreenContent> {
+class _AdminReferralsScreenContentState extends State<AdminReferralsScreenContent> {
 
   final ReferralsBloc referralsBloc = locator.get<ReferralsBloc>();
 
