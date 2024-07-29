@@ -13,3 +13,14 @@ class UpdateReferralMessage extends ReferralsEvent {
 
   const UpdateReferralMessage(this.referralMessage);
 }
+
+class FetchReferralMessage extends ReferralsEvent {
+
+  const FetchReferralMessage();
+}
+
+class IncrementReferralCount extends ReferralsEvent {
+  final String referralType;
+
+  const IncrementReferralCount(this.referralType);
+}

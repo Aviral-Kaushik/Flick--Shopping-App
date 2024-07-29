@@ -32,6 +32,18 @@ class ReferralsBloc extends Bloc<ReferralsEvent, ReferralsState> {
       emit(const ReferralsMessageUpdatedSuccessfully());
 
     });
+
+    on<FetchReferralMessage>((event, emit) async {
+      emit(const ReferralsLoading("Please Wait!"));
+
+      final referralData = await referralsRepository.fetchReferralData();
+
+      emit(ReferralMessageFetched(referralData.referralMessage));
+    });
+
+    on<IncrementReferralCount>((event, emit) async {
+      referralsRepository.incrementReferralCount(event.referralType);
+    });
   }
 
 }

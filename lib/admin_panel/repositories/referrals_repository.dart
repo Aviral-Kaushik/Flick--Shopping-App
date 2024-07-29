@@ -34,4 +34,8 @@ class ReferralsRepository {
     return referralMessageUpdateResponse;
   }
 
+  void incrementReferralCount(String referralType) async {
+    await firebaseServices.incrementReferralsCount(referralType);
+  }
+
 }

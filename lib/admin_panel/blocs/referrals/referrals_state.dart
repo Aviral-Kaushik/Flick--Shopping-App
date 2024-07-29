@@ -32,3 +32,9 @@ class ReferralsMessageUpdatedSuccessfully extends ReferralsState {
   const ReferralsMessageUpdatedSuccessfully();
 }
 
+class ReferralMessageFetched extends ReferralsState {
+  final String referralMessage;
+
+  const ReferralMessageFetched(this.referralMessage);
+}
+

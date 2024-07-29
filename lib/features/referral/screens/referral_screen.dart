@@ -1,7 +1,13 @@
+import 'package:flick/admin_panel/blocs/referrals/referrals_bloc.dart';
+import 'package:flick/admin_panel/blocs/referrals/referrals_event.dart';
+import 'package:flick/admin_panel/blocs/referrals/referrals_state.dart';
 import 'package:flick/components/small_profile_photo.dart';
+import 'package:flick/helper/DialogHelper.dart';
+import 'package:flick/locator.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ReferralScreen extends StatefulWidget {
@@ -12,6 +18,23 @@ class ReferralScreen extends StatefulWidget {
 }
 
 class _ReferralScreenState extends State<ReferralScreen> {
+
+  ReferralsBloc referralsBloc = locator.get<ReferralsBloc>();
+
+  late final DialogHelper dialogHelper;
+
+  bool isAnyDialogShowing = false;
+
+  String referralMessage = "";
+
+  @override
+  initState() {
+    super.initState();
+
+    referralsBloc.add(const FetchReferralMessage());
+
+    dialogHelper = DialogHelper(context);
+  }
 
   referralScreenHeaderWidget() {
     return Row(
@@ -72,16 +95,21 @@ class _ReferralScreenState extends State<ReferralScreen> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
 
-        shareAppIconWidget(
-            "assets/images/referrals_apps/facebook.png"),
+        shareAppIconWidget("assets/images/referrals_apps/facebook.png", () {
+          referralsBloc.add(const IncrementReferralCount("facebook"));
+        }),
 
-        shareAppIconWidget("assets/images/referrals_apps/x.png"),
+        shareAppIconWidget("assets/images/referrals_apps/x.png", () {
+          referralsBloc.add(const IncrementReferralCount("twitter"));
+        }),
 
-        shareAppIconWidget(
-            "assets/images/referrals_apps/linkedin.png"),
+        shareAppIconWidget("assets/images/referrals_apps/linkedin.png", () {
+          referralsBloc.add(const IncrementReferralCount("linkedin"));
+        }),
 
-        shareAppIconWidget("assets/images/referrals_apps/others.png"),
-
+        shareAppIconWidget("assets/images/referrals_apps/others.png", () {
+          referralsBloc.add(const IncrementReferralCount("others"));
+        }),
       ],
     );
   }
@@ -153,7 +181,9 @@ class _ReferralScreenState extends State<ReferralScreen> {
                 SizedBox(
                   width: 200,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      referralsBloc.add(const IncrementReferralCount("others"));
+                    },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: greenButtonColor,
                         side: BorderSide.none,
@@ -173,46 +203,91 @@ class _ReferralScreenState extends State<ReferralScreen> {
     );
   }
 
-  shareAppIconWidget(String appIconPath) {
-    return Image.asset(
-      appIconPath,
-      width: 30,
-      height: 30,
+  shareAppIconWidget(String appIconPath, Function() onPressed) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Image.asset(
+        appIconPath,
+        width: 30,
+        height: 30,
+      ),
     );
+  }
+
+  showProgressDialog(String message) {
+    isAnyDialogShowing = true;
+    dialogHelper.showProgressDialog(message, () {
+      isAnyDialogShowing = false;
+    });
+  }
+
+  showErrorDialog(String message) {
+    isAnyDialogShowing = true;
+    dialogHelper.showSuccessfulOrErrorDialog("Oops!", message, "Okay", true,
+        () {
+      isAnyDialogShowing = false;
+    });
+  }
+
+  dismissDialog() {
+    if (isAnyDialogShowing) {
+      Navigator.pop(context);
+      isAnyDialogShowing = false;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: primaryColor,
+    return BlocProvider<ReferralsBloc>(
+      create: (_) => referralsBloc,
+      child: BlocListener<ReferralsBloc, ReferralsState>(
+        listener: (context, state) {
 
-        body: Padding(
-          padding: const EdgeInsets.symmetric(vertical: appPadding),
+          if (state is ReferralsLoading) {
+            showProgressDialog(state.progressMessage);
+          }
 
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
+          if (state is ReferralMessageFetched) {
+            dismissDialog();
+            referralMessage = state.referralMessage;
+          }
 
-              referralScreenHeaderWidget(),
+          if (state is ReferralError) {
+            showErrorDialog(state.errorMessage);
+          }
+        },
+        child: SafeArea(
+          child: Scaffold(
+            backgroundColor: primaryColor,
 
-              const SizedBox(height: appPadding * 2,),
+            body: Padding(
+              padding: const EdgeInsets.symmetric(vertical: appPadding),
 
-              referralScreenTitleAndSubTitleWidget(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
 
-              const SizedBox(height: appPadding * 13,),
+                  referralScreenHeaderWidget(),
 
-              referAppsWidget(),
+                  const SizedBox(height: appPadding * 2,),
 
-              const SizedBox(height: appPadding,),
+                  referralScreenTitleAndSubTitleWidget(),
 
-              orDividerWidget(),
+                  const SizedBox(height: appPadding * 13,),
 
-              const SizedBox(height: appPadding,),
+                  referAppsWidget(),
 
-              copyLinkWidget(),
-            ],
+                  const SizedBox(height: appPadding,),
+
+                  orDividerWidget(),
+
+                  const SizedBox(height: appPadding,),
+
+                  copyLinkWidget(),
+                ],
+              ),
+            ),
           ),
         ),
       ),
