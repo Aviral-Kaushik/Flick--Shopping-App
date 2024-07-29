@@ -34,10 +34,11 @@ class Converter {
         color: adminPanelPrimaryColor,
       ),
       ReferralInfoModel(
-        title: "Twitter",
+        title: "X",
         count: referralData.twitterReferralsCount,
-        svgSrc: "assets/icons/Twitter.svg",
-        color: adminPanelPrimaryColor,
+        svgSrc: "assets/images/referrals_apps/x.png",
+        color: blackColor,
+        hasSvgIcon: false
       ),
       ReferralInfoModel(
         title: "Linkedin",
@@ -46,7 +47,7 @@ class Converter {
         color: adminPanelPrimaryColor,
       ),
       ReferralInfoModel(
-        title: "Dribble",
+        title: "Others",
         count: referralData.otherReferralsCount,
         svgSrc: "assets/icons/Dribbble.svg",
         color: red,

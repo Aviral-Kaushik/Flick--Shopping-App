@@ -120,8 +120,14 @@ class DetailsChipLayout extends StatelessWidget {
                 decoration: BoxDecoration(
                     color: hasReferralData ? referralModel?.color?.withOpacity(0.1) : detailsCardModel?.color?.withOpacity(0.1),
                     shape: BoxShape.circle),
-                child: SvgPicture.asset(
-                  hasReferralData ? referralModel!.svgSrc! : detailsCardModel!.svgSrc!,
+                child: (hasReferralData && !referralModel!.hasSvgIcon)
+                    ? Image.asset(
+                        referralModel!.svgSrc!,
+                        height: 44,
+                        width: 41,
+                      )
+                    : SvgPicture.asset(
+                        hasReferralData ? referralModel!.svgSrc! : detailsCardModel!.svgSrc!,
                   color: hasReferralData? referralModel?.color : detailsCardModel?.color,
                 ),
               )
