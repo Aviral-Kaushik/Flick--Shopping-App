@@ -160,8 +160,10 @@ class _ProfileHomeState extends State<ProfileHome> {
             height: 4.0,
           ),
 
-          profileMenuWidget("Contact us", Icons.message_outlined, true,
-              "assets/icons/ContactUs.svg", () {}),
+          profileMenuWidget("Get In Touch", Icons.message_outlined, true,
+              "assets/icons/ContactUs.svg", () {
+                Navigator.pushNamed(context, "/contactUs");
+              }),
 
           const SizedBox(
             height: 4.0,
