@@ -13,18 +13,24 @@ class SendReplyEmail extends MessagesEvent {
   final String replyMessage;
   final String messageSubject;
 
-  SendReplyEmail(this.userEmail, this.replyMessage, this.messageSubject);
+  const SendReplyEmail(this.userEmail, this.replyMessage, this.messageSubject);
 }
 
 class DeleteMessage extends MessagesEvent {
   final Message message;
 
-  DeleteMessage(this.message);
+  const DeleteMessage(this.message);
 }
 
 class FilterMessages extends MessagesEvent {
   final String query;
 
-  FilterMessages(this.query);
+  const FilterMessages(this.query);
+}
+
+class CreateNewMessage extends MessagesEvent {
+  final Message message;
+
+  const CreateNewMessage(this.message);
 }
 

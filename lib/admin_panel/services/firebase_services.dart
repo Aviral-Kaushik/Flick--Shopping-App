@@ -221,6 +221,16 @@ class FirebaseServices {
     return Tuple2(hasErrorOccurred, errorMessage);
   }
 
+  void createNewMessage(Message message) async {
+
+      DocumentReference documentReference =
+      database.collection(messagesCollection).doc();
+      message.id = documentReference.id;
+
+      await documentReference.set(message.toFirestore());
+
+  }
+
   Future<List<User>> fetchAllAdmins() async {
     List<User> admins = [];
     QuerySnapshot<Map<String, dynamic>> snapshot =

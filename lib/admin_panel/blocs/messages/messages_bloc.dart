@@ -1,7 +1,6 @@
 import 'package:flick/admin_panel/blocs/messages/messages_event.dart';
 import 'package:flick/admin_panel/blocs/messages/messages_state.dart';
 import 'package:flick/admin_panel/repositories/messages_repository.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MessagesBloc extends Bloc<MessagesEvent, MessagesState> {
@@ -11,7 +10,7 @@ class MessagesBloc extends Bloc<MessagesEvent, MessagesState> {
   MessagesBloc(this.messageRepository) : super(MessageInitial()) {
     on<FetchAllMessages>((event, emit) async {
 
-      emit(MessageLoading("Fetching messages! Please wait"));
+      emit(const MessageLoading("Fetching messages! Please wait"));
 
       final messages = await messageRepository.fetchAllMessages();
 
@@ -21,7 +20,7 @@ class MessagesBloc extends Bloc<MessagesEvent, MessagesState> {
 
     on<SendReplyEmail>((event, emit) async {
 
-      emit(MessageLoading("Sending Reply! Please wait"));
+      emit(const MessageLoading("Sending Reply! Please wait"));
 
       final isReplySentSuccessfully = await messageRepository.sendReplyEmail(
         event.userEmail,
@@ -32,13 +31,13 @@ class MessagesBloc extends Bloc<MessagesEvent, MessagesState> {
       if (isReplySentSuccessfully) {
         emit(ReplyEmailSentSuccessfully());
       } else {
-        emit(MessageError("Failure sending reply email", false));
+        emit(const MessageError("Failure sending reply email", false));
       }
 
     });
 
     on<FilterMessages>((event, emit) async {
-      emit(MessageLoading("Searching...."));
+      emit(const MessageLoading("Searching...."));
 
       final filteredMessages =
           await messageRepository.filterMessages(event.query);
@@ -47,7 +46,7 @@ class MessagesBloc extends Bloc<MessagesEvent, MessagesState> {
     });
 
     on<DeleteMessage>((event, emit) async {
-      emit(MessageLoading("Deleting Message! Please Wait"));
+      emit(const MessageLoading("Deleting Message! Please Wait"));
 
       final messageDeletedResponse =
             await messageRepository.deleteMessage(event.message);
@@ -57,6 +56,14 @@ class MessagesBloc extends Bloc<MessagesEvent, MessagesState> {
       } else {
         emit(MessageDeletedSuccessfully());
       }
+    });
+
+    on<CreateNewMessage>((event, emit) async {
+      emit(const MessageLoading("Please Wait! Sending Message"));
+
+      messageRepository.createNewMessage(event.message);
+
+      emit(MessageCreatedSuccessfully());
     });
   }
 

@@ -68,4 +68,7 @@ class MessageRepository {
     return filteredMessages;
   }
 
+  void createNewMessage(Message message) async =>
+      firebaseServices.createNewMessage(message);
+
 }

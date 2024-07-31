@@ -11,13 +11,13 @@ class MessageInitial extends MessagesState {
 class MessageLoading extends MessagesState {
     final String progressDisplayMessage;
 
-    MessageLoading(this.progressDisplayMessage);
+    const MessageLoading(this.progressDisplayMessage);
 }
 
 class MessageFetched extends MessagesState {
   final List<Message> messages;
 
-  MessageFetched(this.messages);
+  const MessageFetched(this.messages);
 }
 
 class MessageError extends MessagesState {
@@ -26,7 +26,8 @@ class MessageError extends MessagesState {
   // messages or sending reply mail.
   final bool isErrorOccurredDuringFetchingMessages;
 
-  MessageError(this.errorMessage, this.isErrorOccurredDuringFetchingMessages);
+  const MessageError(
+      this.errorMessage, this.isErrorOccurredDuringFetchingMessages);
 }
 
 class ReplyEmailSentSuccessfully extends MessagesState {
@@ -34,6 +35,10 @@ class ReplyEmailSentSuccessfully extends MessagesState {
 }
 
 class MessageDeletedSuccessfully extends MessagesState {
+
+}
+
+class MessageCreatedSuccessfully extends MessagesState {
 
 }
 
