@@ -164,8 +164,9 @@ class _ContactUsState extends State<ContactUs> {
           if (messageTextController.text.length >= 15) {
             subject = messageTextController.text.substring(0, 15);
           } else {
-          }            subject = messageTextController.text
-              .substring(0, messageTextController.text.length);
+            subject = messageTextController.text
+                .substring(0, messageTextController.text.length);
+          }
 
 
           messagesBloc.add(CreateNewMessage(Message(
