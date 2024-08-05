@@ -107,7 +107,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                     ))),
 
                 child: Text(
-                  "Favorite",
+                  "Favourite",
                   style: GoogleFonts.roboto(color: darkGreyButtonBackground),
                 ),
               ),
@@ -129,7 +129,10 @@ class _ProfileHomeState extends State<ProfileHome> {
         children: [
 
           profileMenuWidget(
-              "Upcoming Sales", LineAwesomeIcons.shopping_basket, false, "", () {}),
+              "Upcoming Sales", LineAwesomeIcons.shopping_basket, false, "",
+              () {
+            Navigator.pushNamed(context, "/loginScreen");
+          }),
 
           const SizedBox(
             height: 4.0,

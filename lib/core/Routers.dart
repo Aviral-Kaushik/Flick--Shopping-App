@@ -5,6 +5,7 @@ import 'package:flick/admin_panel/features/messages/MessagesScreen.dart';
 import 'package:flick/admin_panel/features/referral/admin_referral_screen.dart';
 import 'package:flick/admin_panel/features/termsAndPrivacy/TermsAndPrivacyAdminScreeen.dart';
 import 'package:flick/admin_panel/features/users/UsersListScreen.dart';
+import 'package:flick/features/auth/screens/login_screen.dart';
 import 'package:flick/features/cart/screen/CartScreen.dart';
 import 'package:flick/features/contact_us/screens/contact_us.dart';
 import 'package:flick/features/home/screen/HomeScreen.dart';
@@ -60,6 +61,8 @@ class Routers {
         return MaterialPageRoute(builder: (_) => const ReferralScreen());
       case "/contactUs":
         return MaterialPageRoute(builder: (_) => const ContactUs());
+      case "/loginScreen":
+        return MaterialPageRoute(builder: (_) => const LoginScreen());
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(
