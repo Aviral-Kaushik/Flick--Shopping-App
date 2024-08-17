@@ -1,3 +1,6 @@
+import 'package:flick/features/auth/widgets/auth_divider.dart';
+import 'package:flick/features/auth/widgets/auth_text_field.dart';
+import 'package:flick/features/auth/widgets/google_sign_in_button.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,6 +20,88 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  backButtonWidget() {
+    return Container(
+      padding: const EdgeInsets.all(appPadding / 2),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(appPadding / 2),
+          border: Border.all(color: Colors.black.withOpacity(0.7))
+      ),
+      child: Icon(
+        Icons.arrow_back_ios_new,
+        size: 20,
+        color: blackColor,
+      ),
+    );
+  }
+
+  forgotPasswordTextWidget() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+
+        Text(
+          "Forgot Password?",
+          style: GoogleFonts.poppins(
+              fontSize: 14,
+              color: blackColor!.withOpacity(0.9)
+          ),
+        ),
+
+      ],
+    );
+  }
+
+  loginButtonWidget() {
+    return GestureDetector(
+      onTap: () {
+        // TODO Implement login here
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: appPadding),
+        decoration: BoxDecoration(
+            color: blackColor,
+            borderRadius: BorderRadius.circular(appPadding / 2)
+        ),
+        child: Center(
+          child: Text(
+              "Login",
+              style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  color: whiteColor,
+                  fontWeight: FontWeight.w400
+              )
+          ),
+        ),
+      ),
+    );
+  }
+
+  doNotHaveAccountWidget() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          "Don't have an account? ",
+          style: GoogleFonts.poppins(
+            color: blackColor,
+            fontSize: 14,
+          ),
+        ),
+
+        Text(
+          " Register Now",
+          style: GoogleFonts.poppins(
+            color: const Color(0xFF00FFFF),
+            fontSize: 14,
+          ),
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -29,18 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
 
-                Container(
-                  padding: const EdgeInsets.all(appPadding / 2),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(appPadding / 2),
-                    border: Border.all(color: Colors.black.withOpacity(0.7))
-                  ),
-                  child: Icon(
-                    Icons.arrow_back_ios_new,
-                    size: 20,
-                    color: blackColor,
-                  ),
-                ),
+                backButtonWidget(),
 
                 const SizedBox(height: appPadding * 2,),
 
@@ -55,187 +129,41 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 const SizedBox(height: appPadding * 3,),
 
-                TextField(
-                  decoration: InputDecoration(
+                AuthTextField(
                     labelText: "Enter your email",
-                    alignLabelWithHint: true,
-                    labelStyle: GoogleFonts.poppins(
-                        fontSize: 14,
-                        color: const Color(0xFFA6A6A6)
-                    ),
+                    isPasswordField: false,
+                    onTextChanged: (String currentEmail) {
 
-                    contentPadding: const EdgeInsets.all(appPadding),
-                    fillColor: const Color(0x33E5E4E2),
-                    filled: true,
-
-                    border: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Color(0xFFF1F1F1), width: 1.0),
-                      borderRadius: BorderRadius.circular(appPadding / 2),
-                    ),
-
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Color(0xFFA6A6A6), width: 1.0),
-                      borderRadius: BorderRadius.circular(appPadding / 2),
-                    ),
-                  ),
-                  controller: emailController,
-                  textCapitalization: TextCapitalization.words,
-                ),
+                    },
+                    textEditingController: emailController),
 
                 const SizedBox(height: appPadding * 1.5,),
 
-                TextField(
-                  decoration: InputDecoration(
+                AuthTextField(
                     labelText: "Enter your password",
-                    alignLabelWithHint: true,
-                    labelStyle: GoogleFonts.poppins(
-                        fontSize: 14,
-                        color: const Color(0xFFA6A6A6)
-                    ),
-
-                    contentPadding: const EdgeInsets.all(appPadding),
-                    fillColor: const Color(0x33E5E4E2),
-                    filled: true,
-
-                    border: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Color(0xFFF1F1F1), width: 1.0),
-                      borderRadius: BorderRadius.circular(appPadding / 2),
-                    ),
-
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Color(0xFFA6A6A6), width: 1.0),
-                      borderRadius: BorderRadius.circular(appPadding / 2),
-                    ),
-                  ),
-                  controller: passwordController,
-                  obscureText: true,
-                  enableSuggestions: false,
-                  autocorrect: false,
-                ),
+                    isPasswordField: true,
+                    onTextChanged: (String currentPassword) {},
+                    textEditingController: passwordController),
 
                 const SizedBox(height: appPadding,),
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-
-                    Text(
-                      "Forgot Password?",
-                      style: GoogleFonts.poppins(
-                        fontSize: 14,
-                        color: blackColor!.withOpacity(0.9)
-                      ),
-                    ),
-
-                  ],
-                ),
+                forgotPasswordTextWidget(),
 
                 const SizedBox(height: appPadding * 2,),
 
-                GestureDetector(
-                  onTap: () {
-                    // TODO Implement login here
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: appPadding),
-                    decoration: BoxDecoration(
-                      color: blackColor,
-                      borderRadius: BorderRadius.circular(appPadding / 2)
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Login",
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          color: whiteColor,
-                          fontWeight: FontWeight.w400
-                        )
-                      ),
-                    ),
-                  ),
-                ),
+                loginButtonWidget(),
 
                 const SizedBox(height: appPadding / 2,),
 
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-
-                  children: [
-                    Expanded(
-                        child: Divider(color: Colors.grey,
-                            thickness: 1, height: 100)),
-
-                    SizedBox(width: 6,),
-
-                    Text("Or Login with", style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 14,
-                    ),),
-
-                    SizedBox(width: 6,),
-
-                    Expanded(
-                        child: Divider(color: Colors.grey,
-                            thickness: 1, height: 100)),
-                  ],
-                ),
+                const AuthDividerWidget(showDividerForLoginScreen: true),
 
                 const SizedBox(height: appPadding,),
 
-                Container(
-                  padding: const EdgeInsets.all(appPadding),
-
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(appPadding / 2),
-                    border: Border.all(color: const Color(0xFFA6A6A6),
-                        width: 1.0)
-                  ),
-
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-
-                        Image.asset("assets/images/google.png",
-                          height: 30, width: 30,),
-
-                        const SizedBox(width: 24,),
-
-                        Text("Sign in with Google", style: GoogleFonts.poppins(
-                          color: blackColor,
-                          fontSize: 14,
-                        ),)
-                      ],
-                    ),
-                  ),
-                ),
+                GoogleSignInButton(onPressed: () {}, isLoginButton: true),
 
                 const Spacer(),
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Don't have an account? ",
-                      style: GoogleFonts.poppins(
-                        color: blackColor,
-                        fontSize: 14,
-                      ),
-                    ),
-
-                    Text(
-                      " Register Now",
-                      style: GoogleFonts.poppins(
-                        color: const Color(0xFF00FFFF),
-                        fontSize: 14,
-                      ),
-                    )
-                  ],
-                )
+                doNotHaveAccountWidget(),
               ],
             ),
           ),
