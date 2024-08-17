@@ -5,7 +5,6 @@ import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -21,16 +20,19 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordController = TextEditingController();
 
   backButtonWidget() {
-    return Container(
-      padding: const EdgeInsets.all(appPadding / 2),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(appPadding / 2),
-          border: Border.all(color: Colors.black.withOpacity(0.7))
-      ),
-      child: Icon(
-        Icons.arrow_back_ios_new,
-        size: 20,
-        color: blackColor,
+    return GestureDetector(
+      onTap: () => Navigator.pop(context),
+      child: Container(
+        padding: const EdgeInsets.all(appPadding / 2),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(appPadding / 2),
+            border: Border.all(color: Colors.black.withOpacity(0.7))
+        ),
+        child: Icon(
+          Icons.arrow_back_ios_new,
+          size: 20,
+          color: blackColor,
+        ),
       ),
     );
   }
@@ -78,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  doNotHaveAccountWidget() {
+  doNotHaveAccountTextWidget() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -91,11 +93,16 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
 
-        Text(
-          " Register Now",
-          style: GoogleFonts.poppins(
-            color: const Color(0xFF00FFFF),
-            fontSize: 14,
+        GestureDetector(
+          onTap: () {
+            Navigator.pushReplacementNamed(context, "/registerScreen");
+          },
+          child: Text(
+            " Register Now",
+            style: GoogleFonts.poppins(
+              color: const Color(0xFF00FFFF),
+              fontSize: 14,
+            ),
           ),
         )
       ],
@@ -107,8 +114,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return SafeArea(
         child: Scaffold(
           backgroundColor: primaryColor,
+
           body: Padding(
             padding: const EdgeInsets.all(appPadding * 1.5),
+
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: appPadding * 2,),
 
                 Text(
-                  "Welcome Back! Glad \n to see you, Again!",
+                  "Welcome Back! Glad\nto see you, Again!",
                   style: GoogleFonts.poppins(
                     fontSize: 22,
                     fontWeight: FontWeight.w600,
@@ -133,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     labelText: "Enter your email",
                     isPasswordField: false,
                     onTextChanged: (String currentEmail) {
-
+                      emailController.text = currentEmail;
                     },
                     textEditingController: emailController),
 
@@ -142,7 +151,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 AuthTextField(
                     labelText: "Enter your password",
                     isPasswordField: true,
-                    onTextChanged: (String currentPassword) {},
+                    onTextChanged: (String currentPassword) {
+                      passwordController.text = currentPassword;
+                    },
                     textEditingController: passwordController),
 
                 const SizedBox(height: appPadding,),
@@ -163,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 const Spacer(),
 
-                doNotHaveAccountWidget(),
+                doNotHaveAccountTextWidget(),
               ],
             ),
           ),

@@ -157,7 +157,9 @@ class _ProfileHomeState extends State<ProfileHome> {
           ),
 
           profileMenuWidget("Promotions", LineAwesomeIcons.product_hunt, true,
-              "assets/icons/Announcement.svg", () {}),
+              "assets/icons/Announcement.svg", () {
+                Navigator.pushNamed(context, "/registerScreen");
+              }),
 
           const SizedBox(
             height: 4.0,
