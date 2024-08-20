@@ -1,9 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flick/features/auth/widgets/auth_divider.dart';
 import 'package:flick/features/auth/widgets/auth_text_field.dart';
 import 'package:flick/features/auth/widgets/google_sign_in_button.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flick/utils/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -18,6 +19,24 @@ class _LoginScreenState extends State<LoginScreen> {
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  String errorMessage = "";
+
+  Future<void> signInWithEmailAndPassword() async {
+    debugPrint("Login Email: ${emailController.text}");
+    debugPrint("Login Password: ${passwordController.text}");
+    try {
+      await Auth().signInWithEmailAndPassword(
+          emailController.text,
+          passwordController.text
+      );
+    } on FirebaseAuthException catch (e) {
+      debugPrint("Error During Login: ${e.message}");
+      setState(() {
+        errorMessage = e.message ?? "";
+      });
+    }
+  }
 
   backButtonWidget() {
     return GestureDetector(
@@ -58,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
   loginButtonWidget() {
     return GestureDetector(
       onTap: () {
-        // TODO Implement login here
+        signInWithEmailAndPassword();
       },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: appPadding),

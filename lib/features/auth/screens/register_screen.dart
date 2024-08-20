@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flick/features/auth/widgets/auth_divider.dart';
 import 'package:flick/features/auth/widgets/auth_text_field.dart';
 import 'package:flick/features/auth/widgets/google_sign_in_button.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
+import 'package:flick/utils/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -19,6 +21,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
+
+  String errorMessage = "";
+
+  Future<void> createUserWithEmailAndPassword() async {
+    debugPrint("Register Username: ${usernameController.text}");
+    debugPrint("Register Email: ${emailController.text}");
+    debugPrint("Register Password: ${passwordController.text}");
+    debugPrint("Register Confirm Password: ${confirmPasswordController.text}");
+    try {
+      await Auth().createUserWithEmailAndPassword(
+          emailController.text,
+          passwordController.text
+      );
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        errorMessage = e.message ?? "";
+      });
+    }
+  }
 
   backButtonWidget() {
     return GestureDetector(
@@ -41,8 +62,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   registerButtonWidget() {
     return GestureDetector(
       onTap: () {
-        // TODO Implement register functionality here
-      },
+        createUserWithEmailAndPassword();
+        },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: appPadding),
         decoration: BoxDecoration(
