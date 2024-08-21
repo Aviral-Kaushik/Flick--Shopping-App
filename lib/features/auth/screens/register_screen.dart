@@ -1,7 +1,14 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flick/admin_panel/services/firebase_services.dart';
 import 'package:flick/features/auth/widgets/auth_divider.dart';
 import 'package:flick/features/auth/widgets/auth_text_field.dart';
 import 'package:flick/features/auth/widgets/google_sign_in_button.dart';
+import 'package:flick/helper/DialogHelper.dart';
+import 'package:flick/helper/SnackbarHelper.dart';
+import 'package:flick/locator.dart';
+import 'package:flick/models/User.dart' as flick_user;
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flick/utils/auth.dart';
@@ -17,29 +24,66 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
 
+  late DialogHelper dialogHelper;
+
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
 
   String errorMessage = "";
+  bool isAnyDialogShowing = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    dialogHelper = DialogHelper(context);
+  }
 
   Future<void> createUserWithEmailAndPassword() async {
-    debugPrint("Register Username: ${usernameController.text}");
-    debugPrint("Register Email: ${emailController.text}");
-    debugPrint("Register Password: ${passwordController.text}");
-    debugPrint("Register Confirm Password: ${confirmPasswordController.text}");
     try {
       await Auth().createUserWithEmailAndPassword(
           emailController.text,
           passwordController.text
       );
+      postUserDataToFirebase();
     } on FirebaseAuthException catch (e) {
+      debugPrint("Error During Registering at firebase: ${e.message}");
       setState(() {
         errorMessage = e.message ?? "";
+        showErrorDialog("Something Went Wrong! Please Try Again later");
       });
     }
   }
+
+  void postUserDataToFirebase() async {
+    FirebaseServices firebaseServices = locator.get<FirebaseServices>();
+
+    bool userCreatedSuccessfully = await firebaseServices.createNewUser(getNewUserData());
+    if (!userCreatedSuccessfully) {
+      showErrorDialog("Cannot Register at this moment!");
+    } else {
+      // TODO Redirect to specific screen
+      dismissAllDialog();
+      SnackBarHelper().showSnackBar(context, "Registration Successful");
+    }
+  }
+
+  flick_user.User getNewUserData() {
+    return flick_user.User(id: "1",
+        username: usernameController.text,
+        password: passwordController.text,
+        email: emailController.text,
+        name: usernameController.text,
+        device: Platform.isAndroid ? "Android" : "iOS",
+        isAdmin: false,
+        joiningDate: DateTime.now().toString(),
+        profilePhoto: "",
+        country: "India"
+    );
+  }
+
 
   backButtonWidget() {
     return GestureDetector(
@@ -113,6 +157,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
+  void showProgressDialog(String message) {
+    isAnyDialogShowing = true;
+
+    dialogHelper.showProgressDialog(message, () {
+      isAnyDialogShowing = false;
+    });
+  }
+
+  void showErrorDialog(String message) {
+    if (isAnyDialogShowing) {
+      dismissAllDialog();
+    }
+
+    isAnyDialogShowing = true;
+
+    dialogHelper.showSuccessfulOrErrorDialog("Oops!", message, "Dismiss", true,
+            () {
+          isAnyDialogShowing = false;
+        });
+  }
+
+  void dismissAllDialog() {
+    if (isAnyDialogShowing) {
+
+      isAnyDialogShowing = false;
+
+      Navigator.pop(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -143,7 +217,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               const SizedBox(height: appPadding * 1.5,),
 
               AuthTextField(
-                  labelText: "Username",
+                  labelText: "Full Name",
                   isPasswordField: false,
                   onTextChanged: (String currentEmail) {
                     usernameController.text = currentEmail;

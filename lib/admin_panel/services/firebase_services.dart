@@ -78,6 +78,25 @@ class FirebaseServices {
     return Tuple2(hasErrorOccurred, errorMessage);
   }
 
+  Future<User?> getUserDataFromMail(String email) async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> snapshot = await database
+          .collection(usersCollection)
+          .where("email", isEqualTo: email)
+          .limit(1)
+          .get();
+
+      if (snapshot.docs.isNotEmpty) {
+        return User.fromFirestore(snapshot.docs.first);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+
+  }
+
   Future<Tuple2<bool, String>> changeAdminAccessForUserInUsersCollection(
       User user, bool provideAdminAccess) async {
     bool hasErrorOccurred = false;

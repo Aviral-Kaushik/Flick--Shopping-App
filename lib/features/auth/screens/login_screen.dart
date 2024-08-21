@@ -1,7 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flick/admin_panel/services/firebase_services.dart';
 import 'package:flick/features/auth/widgets/auth_divider.dart';
 import 'package:flick/features/auth/widgets/auth_text_field.dart';
 import 'package:flick/features/auth/widgets/google_sign_in_button.dart';
+import 'package:flick/helper/DialogHelper.dart';
+import 'package:flick/helper/SnackbarHelper.dart';
+import 'package:flick/locator.dart';
+import 'package:flick/models/User.dart' as flick_user;
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flick/utils/auth.dart';
@@ -17,24 +22,54 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
 
+  late DialogHelper dialogHelper;
+
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   String errorMessage = "";
+  bool isAnyDialogShowing = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    dialogHelper = DialogHelper(context);
+  }
 
   Future<void> signInWithEmailAndPassword() async {
-    debugPrint("Login Email: ${emailController.text}");
-    debugPrint("Login Password: ${passwordController.text}");
+    showProgressDialog("Please Wait1 Signing In");
     try {
       await Auth().signInWithEmailAndPassword(
           emailController.text,
           passwordController.text
       );
+      if (Auth().currentUser != null) {
+        getUserDataFromFirebase();
+      } else {
+        showErrorDialog("Invalid Credentials");
+      }
     } on FirebaseAuthException catch (e) {
-      debugPrint("Error During Login: ${e.message}");
+      debugPrint("Error During Login at firebase: ${e.message}");
       setState(() {
         errorMessage = e.message ?? "";
+        showErrorDialog("Invalid Credentials");
       });
+    }
+  }
+
+  void getUserDataFromFirebase() async {
+    FirebaseServices firebaseServices = locator.get<FirebaseServices>();
+
+    flick_user.User? user = await firebaseServices.getUserDataFromMail(emailController.text);
+    if (user == null) {
+      debugPrint("User Details not fetched from firebase");
+      showErrorDialog("Cannot fetch data at this moment");
+    } else {
+      // TODO Redirect to specific screen
+      dismissAllDialog();
+      debugPrint("User Details fetched from firebase: ${user.toFirestore()}");
+      SnackBarHelper().showSnackBar(context, "Login Successful");
     }
   }
 
@@ -126,6 +161,35 @@ class _LoginScreenState extends State<LoginScreen> {
         )
       ],
     );
+  }
+
+  void showProgressDialog(String message) {
+    isAnyDialogShowing = true;
+
+    dialogHelper.showProgressDialog(message, () {
+      isAnyDialogShowing = false;
+    });
+  }
+
+  void showErrorDialog(String message) {
+    if (isAnyDialogShowing) {
+      dismissAllDialog();
+    }
+    isAnyDialogShowing = true;
+
+    dialogHelper.showSuccessfulOrErrorDialog("Oops!", message, "Dismiss", true,
+            () {
+          isAnyDialogShowing = false;
+        });
+  }
+
+  void dismissAllDialog() {
+    if (isAnyDialogShowing) {
+
+      isAnyDialogShowing = false;
+
+      Navigator.pop(context);
+    }
   }
 
   @override
