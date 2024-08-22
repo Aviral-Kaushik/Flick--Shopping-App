@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flick/admin_panel/services/firebase_services.dart';
+import 'package:flick/data/database/hive_database.dart';
+import 'package:flick/data/session/session_manager.dart';
 import 'package:flick/features/auth/widgets/auth_divider.dart';
 import 'package:flick/features/auth/widgets/auth_text_field.dart';
 import 'package:flick/features/auth/widgets/google_sign_in_button.dart';
@@ -24,6 +26,11 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
 
+  FirebaseServices firebaseServices = locator.get<FirebaseServices>();
+
+  HiveDatabase hiveDatabase = locator.get<HiveDatabase>();
+  SessionManager sessionManager = locator.get<SessionManager>();
+
   late DialogHelper dialogHelper;
 
   TextEditingController usernameController = TextEditingController();
@@ -42,6 +49,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Future<void> createUserWithEmailAndPassword() async {
+    showProgressDialog("Registering! Please Wait");
+
     try {
       await Auth().createUserWithEmailAndPassword(
           emailController.text,
@@ -58,16 +67,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void postUserDataToFirebase() async {
-    FirebaseServices firebaseServices = locator.get<FirebaseServices>();
-
     bool userCreatedSuccessfully = await firebaseServices.createNewUser(getNewUserData());
     if (!userCreatedSuccessfully) {
       showErrorDialog("Cannot Register at this moment!");
     } else {
       // TODO Redirect to specific screen
-      dismissAllDialog();
       SnackBarHelper().showSnackBar(context, "Registration Successful");
+      fetchAndStoreUserDataInLocalDatabase();
     }
+  }
+
+  void fetchAndStoreUserDataInLocalDatabase() async {
+    flick_user.User? userData = await getUserDataFromFirebase();
+
+    if (userData != null) {
+      hiveDatabase.storeUsersData(userData);
+      sessionManager.storeUsernameInSessionStorage(userData.name);
+    }
+
+    dismissAllDialog();
+  }
+
+  Future<flick_user.User?> getUserDataFromFirebase() async {
+    flick_user.User? user = await firebaseServices.getUserDataFromMail(emailController.text);
+    if (user == null) {
+      debugPrint("User Details not fetched from firebase");
+      showErrorDialog("Cannot fetch data at this moment");
+    }
+    return user;
   }
 
   flick_user.User getNewUserData() {

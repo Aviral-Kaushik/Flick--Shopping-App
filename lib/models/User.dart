@@ -1,5 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hive/hive.dart';
 
+part 'User.g.dart';
+
+@HiveType(typeId: 0)
 class User {
 
   User({
@@ -19,15 +23,25 @@ class User {
    // required this.ratedProduct,
 });
 
+  @HiveField(0)
   String id;
+  @HiveField(1)
   String username;
+  @HiveField(2)
   String password;
+  @HiveField(3)
   String email;
+  @HiveField(4)
   String name;
+  @HiveField(5)
   String device;
+  @HiveField(6)
   bool isAdmin;
+  @HiveField(7)
   String joiningDate;
+  @HiveField(8)
   String profilePhoto;
+  @HiveField(9)
   String country;
   // List<Product> itemsInCart;
   // List<Address> addresses;

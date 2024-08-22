@@ -11,6 +11,8 @@ import 'package:flick/admin_panel/repositories/settings_repository.dart';
 import 'package:flick/admin_panel/repositories/terms_and_privacy_repository.dart';
 import 'package:flick/admin_panel/repositories/users_repository.dart';
 import 'package:flick/admin_panel/services/firebase_services.dart';
+import 'package:flick/data/database/hive_database.dart';
+import 'package:flick/data/session/session_manager.dart';
 import 'package:flick/helper/MailHelper.dart';
 import 'package:get_it/get_it.dart';
 
@@ -21,6 +23,9 @@ void setup() {
   locator.registerLazySingleton<MailHelper>(() => MailHelper());
 
   final firebaseServices = locator.get<FirebaseServices>();
+
+  locator.registerLazySingleton<HiveDatabase>(() => HiveDatabase());
+  locator.registerLazySingleton<SessionManager>(() => SessionManager());
 
   // Get it initialization for Admin Panel Blocs
   locator.registerLazySingleton<TermsAndPrivacyRepository>(
