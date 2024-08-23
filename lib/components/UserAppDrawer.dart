@@ -1,3 +1,4 @@
+import 'package:flick/main.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +10,22 @@ class UserAppDrawer extends StatefulWidget {
 }
 
 class _UserAppDrawerState extends State<UserAppDrawer> {
+
+  bool _isAdmin = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _isAdmin = isAdmin;
+    // User? user = await User.instance;
+    //
+    // if(Auth().currentUser != null) {
+    //   isAdmin = (user != null) ? user.isAdmin : false;
+    // } else {
+    //   isAdmin = false;
+    // }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -80,19 +97,20 @@ class _UserAppDrawerState extends State<UserAppDrawer> {
                 ),
               ),
 
-              Padding(
-                padding: const EdgeInsets.only(left: 25.0),
-                child: ListTile(
-                  onTap: () => {
-                    Navigator.pushNamed(context, "/adminPanel")
-                  },
-                  leading: Icon(Icons.admin_panel_settings_outlined, color: whiteTextColor),
-                  title: Text(
-                    "Admin Panel",
-                    style: TextStyle(color: whiteTextColor),
+              if (_isAdmin)
+                Padding(
+                  padding: const EdgeInsets.only(left: 25.0),
+                  child: ListTile(
+                    onTap: () => {
+                      Navigator.pushNamed(context, "/adminPanel")
+                    },
+                    leading: Icon(Icons.admin_panel_settings_outlined, color: whiteTextColor),
+                    title: Text(
+                      "Admin Panel",
+                      style: TextStyle(color: whiteTextColor),
+                    ),
                   ),
-                ),
-              )
+                )
             ],
           ),
 

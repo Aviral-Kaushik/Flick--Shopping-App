@@ -1,4 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flick/data/database/hive_database.dart';
+import 'package:flick/locator.dart';
+import 'package:flick/utils/auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 
 part 'User.g.dart';
@@ -93,4 +97,26 @@ class User {
     country: json['country'] as String,
   );
 
+  // Private Constructor
+  User._internal(
+      this.id,
+      this.username,
+      this.password,
+      this.email,
+      this.name,
+      this.device,
+      this.isAdmin,
+      this.joiningDate,
+      this.profilePhoto,
+      this.country) {
+    debugPrint("Private Constructor Created");
+  }
+
+  static User? _instance;
+
+  static Future<User?> get instance async {
+    final HiveDatabase hiveDatabase = locator.get<HiveDatabase>();
+    _instance ??= await hiveDatabase.getUserData(Auth().currentUser!.email!);
+    return _instance;
+  }
 }

@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flick/core/Routers.dart';
 import 'package:flick/core/models/CartItem.dart';
-import 'package:flick/data/database/hive_database.dart';
 import 'package:flick/locator.dart';
 import 'package:flick/models/User.dart';
 import 'package:flick/utils/auth.dart';
@@ -17,24 +16,18 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(UserAdapter());
   setup();
-  getUserDataFromLocalDatabase();
+  initUserInstance();
   runApp(const MyApp());
 }
 
-void getUserDataFromLocalDatabase() async {
-  debugPrint("Aviral getting user data from local database");
-  debugPrint("Aviral Auth().currentUser: ${Auth().currentUser}");
-  debugPrint("Aviral Auth().email: ${Auth().currentUser?.email}");
-  if (Auth().currentUser != null) {
-    debugPrint("Aviral Current User is not null");
-    final HiveDatabase hiveDatabase = locator.get<HiveDatabase>();
-    // if (Auth().currentUser?.email != null) {
-      User? user = await hiveDatabase.getUserData(Auth().currentUser!.email!);
-      debugPrint("Aviral User from hive database: $user");
-      if (user != null) {
-        debugPrint("Aviral User Data is in DB: ${user.toFirestore()}");
-      }
-    // }
+bool isAdmin = false;
+
+void initUserInstance() async {
+  if(Auth().currentUser != null) {
+    User? user = await User.instance;
+    isAdmin = (user != null) ? user.isAdmin : false;
+  } else {
+    isAdmin = false;
   }
 }
 

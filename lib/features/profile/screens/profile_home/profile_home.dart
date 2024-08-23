@@ -1,5 +1,8 @@
+import 'package:flick/admin_panel/components/widgets/dialogs/ProgressDialog.dart';
+import 'package:flick/models/User.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
+import 'package:flick/utils/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,6 +16,33 @@ class ProfileHome extends StatefulWidget {
 }
 
 class _ProfileHomeState extends State<ProfileHome> {
+
+  User? user = null;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      initUser();
+    });
+  }
+
+  Future<void> initUser() async {
+    if (Auth().currentUser != null) {
+      User? _user = await User.instance;
+      setState(() {
+        // Navigator.pop(context);
+        user = _user;
+      });
+    } else {
+      setState(() {
+        // Navigator.pop(context);
+        user = null;
+      });
+    }
+
+  }
 
   profileHeaderWidget() {
     return Padding(
@@ -45,7 +75,7 @@ class _ProfileHomeState extends State<ProfileHome> {
               children: [
 
                 Text(
-                  "Avichal Kaushik",
+                  user?.name ?? "Avichal Kaushik",
                   style: GoogleFonts.poppins(
                       color: adminPanelPrimaryColor,
                       fontSize: 22,
@@ -53,7 +83,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                 ),
 
                 Text(
-                  "@avichal_1106",
+                  user?.username ?? "@avichal_1106",
                   style: GoogleFonts.poppins(
                     color: textColor.withOpacity(0.3),
                     fontSize: 16,
@@ -174,8 +204,14 @@ class _ProfileHomeState extends State<ProfileHome> {
             height: 4.0,
           ),
 
-          profileMenuWidget("Sign out", LineAwesomeIcons.alternate_sign_out,
-              false, "", () {}),
+          profileMenuWidget(user != null ? "Sign out" : "Log In", LineAwesomeIcons.alternate_sign_out,
+              false, "", () {
+                if (user != null) {
+                  Auth().signOut();
+                }
+
+                Navigator.pushNamed(context, "/loginScreen");
+              }),
 
         ],
       ),
@@ -220,6 +256,9 @@ class _ProfileHomeState extends State<ProfileHome> {
 
   @override
   Widget build(BuildContext context) {
+    // if (user == null) {
+    //   return const ProgressDialog(message: "Please Wait! Loading Data"); // or some other loading widget
+    // }
     return Scaffold(
       backgroundColor: primaryColor,
       body: SingleChildScrollView(
