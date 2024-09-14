@@ -19,7 +19,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
   List<Address> addresses = [
     Address(
         userId: "1",
-        address: " C 33, Inner Circle, Connaught Place, Delhi",
+        address: "C 33, Inner Circle, Connaught Place, Delhi",
         pinCode: "110001",
         contactNumber: "1234567890"),
     Address(
@@ -68,7 +68,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
           width: appPadding * 2,
         ),
         
-        Text("Your Address", style: GoogleFonts.lato(
+        Text("Your Addresses", style: GoogleFonts.lato(
           color: textColor,
           fontWeight: FontWeight.bold,
           fontSize: 17
@@ -82,36 +82,46 @@ class _AddressesScreenState extends State<AddressesScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: whiteColor?.withOpacity(0.5),
+        backgroundColor: whiteColor,
         body: Padding(
           padding: const EdgeInsets.all(appPadding),
-          child: Column(
-            children: [
-              addressHeader(),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
 
-              const SizedBox(
-                height: appPadding * 2,
-              ),
-
-              Divider(
-                color: blackColor,
-              ),
-
-              const SizedBox(
-                height: appPadding * 2,
-              ),
-
-              ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: addresses.length,
-                itemBuilder: (context, index) => AddressCard(
-                  address: addresses[index],
-                  showUIForSelectAddress: widget.showUIForSelectAddressScreen,
+                const SizedBox(
+                  height: appPadding,
                 ),
-              )
 
-            ],
+                addressHeader(),
+
+                const SizedBox(
+                  height: appPadding,
+                ),
+
+                Divider(
+                  color: blackColor,
+                ),
+
+                const SizedBox(
+                  height: appPadding,
+                ),
+
+                ListView.separated(
+                  physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: addresses.length,
+                  itemBuilder: (context, index) => AddressCard(
+                    address: addresses[index],
+                    showUIForSelectAddress: widget.showUIForSelectAddressScreen,
+                  ),
+                    separatorBuilder: (context, index) => const SizedBox(
+                      height: appPadding * 1.5,
+                    )
+                )
+
+              ],
+            ),
           ),
         ),
       ),
@@ -134,23 +144,25 @@ class _AddressCardState extends State<AddressCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: whiteColor,
-
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(appPadding),
-        boxShadow: const [
-          BoxShadow(
-              color: Color(0xff0000001a),
-              blurRadius: 10.0,
-              spreadRadius: 2.0)
-        ]
-      ),
+          color: whiteColor,
+          borderRadius: BorderRadius.circular(appPadding),
+          border: Border.all(color: Colors.black12),
+          boxShadow: const [
+            BoxShadow(
+                color: Colors.black12,
+                blurRadius: 10.0,
+                spreadRadius: 1.0,
+                offset: Offset(0, 10),
+            )
+          ]),
 
       child: Padding(
         padding: const EdgeInsets.all(appPadding),
+
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
 
           children: [
 
@@ -161,11 +173,10 @@ class _AddressCardState extends State<AddressCard> {
               style: GoogleFonts.poppins(
                 color: textColor,
                 fontSize: 15,
-                fontWeight: FontWeight.w600
               ),
             ),
 
-            const SizedBox(height: appPadding / 2,),
+            const SizedBox(height: appPadding,),
 
             RichText(
               text: TextSpan(
@@ -185,7 +196,7 @@ class _AddressCardState extends State<AddressCard> {
               ),
             ),
 
-            const SizedBox(height: appPadding / 2,),
+            const SizedBox(height: appPadding,),
 
             RichText(
               text: TextSpan(
@@ -216,7 +227,11 @@ class _AddressCardState extends State<AddressCard> {
                 onSecondButtonPressed: () {
                   // TODO Handle delete address case
                 },
-                secondButtonColor: Colors.redAccent)
+                firstButtonColor: Colors.white,
+                secondButtonColor: Colors.redAccent),
+
+            const SizedBox(height: appPadding,),
+
           ],
         ),
       ),

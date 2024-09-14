@@ -9,12 +9,14 @@ class RowWithTwoButtonsWidget extends StatelessWidget {
       required this.secondBtnTitle,
       required this.onFirstButtonPressed,
       required this.onSecondButtonPressed,
+      required this.firstButtonColor,
       required this.secondButtonColor});
 
   final String firstBtnTitle;
   final String secondBtnTitle;
   final Function() onFirstButtonPressed;
   final Function() onSecondButtonPressed;
+  final Color firstButtonColor;
   final Color secondButtonColor;
 
 
@@ -33,8 +35,9 @@ class RowWithTwoButtonsWidget extends StatelessWidget {
                         bottom: appPadding / 2),
 
                     decoration: BoxDecoration(
-                        color: const Color(0xFFF0F0F0),
-                        borderRadius: BorderRadius.circular(appPadding / 2)
+                        color: firstButtonColor,
+                        borderRadius: BorderRadius.circular(appPadding / 2),
+                        border: Border.all(color: Colors.black12)
                     ),
 
                     child: Center(

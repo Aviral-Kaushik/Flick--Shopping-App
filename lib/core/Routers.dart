@@ -68,9 +68,10 @@ class Routers {
       case "/registerScreen":
         return MaterialPageRoute(builder: (_) => const RegisterScreen());
       case "/addressesScreen":
-        List argumentList = settings.arguments as List;
+        // TODO Argument logic not working
+        // List argumentList = settings.arguments as List;
         return MaterialPageRoute(builder: (_) => AddressesScreen(
-          showUIForSelectAddressScreen: argumentList[0] as bool));
+          showUIForSelectAddressScreen: false));
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(
