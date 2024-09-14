@@ -1,0 +1,81 @@
+import 'package:flick/utils/Colors.dart';
+import 'package:flick/utils/Constants.dart';
+import 'package:flutter/material.dart';
+
+class RowWithTwoButtonsWidget extends StatelessWidget {
+  const RowWithTwoButtonsWidget(
+      {super.key,
+      required this.firstBtnTitle,
+      required this.secondBtnTitle,
+      required this.onFirstButtonPressed,
+      required this.onSecondButtonPressed,
+      required this.secondButtonColor});
+
+  final String firstBtnTitle;
+  final String secondBtnTitle;
+  final Function() onFirstButtonPressed;
+  final Function() onSecondButtonPressed;
+  final Color secondButtonColor;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Expanded(
+            child: Center(
+              child: GestureDetector(
+                onTap: onFirstButtonPressed,
+                child: Container(
+                    padding: const EdgeInsets.only(
+                        top: appPadding / 2,
+                        bottom: appPadding / 2),
+
+                    decoration: BoxDecoration(
+                        color: const Color(0xFFF0F0F0),
+                        borderRadius: BorderRadius.circular(appPadding / 2)
+                    ),
+
+                    child: Center(
+                      child: Text(firstBtnTitle, style: TextStyle(
+                          fontSize: 15,
+                          color: blackColor
+                      ),
+                      ),
+                    )
+                ),
+              ),
+            )),
+
+        const SizedBox(
+          width: 8,
+        ),
+
+        Expanded(
+          child: GestureDetector(
+            onTap: onSecondButtonPressed,
+            child: Container(
+                padding: const EdgeInsets.only(
+                    top: appPadding / 2,
+                    bottom: appPadding / 2),
+
+                decoration: BoxDecoration(
+                    color: secondButtonColor,
+                    borderRadius: BorderRadius.circular(appPadding / 2)
+                ),
+
+                child: Center(
+                  child: Text(secondBtnTitle, style: TextStyle(
+                      fontSize: 15,
+                      color: whiteColor
+                  ),
+                  ),
+                )
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}

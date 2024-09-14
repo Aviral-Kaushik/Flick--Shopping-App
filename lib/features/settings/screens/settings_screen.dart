@@ -33,7 +33,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           const SizedBox(height: appPadding,),
 
-          settingsOptionListTile("Your Addresses", () => null, false),
+          settingsOptionListTile("Your Addresses", () => Navigator.pushNamed(
+              context, "/addressesScreen", arguments: false),
+              false),
 
           const SizedBox(height: appPadding,),
 

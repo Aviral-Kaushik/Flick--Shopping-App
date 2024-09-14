@@ -4,10 +4,12 @@ class Address {
   Address(
       {required this.userId,
       required this.address,
+      required this.pinCode,
       required this.contactNumber});
 
   String userId;
   String address;
+  String pinCode;
   String contactNumber;
 
   factory Address.fromFirestore(
@@ -17,6 +19,7 @@ class Address {
     return Address(
         userId: data?["user_id"],
         address: data?["address"],
+        pinCode: data?["pin_code"],
         contactNumber: data?["contactNumber"]);
   }
 
@@ -24,6 +27,7 @@ class Address {
     return {
       "user_id": userId,
       "address": address,
+      "pin_code": pinCode,
       "contact_number": contactNumber,
     };
   }
