@@ -18,29 +18,34 @@ class _AddressesScreenState extends State<AddressesScreen> {
 
   List<Address> addresses = [
     Address(
+        addressId: "1",
         userId: "1",
         address: "C 33, Inner Circle, Connaught Place, Delhi",
         pinCode: "110001",
         contactNumber: "1234567890"),
     Address(
+        addressId: "1",
         userId: "1",
         address:
             "A - 45, Nand Vatika, Siwaya, Modipuram, Meerut, Uttar Pradesh",
         pinCode: "250001",
         contactNumber: "7896541235"),
     Address(
+        addressId: "1",
         userId: "1",
         address:
             "H. No. 638. Jansath Road Bhood, Khatauli, Muzaffarnagar, Uttar Pradesh",
         pinCode: "250001",
         contactNumber: "7895848685"),
     Address(
+        addressId: "1",
         userId: "1",
         address:
             "A103/2, Ahuna Divecha Complex B, Edulji Rd, Charai, Thane West, Mumbai, Maharashtra",
         pinCode: "400601",
         contactNumber: "1478745965"),
     Address(
+        addressId: "1",
         userId: "1",
         address:
             "Indian Merchant Chamber Bldg, Opp Chruchgate Station, Churchgate, Mumbai, Maharashtra",
@@ -68,7 +73,9 @@ class _AddressesScreenState extends State<AddressesScreen> {
           width: appPadding * 2,
         ),
         
-        Text("Your Addresses", style: GoogleFonts.lato(
+        Text(widget.showUIForSelectAddressScreen
+            ? "Select Address"
+            : "Your Addresses", style: GoogleFonts.lato(
           color: textColor,
           fontWeight: FontWeight.bold,
           fontSize: 17
@@ -141,98 +148,137 @@ class AddressCard extends StatefulWidget {
 }
 
 class _AddressCardState extends State<AddressCard> {
+
+  bool isSelected = false;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          color: whiteColor,
-          borderRadius: BorderRadius.circular(appPadding),
-          border: Border.all(color: Colors.black12),
-          boxShadow: const [
-            BoxShadow(
-                color: Colors.black12,
-                blurRadius: 10.0,
-                spreadRadius: 1.0,
-                offset: Offset(0, 10),
-            )
-          ]),
+    return Card(
+      elevation: isSelected ? 10 : 0,
 
-      child: Padding(
-        padding: const EdgeInsets.all(appPadding),
+      child: Container(
 
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        decoration: BoxDecoration(
+            color: whiteColor,
+            borderRadius: BorderRadius.circular(appPadding / 2),
 
-          children: [
+            border: Border.all(color: isSelected
+                ? Colors.blueAccent.shade400
+                : Colors.black12),
 
-            Text(
-              widget.address.address,
-              maxLines: 5,
-              overflow: TextOverflow.ellipsis,
-              style: GoogleFonts.poppins(
-                color: textColor,
-                fontSize: 15,
-              ),
-            ),
+            boxShadow: [
+              BoxShadow(
+                  color: isSelected
+                      ? Colors.blueAccent.shade400
+                      : Colors.black12,
+                  blurRadius: 10.0,
+                  spreadRadius: 1.0,
+                  offset: isSelected ? const Offset(0, 0) : const Offset(0, 10),
+              )
+            ]),
 
-            const SizedBox(height: appPadding,),
+        child: Padding(
+          padding: const EdgeInsets.all(appPadding),
 
-            RichText(
-              text: TextSpan(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+
+            children: [
+
+              Text(
+                widget.address.address,
+                maxLines: 5,
+                overflow: TextOverflow.ellipsis,
                 style: GoogleFonts.poppins(
-                    color: textColor,
-                    fontSize: 15
+                  color: textColor,
+                  fontSize: 15,
                 ),
-                children: <TextSpan>[
-                  TextSpan(text: "Pin Code: ", style: GoogleFonts.poppins(
-                      color: textColor,
-                      fontSize: 15,
-                    fontWeight: FontWeight.bold
-                  ),),
-
-                  TextSpan(text: widget.address.pinCode)
-                ]
               ),
-            ),
 
-            const SizedBox(height: appPadding,),
+              const SizedBox(height: appPadding,),
 
-            RichText(
-              text: TextSpan(
+              RichText(
+                text: TextSpan(
                   style: GoogleFonts.poppins(
                       color: textColor,
                       fontSize: 15
                   ),
                   children: <TextSpan>[
-                    TextSpan(text: "Contact Number: ", style: GoogleFonts.poppins(
+                    TextSpan(text: "Pin Code: ", style: GoogleFonts.poppins(
                         color: textColor,
                         fontSize: 15,
-                        fontWeight: FontWeight.bold
+                      fontWeight: FontWeight.bold
                     ),),
 
-                    TextSpan(text: widget.address.contactNumber)
+                    TextSpan(text: widget.address.pinCode)
                   ]
+                ),
               ),
-            ),
 
-            const SizedBox(height: appPadding,),
+              const SizedBox(height: appPadding,),
 
-            RowWithTwoButtonsWidget(
-                firstBtnTitle: "Edit Address",
-                secondBtnTitle: "Delete Address",
-                onFirstButtonPressed: () {
-                  // TODO Navigate to Edit Address Screen and pop this screen
-                },
-                onSecondButtonPressed: () {
-                  // TODO Handle delete address case
-                },
-                firstButtonColor: Colors.white,
-                secondButtonColor: Colors.redAccent),
+              RichText(
+                text: TextSpan(
+                    style: GoogleFonts.poppins(
+                        color: textColor,
+                        fontSize: 15
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(text: "Contact Number: ", style: GoogleFonts.poppins(
+                          color: textColor,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold
+                      ),),
 
-            const SizedBox(height: appPadding,),
+                      TextSpan(text: widget.address.contactNumber)
+                    ]
+                ),
+              ),
 
-          ],
+              const SizedBox(height: appPadding * 1.5,),
+
+              if (!widget.showUIForSelectAddress)
+                RowWithTwoButtonsWidget(
+                    firstBtnTitle: "Edit Address",
+                    secondBtnTitle: "Delete Address",
+                    onFirstButtonPressed: () {
+                      // TODO Navigate to Edit Address Screen and pop this screen
+                    },
+                    onSecondButtonPressed: () {
+                      // TODO Handle delete address case
+                    },
+                    firstButtonColor: Colors.white,
+                    secondButtonColor: Colors.redAccent),
+
+              if (widget.showUIForSelectAddress)
+                GestureDetector(
+                  onTap: () {
+                    isSelected = !isSelected;
+                    setState(() {});
+                  },
+                  child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: appPadding,
+                          vertical: appPadding / 2),
+
+                      decoration: BoxDecoration(
+                          color: Colors.blueAccent,
+                          borderRadius: BorderRadius.circular(appPadding / 2)
+                      ),
+
+                      child: Center(
+                        child: Text("Select this Address", style: TextStyle(
+                            fontSize: 15,
+                            color: whiteColor
+                        ),
+                        ),
+                      )
+                  ),
+                ),
+
+            ],
+          ),
         ),
       ),
     );

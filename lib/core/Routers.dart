@@ -70,8 +70,8 @@ class Routers {
       case "/addressesScreen":
         // TODO Argument logic not working
         // List argumentList = settings.arguments as List;
-        return MaterialPageRoute(builder: (_) => AddressesScreen(
-          showUIForSelectAddressScreen: false));
+        return MaterialPageRoute(builder: (_) => const AddressesScreen(
+          showUIForSelectAddressScreen: true));
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(
