@@ -1,10 +1,16 @@
 import 'package:flick/components/row_with_two_buttons.dart';
 import 'package:flick/components/simple_button.dart';
 import 'package:flick/components/simple_header.dart';
+import 'package:flick/features/address/blocs/address_bloc/address_bloc.dart';
+import 'package:flick/features/address/blocs/address_bloc/address_event.dart';
+import 'package:flick/features/address/blocs/address_bloc/address_state.dart';
+import 'package:flick/helper/DialogHelper.dart';
+import 'package:flick/locator.dart';
 import 'package:flick/models/Address.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AddressesScreen extends StatefulWidget {
@@ -17,6 +23,25 @@ class AddressesScreen extends StatefulWidget {
 }
 
 class _AddressesScreenState extends State<AddressesScreen> {
+
+  final AddressBloc addressBloc = locator.get<AddressBloc>();
+
+  late DialogHelper dialogHelper;
+  List<Address>? address;
+
+  bool isAnyDialogShowing = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    dialogHelper = DialogHelper(context);
+
+    // TODO fetch userId
+    String userId = "1";
+
+    addressBloc.add(LoadAddresses(userId));
+  }
 
   List<Address> addresses = [
     Address(
@@ -55,66 +80,144 @@ class _AddressesScreenState extends State<AddressesScreen> {
         contactNumber: "8989562356"),
   ];
 
+  showProgressDialog(String message) {
+    isAnyDialogShowing = true;
+
+    dialogHelper.showProgressDialog(message, () {
+      isAnyDialogShowing = false;
+    });
+  }
+
+  showSuccessfulDialog(String successfulMessage) {
+    isAnyDialogShowing = true;
+
+    dialogHelper.showSuccessfulOrErrorDialog(
+        "Success!", successfulMessage, "Okay", false, () {
+      isAnyDialogShowing = false;
+    });
+  }
+
+  showErrorDialog(String message) {
+    isAnyDialogShowing = true;
+
+    dialogHelper.showSuccessfulOrErrorDialog("Oops!", message, "Dismiss", true,
+            () {
+          isAnyDialogShowing = false;
+        });
+  }
+
+  showDeleteAddressWarningDialog(String addressId) {
+    isAnyDialogShowing = true;
+
+    dialogHelper.showWarningDialog("Are you sure want to delete this address?",
+        "Delete", "Cancel", () {
+      addressBloc.add(DeleteAddress(addressId));
+        }, Colors.redAccent, () {
+      isAnyDialogShowing = false;
+    });
+  }
+
+  dismissAllDialogs() {
+    if (isAnyDialogShowing) {
+
+      isAnyDialogShowing = false;
+
+      Navigator.pop(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: whiteColor,
+    return BlocProvider<AddressBloc>(
+      create: (_) => addressBloc,
 
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: ClipRRect(
-          borderRadius: BorderRadius.circular(appPadding * 8),
+      child: BlocListener<AddressBloc, AddressState>(
+        listener: (context, state) {
 
-          child: FloatingActionButton(
-            backgroundColor: blueThemeColor,
-            onPressed: () {
-              // TODO Implement Proper Arguments Here
-              Navigator.pushNamed(context, "/addEditAddressScreen");
-            },
-            child: const Icon(Icons.add, color: Colors.white,),
-          ),
-        ),
+          if (state is AddressLoadingState) {
+            dismissAllDialogs();
+            showProgressDialog(state.progressMessage);
+          }
 
-        body: Padding(
-          padding: const EdgeInsets.all(appPadding),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
+          if (state is AddressLoaded) {
+            dismissAllDialogs();
+            addresses = state.addresses;
+            setState(() {});
+          }
 
-                const SizedBox(
-                  height: appPadding,
-                ),
+          if (state is AddressError) {
+            dismissAllDialogs();
+            showErrorDialog(state.errorMessage);
+          }
 
-                SimpleHeader(title: widget.showUIForSelectAddressScreen
-                    ? "Select Address"
-                    : "Your Addresses"),
+          if (state is AddressDeletedSuccessfully) {
+            dismissAllDialogs();
+            showSuccessfulDialog("Address Deleted Successfully!");
+          }
+        },
+        child: SafeArea(
+          child: Scaffold(
+            backgroundColor: whiteColor,
 
-                const SizedBox(
-                  height: appPadding,
-                ),
+            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+            floatingActionButton: ClipRRect(
+              borderRadius: BorderRadius.circular(appPadding * 8),
 
-                Divider(
-                  color: blackColor,
-                ),
+              child: FloatingActionButton(
+                backgroundColor: blueThemeColor,
+                onPressed: () {
+                  // TODO Implement Proper Arguments Here
+                  Navigator.pushNamed(context, "/addEditAddressScreen");
+                },
+                child: const Icon(Icons.add, color: Colors.white,),
+              ),
+            ),
 
-                const SizedBox(
-                  height: appPadding,
-                ),
+            body: Padding(
+              padding: const EdgeInsets.all(appPadding),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
 
-                ListView.separated(
-                  physics: const BouncingScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: addresses.length,
-                  itemBuilder: (context, index) => AddressCard(
-                    address: addresses[index],
-                    showUIForSelectAddress: widget.showUIForSelectAddressScreen,
-                  ),
-                    separatorBuilder: (context, index) => const SizedBox(
-                      height: appPadding * 1.5,
+                    const SizedBox(
+                      height: appPadding,
+                    ),
+
+                    SimpleHeader(title: widget.showUIForSelectAddressScreen
+                        ? "Select Address"
+                        : "Your Addresses"),
+
+                    const SizedBox(
+                      height: appPadding,
+                    ),
+
+                    Divider(
+                      color: blackColor,
+                    ),
+
+                    const SizedBox(
+                      height: appPadding,
+                    ),
+
+                    ListView.separated(
+                      physics: const BouncingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: addresses.length,
+                      itemBuilder: (context, index) => AddressCard(
+                        address: addresses[index],
+                        showUIForSelectAddress: widget.showUIForSelectAddressScreen,
+                        onDeleteButtonPressed: () {
+                          showDeleteAddressWarningDialog(addresses[index].addressId);
+                        },
+                      ),
+                        separatorBuilder: (context, index) => const SizedBox(
+                          height: appPadding * 1.5,
+                        )
                     )
-                )
 
-              ],
+                  ],
+                ),
+              ),
             ),
           ),
         ),
@@ -124,11 +227,15 @@ class _AddressesScreenState extends State<AddressesScreen> {
 }
 
 class AddressCard extends StatefulWidget {
-  const AddressCard({super.key,
-    required this.address, required this.showUIForSelectAddress});
+  const AddressCard(
+      {super.key,
+      required this.address,
+      required this.showUIForSelectAddress,
+      required this.onDeleteButtonPressed});
 
   final Address address;
   final bool showUIForSelectAddress;
+  final Function() onDeleteButtonPressed;
 
   @override
   State<AddressCard> createState() => _AddressCardState();
@@ -233,9 +340,7 @@ class _AddressCardState extends State<AddressCard> {
                       // TODO Implement Proper Arguments Here
                       Navigator.pushNamed(context, "/addEditAddressScreen");
                     },
-                    onSecondButtonPressed: () {
-                      // TODO Handle delete address case
-                    },
+                    onSecondButtonPressed: widget.onDeleteButtonPressed,
                     firstButtonColor: Colors.white,
                     secondButtonColor: Colors.redAccent),
 
