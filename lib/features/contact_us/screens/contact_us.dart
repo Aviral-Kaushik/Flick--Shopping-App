@@ -1,6 +1,8 @@
 import 'package:flick/admin_panel/blocs/messages/messages_bloc.dart';
 import 'package:flick/admin_panel/blocs/messages/messages_event.dart';
 import 'package:flick/admin_panel/blocs/messages/messages_state.dart';
+import 'package:flick/components/simple_text_area.dart';
+import 'package:flick/components/simple_text_field.dart';
 import 'package:flick/helper/DialogHelper.dart';
 import 'package:flick/locator.dart';
 import 'package:flick/models/Message.dart';
@@ -85,62 +87,36 @@ class _ContactUsState extends State<ContactUs> {
               height: appPadding,
             ),
 
-            TextField(
-              decoration: InputDecoration(
+            SimpleTextField(
                 labelText: "Name",
-                alignLabelWithHint: true,
-                  labelStyle: GoogleFonts.poppins(
-                      fontSize: 14,
-                      color: blackColor
-                  ),
-                  contentPadding: const EdgeInsets.all(appPadding / 4)
-              ),
-              controller: nameTextController,
-              textCapitalization: TextCapitalization.words,
-              style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w400, fontSize: 14, color: blackColor),
-            ),
+                controller: nameTextController,
+                onChanged: (String name) {
+                  nameTextController.text = name;
+                }),
 
             const SizedBox(
               height: appPadding,
             ),
 
-            TextField(
-              decoration: InputDecoration(
+            SimpleTextField(
                 labelText: "E-mail",
-                alignLabelWithHint: true,
-                labelStyle: GoogleFonts.poppins(
-                  fontSize: 14,
-                  color: blackColor
-                ),
-                contentPadding: const EdgeInsets.all(appPadding / 4)
-              ),
-              controller: emailTextController,
-              textCapitalization: TextCapitalization.words,
-              keyboardType: TextInputType.emailAddress,
-              style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w400, fontSize: 14, color: blackColor),
-            ),
+                controller: emailTextController,
+                onChanged: (String email) {
+                  emailTextController.text = email;
+                }),
 
             const SizedBox(
               height: appPadding,
             ),
 
-            TextField(
-              decoration: InputDecoration(
+            SimpleTextArea(
                 labelText: "Message",
-                alignLabelWithHint: true,
-                  labelStyle:
-                      GoogleFonts.poppins(fontSize: 14, color: blackColor),
-                  contentPadding: const EdgeInsets.all(appPadding / 4)),
-              controller: messageTextController,
-              textCapitalization: TextCapitalization.words,
-              keyboardType: TextInputType.multiline,
-              minLines: 5,
-              maxLines: 20,
-              style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w400, fontSize: 14, color: blackColor),
-            ),
+                controller: messageTextController,
+                minLines: 5,
+                maxLines: 20,
+                onChanged: (String message) {
+                  messageTextController.text = message;
+                }),
 
             const SizedBox(
               height: appPadding * 2,

@@ -5,6 +5,7 @@ import 'package:flick/admin_panel/features/messages/MessagesScreen.dart';
 import 'package:flick/admin_panel/features/referral/admin_referral_screen.dart';
 import 'package:flick/admin_panel/features/termsAndPrivacy/TermsAndPrivacyAdminScreeen.dart';
 import 'package:flick/admin_panel/features/users/UsersListScreen.dart';
+import 'package:flick/features/address/add_edit_address_screen.dart';
 import 'package:flick/features/address/addresses_screen.dart';
 import 'package:flick/features/auth/screens/login_screen.dart';
 import 'package:flick/features/auth/screens/register_screen.dart';
@@ -16,6 +17,7 @@ import 'package:flick/features/profile/screens/profile_home/profile_home.dart';
 import 'package:flick/features/referral/screens/referral_screen.dart';
 import 'package:flick/features/settings/screens/settings_screen.dart';
 import 'package:flick/features/terms_and_privacy/screens/terms_and_privacy_screen.dart';
+import 'package:flick/models/Address.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -71,7 +73,18 @@ class Routers {
         // TODO Argument logic not working
         // List argumentList = settings.arguments as List;
         return MaterialPageRoute(builder: (_) => const AddressesScreen(
-          showUIForSelectAddressScreen: true));
+          showUIForSelectAddressScreen: false));
+      case "/addEditAddressScreen":
+      // TODO Replace Optional Arguments with real arguments
+        return MaterialPageRoute(builder: (_) =>
+            AddEditAddressScreen(address: Address(
+                addressId: "1",
+                userId: "1",
+                address:
+                "Indian Merchant Chamber Bldg, Opp Chruchgate Station, Churchgate, Mumbai, Maharashtra",
+                pinCode: "400021",
+                contactNumber: "8989562356"),
+                showUiForEditAddressScreen: true));
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(

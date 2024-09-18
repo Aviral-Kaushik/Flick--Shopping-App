@@ -1,4 +1,6 @@
 import 'package:flick/components/row_with_two_buttons.dart';
+import 'package:flick/components/simple_button.dart';
+import 'package:flick/components/simple_header.dart';
 import 'package:flick/models/Address.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
@@ -53,43 +55,26 @@ class _AddressesScreenState extends State<AddressesScreen> {
         contactNumber: "8989562356"),
   ];
 
-  addressHeader() {
-    return Row(
-      children: [
-
-        GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: Container(
-            padding: const EdgeInsets.all(appPadding / 2),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(appPadding / 2),
-              border: Border.all(color: Colors.black)
-            ),
-            child: const Icon(Icons.arrow_back_ios_new, color: Colors.black, size: 20,),
-          ),
-        ),
-        
-        const SizedBox(
-          width: appPadding * 2,
-        ),
-        
-        Text(widget.showUIForSelectAddressScreen
-            ? "Select Address"
-            : "Your Addresses", style: GoogleFonts.lato(
-          color: textColor,
-          fontWeight: FontWeight.bold,
-          fontSize: 17
-        ),)
-
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: whiteColor,
+
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButton: ClipRRect(
+          borderRadius: BorderRadius.circular(appPadding * 8),
+
+          child: FloatingActionButton(
+            backgroundColor: blueThemeColor,
+            onPressed: () {
+              // TODO Implement Proper Arguments Here
+              Navigator.pushNamed(context, "/addEditAddressScreen");
+            },
+            child: const Icon(Icons.add, color: Colors.white,),
+          ),
+        ),
+
         body: Padding(
           padding: const EdgeInsets.all(appPadding),
           child: SingleChildScrollView(
@@ -100,7 +85,9 @@ class _AddressesScreenState extends State<AddressesScreen> {
                   height: appPadding,
                 ),
 
-                addressHeader(),
+                SimpleHeader(title: widget.showUIForSelectAddressScreen
+                    ? "Select Address"
+                    : "Your Addresses"),
 
                 const SizedBox(
                   height: appPadding,
@@ -243,7 +230,8 @@ class _AddressCardState extends State<AddressCard> {
                     firstBtnTitle: "Edit Address",
                     secondBtnTitle: "Delete Address",
                     onFirstButtonPressed: () {
-                      // TODO Navigate to Edit Address Screen and pop this screen
+                      // TODO Implement Proper Arguments Here
+                      Navigator.pushNamed(context, "/addEditAddressScreen");
                     },
                     onSecondButtonPressed: () {
                       // TODO Handle delete address case
@@ -252,31 +240,13 @@ class _AddressCardState extends State<AddressCard> {
                     secondButtonColor: Colors.redAccent),
 
               if (widget.showUIForSelectAddress)
-                GestureDetector(
-                  onTap: () {
-                    isSelected = !isSelected;
-                    setState(() {});
-                  },
-                  child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: appPadding,
-                          vertical: appPadding / 2),
-
-                      decoration: BoxDecoration(
-                          color: Colors.blueAccent,
-                          borderRadius: BorderRadius.circular(appPadding / 2)
-                      ),
-
-                      child: Center(
-                        child: Text("Select this Address", style: TextStyle(
-                            fontSize: 15,
-                            color: whiteColor
-                        ),
-                        ),
-                      )
-                  ),
-                ),
-
+                SimpleButton(
+                    buttonText: "Select this Address",
+                    backgroundColor: Colors.blueAccent,
+                    onPressed: () {
+                      isSelected = !isSelected;
+                      setState(() {});
+                    })
             ],
           ),
         ),
