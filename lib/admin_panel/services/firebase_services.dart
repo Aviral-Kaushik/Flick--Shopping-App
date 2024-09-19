@@ -3,6 +3,7 @@ import 'package:flick/admin_panel/helper/RulesAndRegulationHelper.dart';
 import 'package:flick/admin_panel/models/MiscellaneousDataModel.dart';
 import 'package:flick/admin_panel/models/referrals/referral_data.dart';
 import 'package:flick/admin_panel/utils/firebase/collections.dart';
+import 'package:flick/models/Address.dart';
 import 'package:flick/models/Message.dart';
 import 'package:flick/models/Product.dart';
 import 'package:flick/models/User.dart';
@@ -500,6 +501,92 @@ class FirebaseServices {
         .doc("Miscellaneous")
         .set(miscellaneousDataModel.toFirestore());
 
+  }
+
+  void storeAllAddresses(List<Address> addresses) async  {
+
+    for (Address address in addresses) {
+
+      CollectionReference addressCollection = database
+          .collection(usersCollection)
+          .doc(address.userId)
+          .collection(addressesCollection);
+
+      DocumentReference newAddressRef = addressCollection.doc();
+      address.addressId = newAddressRef.id;
+
+      await newAddressRef.set(address.toFirestore());
+
+    }
+
+  }
+
+  Future<List<Address>> getAllUserAddresses(String userId) async {
+    List<Address> addresses = [];
+
+    CollectionReference addressCollectionReference = database
+        .collection(usersCollection)
+        .doc(userId)
+        .collection(addressesCollection);
+
+    QuerySnapshot snapshot = await addressCollectionReference.get();
+
+    addresses = snapshot.docs.map((doc) {
+      return Address.fromFirestore(doc.data() as Map<String, dynamic>);
+    }).toList();
+
+    return addresses;
+  }
+
+  Future<void> addNewAddress(Address address) async {
+
+    CollectionReference addressCollection = database
+        .collection(usersCollection)
+        .doc(address.userId)
+        .collection(addressesCollection);
+
+    DocumentReference newAddressRef = addressCollection.doc();
+    address.addressId = newAddressRef.id;
+
+    await newAddressRef.set(address.toFirestore());
+  }
+
+  Future<Tuple2<bool, String>> deleteAddress(String userId, String addressId) async {
+    bool hasErrorOccurred = false;
+    String errorMessage = "";
+
+    await database
+        .collection(usersCollection)
+        .doc(userId)
+        .collection(addressesCollection)
+        .doc(addressId)
+        .delete()
+        .then((value) => debugPrint("Address Deleted Successfully"),
+        onError: (e) {
+          hasErrorOccurred = true;
+          errorMessage = e;
+        });
+
+    return Tuple2(hasErrorOccurred, errorMessage);
+  }
+
+  Future<Tuple2<bool, String>> updateAddress(Address address) async {
+    bool hasErrorOccurred = false;
+    String errorMessage = "";
+
+    await database
+        .collection(usersCollection)
+        .doc(address.userId)
+        .collection(addressesCollection)
+        .doc(address.addressId)
+        .update(address.toFirestore())
+        .then((value) => debugPrint("Address Updated Successfully"),
+        onError: (e) {
+          hasErrorOccurred = true;
+          errorMessage = e;
+        });
+
+    return Tuple2(hasErrorOccurred, errorMessage);
   }
 
 }

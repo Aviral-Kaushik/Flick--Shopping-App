@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Address {
   Address(
@@ -15,15 +14,13 @@ class Address {
   String contactNumber;
 
   factory Address.fromFirestore(
-      DocumentSnapshot<Map<String, dynamic>> snapshot,
-      SnapshotOptions? options) {
-    final data = snapshot.data();
+      Map<String, dynamic> map) {
     return Address(
-        addressId: data?["address_id"],
-        userId: data?["user_id"],
-        address: data?["address"],
-        pinCode: data?["pin_code"],
-        contactNumber: data?["contactNumber"]);
+        addressId: map["address_id"],
+        userId: map["user_id"],
+        address: map["address"],
+        pinCode: map["pin_code"],
+        contactNumber: map["contactNumber"]);
   }
 
   Map<String, dynamic> toFirestore() {

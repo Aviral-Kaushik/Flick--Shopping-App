@@ -7,6 +7,7 @@ import 'package:flick/features/address/blocs/address_bloc/address_state.dart';
 import 'package:flick/helper/DialogHelper.dart';
 import 'package:flick/locator.dart';
 import 'package:flick/models/Address.dart';
+import 'package:flick/models/User.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
   final AddressBloc addressBloc = locator.get<AddressBloc>();
 
   late DialogHelper dialogHelper;
-  List<Address>? address;
+  List<Address>? addresses;
 
   bool isAnyDialogShowing = false;
 
@@ -37,48 +38,20 @@ class _AddressesScreenState extends State<AddressesScreen> {
 
     dialogHelper = DialogHelper(context);
 
-    // TODO fetch userId
-    String userId = "1";
-
-    addressBloc.add(LoadAddresses(userId));
+    loadAddress();
   }
 
-  List<Address> addresses = [
-    Address(
-        addressId: "1",
-        userId: "1",
-        address: "C 33, Inner Circle, Connaught Place, Delhi",
-        pinCode: "110001",
-        contactNumber: "1234567890"),
-    Address(
-        addressId: "1",
-        userId: "1",
-        address:
-            "A - 45, Nand Vatika, Siwaya, Modipuram, Meerut, Uttar Pradesh",
-        pinCode: "250001",
-        contactNumber: "7896541235"),
-    Address(
-        addressId: "1",
-        userId: "1",
-        address:
-            "H. No. 638. Jansath Road Bhood, Khatauli, Muzaffarnagar, Uttar Pradesh",
-        pinCode: "250001",
-        contactNumber: "7895848685"),
-    Address(
-        addressId: "1",
-        userId: "1",
-        address:
-            "A103/2, Ahuna Divecha Complex B, Edulji Rd, Charai, Thane West, Mumbai, Maharashtra",
-        pinCode: "400601",
-        contactNumber: "1478745965"),
-    Address(
-        addressId: "1",
-        userId: "1",
-        address:
-            "Indian Merchant Chamber Bldg, Opp Chruchgate Station, Churchgate, Mumbai, Maharashtra",
-        pinCode: "400021",
-        contactNumber: "8989562356"),
-  ];
+  void loadAddress() async {
+    User? user = await User.instance;
+
+    print("Aviral User: $user");
+    if (user != null) {
+      print("Aviral User ID: ${user.id}");
+      addressBloc.add(LoadAddresses(user.id));
+    } else {
+      // TODO User Not Logged In
+    }
+  }
 
   showProgressDialog(String message) {
     isAnyDialogShowing = true;
@@ -199,21 +172,25 @@ class _AddressesScreenState extends State<AddressesScreen> {
                       height: appPadding,
                     ),
 
-                    ListView.separated(
-                      physics: const BouncingScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: addresses.length,
-                      itemBuilder: (context, index) => AddressCard(
-                        address: addresses[index],
-                        showUIForSelectAddress: widget.showUIForSelectAddressScreen,
-                        onDeleteButtonPressed: () {
-                          showDeleteAddressWarningDialog(addresses[index].addressId);
-                        },
+                    if (addresses != null && addresses!.isNotEmpty)
+                      ListView.separated(
+                        physics: const BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount:  addresses!.length ,
+                        itemBuilder: (context, index) => AddressCard(
+                          address: addresses![index],
+                          showUIForSelectAddress: widget.showUIForSelectAddressScreen,
+                          onDeleteButtonPressed: () {
+                            showDeleteAddressWarningDialog(addresses![index].addressId);
+                          },
+                        ),
+                          separatorBuilder: (context, index) => const SizedBox(
+                            height: appPadding * 1.5,
+                          )
                       ),
-                        separatorBuilder: (context, index) => const SizedBox(
-                          height: appPadding * 1.5,
-                        )
-                    )
+
+                    // if (addresses == null || (addresses != null && addresses!.isEmpty)
+                    //   // TODO UI for No Address Saved Yet Case
 
                   ],
                 ),
