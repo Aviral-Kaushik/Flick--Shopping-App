@@ -20,7 +20,7 @@ class Address {
         userId: map["user_id"],
         address: map["address"],
         pinCode: map["pin_code"],
-        contactNumber: map["contactNumber"]);
+        contactNumber: map["contact_number"]);
   }
 
   Map<String, dynamic> toFirestore() {

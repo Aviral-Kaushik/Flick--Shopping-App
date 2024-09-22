@@ -1,9 +1,9 @@
 import 'package:flick/components/row_with_two_buttons.dart';
 import 'package:flick/components/simple_button.dart';
-import 'package:flick/components/simple_header.dart';
 import 'package:flick/features/address/blocs/address_bloc/address_bloc.dart';
 import 'package:flick/features/address/blocs/address_bloc/address_event.dart';
 import 'package:flick/features/address/blocs/address_bloc/address_state.dart';
+import 'package:flick/features/address/screens/add_edit_address_screen.dart';
 import 'package:flick/helper/DialogHelper.dart';
 import 'package:flick/locator.dart';
 import 'package:flick/models/Address.dart';
@@ -32,6 +32,8 @@ class _AddressesScreenState extends State<AddressesScreen> {
 
   bool isAnyDialogShowing = false;
 
+  late User? user;
+
   @override
   void initState() {
     super.initState();
@@ -42,15 +44,58 @@ class _AddressesScreenState extends State<AddressesScreen> {
   }
 
   void loadAddress() async {
-    User? user = await User.instance;
+    user = await User.instance;
 
-    print("Aviral User: $user");
     if (user != null) {
-      print("Aviral User ID: ${user.id}");
-      addressBloc.add(LoadAddresses(user.id));
-    } else {
-      // TODO User Not Logged In
+      addressBloc.add(LoadAddresses(user!.id));
     }
+  }
+
+  addressHeaderWithRefreshButton(String title) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+
+            GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Container(
+                padding: const EdgeInsets.all(appPadding / 2),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(appPadding / 2),
+                    border: Border.all(color: Colors.black)
+                ),
+                child: const Icon(Icons.arrow_back_ios_new, color: Colors.black, size: 20,),
+              ),
+            ),
+
+            const SizedBox(
+              width: appPadding * 2,
+            ),
+
+            Text(title, style: GoogleFonts.lato(
+                color: textColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 17
+            ),)
+
+          ],
+        ),
+
+        GestureDetector(
+          onTap: () {
+            if (user != null) {
+              addressBloc.add(LoadAddresses(user!.id));
+            }
+          },
+          child: Container(
+            padding: const EdgeInsets.all(appPadding / 2),
+            child: const Icon(Icons.refresh, color: Colors.black, size: 30,),
+          ),
+        ),
+      ],
+    );
   }
 
   showProgressDialog(String message) {
@@ -84,7 +129,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
 
     dialogHelper.showWarningDialog("Are you sure want to delete this address?",
         "Delete", "Cancel", () {
-      addressBloc.add(DeleteAddress(addressId));
+      addressBloc.add(DeleteAddress(user!.id, addressId));
         }, Colors.redAccent, () {
       isAnyDialogShowing = false;
     });
@@ -139,8 +184,15 @@ class _AddressesScreenState extends State<AddressesScreen> {
               child: FloatingActionButton(
                 backgroundColor: blueThemeColor,
                 onPressed: () {
-                  // TODO Implement Proper Arguments Here
-                  Navigator.pushNamed(context, "/addEditAddressScreen");
+                  Navigator.pushNamed(context, "/addEditAddressScreen",
+                      arguments: AddEditAddressArguments(
+                          address: Address(
+                              addressId: "",
+                              userId: "",
+                              address: "",
+                              pinCode: "",
+                              contactNumber: ""),
+                          showUiForEditAddressScreen: false));
                 },
                 child: const Icon(Icons.add, color: Colors.white,),
               ),
@@ -156,7 +208,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
                       height: appPadding,
                     ),
 
-                    SimpleHeader(title: widget.showUIForSelectAddressScreen
+                    addressHeaderWithRefreshButton(widget.showUIForSelectAddressScreen
                         ? "Select Address"
                         : "Your Addresses"),
 
@@ -314,8 +366,10 @@ class _AddressCardState extends State<AddressCard> {
                     firstBtnTitle: "Edit Address",
                     secondBtnTitle: "Delete Address",
                     onFirstButtonPressed: () {
-                      // TODO Implement Proper Arguments Here
-                      Navigator.pushNamed(context, "/addEditAddressScreen");
+                      Navigator.pushNamed(context, "/addEditAddressScreen",
+                          arguments: AddEditAddressArguments(
+                              address: widget.address,
+                              showUiForEditAddressScreen: true));
                     },
                     onSecondButtonPressed: widget.onDeleteButtonPressed,
                     firstButtonColor: Colors.white,

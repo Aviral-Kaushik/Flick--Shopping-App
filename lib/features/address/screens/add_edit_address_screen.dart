@@ -8,6 +8,7 @@ import 'package:flick/features/address/blocs/add_edit_address_boc/add_edit_addre
 import 'package:flick/helper/DialogHelper.dart';
 import 'package:flick/locator.dart';
 import 'package:flick/models/Address.dart';
+import 'package:flick/models/User.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
@@ -15,11 +16,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddEditAddressScreen extends StatefulWidget {
   const AddEditAddressScreen({super.key,
-    required this.address,
-    required this.showUiForEditAddressScreen});
+    required this.arguments});
 
-  final Address address;
-  final bool showUiForEditAddressScreen;
+  final AddEditAddressArguments? arguments;
 
   @override
   State<AddEditAddressScreen> createState() => _AddEditAddressScreenState();
@@ -37,17 +36,25 @@ class _AddEditAddressScreenState extends State<AddEditAddressScreen> {
 
   bool isAnyDialogShowing = false;
 
+  late User? user;
+
   @override
   void initState() {
     super.initState();
 
-    if (widget.showUiForEditAddressScreen) {
-      addressController.text = widget.address.address;
-      contactNumberController.text = widget.address.contactNumber;
-      pinCodeController.text = widget.address.pinCode;
+    if (widget.arguments?.showUiForEditAddressScreen ?? false) {
+      addressController.text = widget.arguments?.address.address ?? "";
+      contactNumberController.text = widget.arguments?.address.contactNumber ?? "";
+      pinCodeController.text = widget.arguments?.address.pinCode ?? "";
     }
 
     dialogHelper = DialogHelper(context);
+
+    loadUserData();
+  }
+
+  void loadUserData() async {
+    user = await User.instance;
   }
 
   showProgressDialog(String message) {
@@ -133,7 +140,7 @@ class _AddEditAddressScreenState extends State<AddEditAddressScreen> {
                       ),
 
                       SimpleHeader(title:
-                          widget.showUiForEditAddressScreen
+                          widget.arguments?.showUiForEditAddressScreen ?? false
                           ? "Edit Address" : "Add Address"),
 
                       const SizedBox(
@@ -182,15 +189,31 @@ class _AddEditAddressScreenState extends State<AddEditAddressScreen> {
                     ],
                   ),
                   SimpleButton(
-                      buttonText: widget.showUiForEditAddressScreen
+                      buttonText: widget.arguments?.showUiForEditAddressScreen ?? false
                           ? "Edit Address"
                           : "Add Address",
                       backgroundColor: Colors.blueAccent,
                       onPressed: () {
-                        if (widget.showUiForEditAddressScreen) {
-                          addEditAddressBloc.add(UpdateAddress(widget.address));
+                        if (widget.arguments?.showUiForEditAddressScreen ??
+                            false) {
+                          addEditAddressBloc.add(UpdateAddress(
+                            Address(
+                                addressId:
+                                    widget.arguments?.address.addressId ?? "",
+                                userId: widget.arguments?.address.userId ?? "",
+                                address: addressController.text,
+                                pinCode: pinCodeController.text,
+                                contactNumber: contactNumberController.text),
+                          ));
                         } else {
-                          addEditAddressBloc.add(AddNewAddress(widget.address));
+                          addEditAddressBloc.add(AddNewAddress(
+                            Address(
+                                addressId: "1",
+                                userId: user?.id ?? "",
+                                address: addressController.text,
+                                pinCode: pinCodeController.text,
+                                contactNumber: contactNumberController.text),
+                          ));
                         }
                       })
                 ],
@@ -201,4 +224,14 @@ class _AddEditAddressScreenState extends State<AddEditAddressScreen> {
       ),
     );
   }
+}
+
+class AddEditAddressArguments {
+  final Address address;
+  final bool showUiForEditAddressScreen;
+
+  AddEditAddressArguments({
+    required this.address,
+    required this.showUiForEditAddressScreen,
+  });
 }

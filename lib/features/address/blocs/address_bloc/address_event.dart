@@ -11,6 +11,7 @@ class LoadAddresses extends AddressEvent {
 
 class DeleteAddress extends AddressEvent {
   final String addressId;
+  final String userId;
 
-  const DeleteAddress(this.addressId);
+  const DeleteAddress(this.userId, this.addressId);
 }

@@ -21,7 +21,7 @@ class SimpleTextArea extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       decoration: InputDecoration(
-          labelText: "Message",
+          labelText: labelText,
           alignLabelWithHint: true,
           labelStyle:
           GoogleFonts.poppins(fontSize: 14, color: blackColor),

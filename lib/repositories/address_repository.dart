@@ -23,16 +23,7 @@ class AddressRepository {
     Tuple2<bool, String> deleteAddressResponse =
         await firebaseServices.deleteAddress(userid, addressId);
 
-    if (deleteAddressResponse.item1) {
-      return deleteAddressResponse;
-    } else {
-      for (Address address in addresses) {
-        if (address.addressId == addressId) {
-          addresses.remove(address);
-        }
-      }
-      return deleteAddressResponse;
-    }
+    return deleteAddressResponse;
 
   }
 
@@ -44,13 +35,6 @@ class AddressRepository {
 
     Tuple2<bool, String> updateAddressResponse =
     await firebaseServices.updateAddress(address);
-
-    if (updateAddressResponse.item1) {
-      return updateAddressResponse;
-    }
-
-    addresses[addresses.indexWhere(
-        (element) => element.addressId == address.addressId)] = address;
 
     return updateAddressResponse;
 

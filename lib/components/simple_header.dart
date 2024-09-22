@@ -9,7 +9,7 @@ class SimpleHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Row(
+    return Row(
       children: [
 
         GestureDetector(
@@ -35,6 +35,6 @@ class SimpleHeader extends StatelessWidget {
         ),)
 
       ],
-    );;
+    );
   }
 }
