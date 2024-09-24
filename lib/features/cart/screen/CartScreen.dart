@@ -1,6 +1,7 @@
 import 'package:flick/components/CartItemTile.dart';
 import 'package:flick/core/models/CartItem.dart';
 import 'package:flick/core/models/ShoppingItem.dart';
+import 'package:flick/models/Product.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,8 +14,8 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
 
-  void deleteCartItem(ShoppingItem itemToRemove) {
-    Provider.of<CartItem>(context, listen: false).removeItemInCart(itemToRemove);
+  void deleteCartItem(Product product) {
+    Provider.of<CartItem>(context, listen: false).removeItemInCart(product);
 
     showDialog(
         context: context,
@@ -47,12 +48,12 @@ class _CartScreenState extends State<CartScreen> {
                         itemCount: value.getCartItems().length,
                         itemBuilder: (context, index) {
                           // get individual shoe
-                          ShoppingItem itemInCart = value.getCartItems()[index];
+                          Product product = value.getCartItems()[index];
 
                           // return the cart item
                           return CartItemTile(
-                              cartItem: itemInCart,
-                              onDeletePressed: () => deleteCartItem(itemInCart));
+                              product: product,
+                              onDeletePressed: () => deleteCartItem(product));
                         }),
                   )
                 ],

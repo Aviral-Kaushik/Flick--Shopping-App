@@ -1,6 +1,7 @@
+import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/components/ItemTile.dart';
 import 'package:flick/core/models/CartItem.dart';
-import 'package:flick/core/models/ShoppingItem.dart';
+import 'package:flick/models/Product.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,8 +14,11 @@ class ShopScreen extends StatefulWidget {
 }
 
 class _ShopScreenState extends State<ShopScreen> {
-  void addShoppingItemToCart(ShoppingItem shoppingItem) {
-    Provider.of<CartItem>(context, listen: false).addItemToCart(shoppingItem);
+
+  final products = getDummyProducts();
+
+  void addShoppingItemToCart(Product product) {
+    Provider.of<CartItem>(context, listen: false).addItemToCart(product);
 
     showDialog(
         context: context,
@@ -84,17 +88,22 @@ class _ShopScreenState extends State<ShopScreen> {
                 // list of shoes for sale
                 Expanded(
                     child: ListView.builder(
-                        itemCount: value.getShoppingItemOnSale().length,
+                        // itemCount: value.getShoppingItemOnSale().length,
+                        itemCount: products.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
-                          ShoppingItem shoppingItem =
-                              value.getShoppingItemOnSale()[index];
+                          // ShoppingItem shoppingItem =
+                          //     value.getShoppingItemOnSale()[index];
 
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 30.0),
-                            child: ItemTile(
-                              shoppingItem: shoppingItem,
-                              onTap: () => addShoppingItemToCart(shoppingItem),
+                            child: ProductTile(
+                              product: products[index],
+                              onProductTilePressed: () => Navigator.pushNamed(
+                                  context, "/productScreen",
+                                  arguments: products[index]),
+                              onAddToCartButtonPressed: () =>
+                                  addShoppingItemToCart(products[index]),
                             ),
                           );
                         })),
