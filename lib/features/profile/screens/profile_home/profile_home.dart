@@ -1,4 +1,3 @@
-import 'package:flick/admin_panel/components/widgets/dialogs/ProgressDialog.dart';
 import 'package:flick/models/User.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';

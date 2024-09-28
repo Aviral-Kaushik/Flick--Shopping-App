@@ -104,6 +104,7 @@ class _ShopScreenState extends State<ShopScreen> {
                                   arguments: products[index]),
                               onAddToCartButtonPressed: () =>
                                   addShoppingItemToCart(products[index]),
+                              isLastTile: index == products.length - 1,
                             ),
                           );
                         })),

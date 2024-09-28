@@ -20,6 +20,8 @@ void main() async {
   runApp(const MyApp());
 }
 
+// TODO Implement Review Collection with product id to fetch reviews for a product
+
 bool isAdmin = false;
 
 void initUserInstance() async {

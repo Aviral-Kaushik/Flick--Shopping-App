@@ -694,7 +694,7 @@ List<Product> getDummyProducts() {
       productName: "Nike",
       productDescription:
           "Designed for comfortable wear for sports and street style, NIKE is always fun to wear. Upgrade in style with a wide range from the world’s leading and much-loved sports brand, NIKE.",
-      productImages: ["lib/images/nike.png"],
+      productImages: ["lib/images/nike.png", "lib/images/zoom_freak.png", "lib/images/air_jordan.png", "lib/images/kd_treys.png", "lib/images/kyrie.jpeg"],
       productRating: 4.5,
       productPrice: 399,
       totalPurchases: 357,
