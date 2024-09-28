@@ -1,8 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flick/features/product/widgets/product_colors_list_view.dart';
 import 'package:flick/features/product/widgets/product_header.dart';
 import 'package:flick/models/Product.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -20,7 +22,7 @@ class _ProductScreenState extends State<ProductScreen> {
   priceAndColorsRowWidget() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
 
       children: [
         // Price Column
@@ -41,17 +43,28 @@ class _ProductScreenState extends State<ProductScreen> {
         ),
 
         // Colors Column
-        Column(
-          children: [
-            Text("COLORS: ", style: GoogleFonts.montserrat(
-                color: blackColor,
-                fontSize: 16,
-                fontWeight: FontWeight.w600
-            ),),
+        if (widget.product != null && widget.product!.availableColors.isNotEmpty)
+          Column(
+            children: [
+              Text("COLORS: ", style: GoogleFonts.montserrat(
+                  color: blackColor,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600
+              ),),
 
-            // Colors List
-          ],
-        ),
+              const SizedBox(height: 4,),
+
+              // Colors List
+              SizedBox(
+                width: widget.product!.availableColors.length * 33.3,
+                child: ProductColorsListView(
+                    availableHexColors: widget.product!.availableColors,
+                    selectedColor: (String selectedColor) {
+                      setState(() {});
+                    }),
+              ),
+            ],
+          ),
       ],
     );
   }

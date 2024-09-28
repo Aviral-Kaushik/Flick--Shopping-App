@@ -21,6 +21,7 @@ void main() async {
 }
 
 // TODO Implement Review Collection with product id to fetch reviews for a product
+// TODO Only Hex Color Code must be saved as string in firebase for different product color
 
 bool isAdmin = false;
 

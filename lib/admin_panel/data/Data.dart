@@ -654,7 +654,7 @@ List<Product> getDummyProducts() {
       sellerName: "Lutfhi Chan",
       productFeatures: [""],
       productCategory: 'Sneakers',
-      availableColors: [],
+      availableColors: ["FF0000", "00FF00", "0000FF"],
     ),
 
     Product(
