@@ -59,9 +59,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 width: widget.product!.availableColors.length * 33.3,
                 child: ProductColorsListView(
                     availableHexColors: widget.product!.availableColors,
-                    selectedColor: (String selectedColor) {
-                      setState(() {});
-                    }),
+                    selectedColor: (String selectedColor) {}),
               ),
             ],
           ),
