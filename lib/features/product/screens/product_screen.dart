@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flick/features/product/widgets/product_colors_list_view.dart';
 import 'package:flick/features/product/widgets/product_header.dart';
+import 'package:flick/features/product/widgets/product_screen_buttons.dart';
 import 'package:flick/models/Product.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
@@ -63,6 +64,28 @@ class _ProductScreenState extends State<ProductScreen> {
               ),
             ],
           ),
+      ],
+    );
+  }
+
+  addToCartAndBuyNowButtonsWidgets() {
+    return Column(
+      children: [
+        ProductScreenButtons(
+            buttonText: "Add To Cart!",
+            onActionPerformed: () {
+              // Add item to cart
+            },
+            showAddToCartButton: true),
+
+        const SizedBox(height: appPadding,),
+
+        ProductScreenButtons(
+            buttonText: "Buy Now!",
+            onActionPerformed: () {
+              // Buy that item
+            },
+            showAddToCartButton: false),
       ],
     );
   }
@@ -136,6 +159,10 @@ class _ProductScreenState extends State<ProductScreen> {
               const SizedBox(height: appPadding * 2,),
 
               priceAndColorsRowWidget(),
+
+              const SizedBox(height: appPadding * 2,),
+
+              addToCartAndBuyNowButtonsWidgets(),
             ],
           ),
         ),
