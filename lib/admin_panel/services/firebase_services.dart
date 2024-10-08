@@ -6,7 +6,10 @@ import 'package:flick/admin_panel/utils/firebase/collections.dart';
 import 'package:flick/models/Address.dart';
 import 'package:flick/models/Message.dart';
 import 'package:flick/models/Product.dart';
+import 'package:flick/models/product_ratings.dart';
+import 'package:flick/models/rating.dart';
 import 'package:flick/models/User.dart';
+import 'package:flick/utils/mapper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:tuple/tuple.dart';
 
@@ -587,6 +590,44 @@ class FirebaseServices {
         });
 
     return Tuple2(hasErrorOccurred, errorMessage);
+  }
+
+  Future<void> createNewRatingForProduct(String productId, Rating rating) async {
+    ProductRatings productRatings = createNewProductRatingFromRating(productId, rating);
+
+    DocumentReference productRatingsReference = database.collection(ratingsCollection).doc(productId);
+
+    DocumentSnapshot productRatingsSnapshot = await productRatingsReference.get();
+
+    if (productRatingsSnapshot.exists) {
+      Map<String, dynamic>? data = productRatingsSnapshot.data() as Map<String, dynamic>?;
+      if (data != null) {
+        ProductRatings productRatings = ProductRatings.fromMap(data);
+
+        if (productRatings.avgRating != null) {
+          num total = productRatings.totalNumberOfRating?.toInt() ?? 0;
+          num avgRating = productRatings.avgRating ?? 0.0;
+          double updatedAvgRating = avgRating + rating.rating / total + 1;
+          productRatings =
+              updateProductRatingData(productRatings, updatedAvgRating, rating);
+        }
+      }
+    }
+
+    await database
+        .colletion(ratingsCollection)
+        .doc(productId)
+        .set(productRatings.toFirestore());
+  }
+
+  Future<ProductRatings> fetchRatingsForProduct(String productId) async {
+
+    DocumentSnapshot<Map<String, dynamic>> documentSnapshot = await database
+        .collection(ratingsCollection)
+        .doc(productId)
+        .get();
+
+    return ProductRatings.fromFirestore(documentSnapshot);
   }
 
 }

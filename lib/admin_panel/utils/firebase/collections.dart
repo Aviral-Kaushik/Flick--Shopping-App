@@ -11,3 +11,4 @@ String dashboardCollection = "Dashboard";
 // Collection for handling collection like total sale, total product, total user
 String miscellaneousCollection = "Miscellaneous";
 String addressesCollection = "Addresses";
+String ratingsCollection = "Rating";

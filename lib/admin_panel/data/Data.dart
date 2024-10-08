@@ -8,6 +8,8 @@ import 'package:flick/models/Product.dart';
 import 'package:flick/models/User.dart';
 import 'package:flick/utils/Colors.dart';
 
+import '../../models/rating.dart';
+
 List<DetailsCardModel> detailsCardData = [
   DetailsCardModel(
     title: "Subscribers",
@@ -613,6 +615,44 @@ List<Message> getDummyMessages() {
   ];
 }
 
+List<Rating> getDummyRatingList1() {
+  return [
+    Rating(rating: 5, ratingComment: "Loved it! Glad to purchase that! Good & reliable quality", username: "Avichal Kaushik", ratingDate: "09-21-2024"),
+    Rating(rating: 2, ratingComment: "Did not like the color", username: "Daniel Clark", ratingDate: "05-07-2024"),
+    Rating(rating: 3, ratingComment: "An Average product but has a decent price", username: "John Doe", ratingDate: "01-19-2024"),
+    Rating(rating: 1, ratingComment: "Not a good deal to purchase this", username: "Avichal Kaushik", ratingDate: "09-21-2024"),
+  ];
+}
+
+List<Rating> getDummyRatingList2() {
+  return [
+    Rating(rating: 4, ratingComment: "Best for Gym or exercise work", username: "Anna Miller", ratingDate: "06-25-2024"),
+    Rating(rating: 2, ratingComment: "It did not have a long life", username: "Lisa Hernandez", ratingDate: "05-07-2024"),
+    Rating(rating: 1, ratingComment: "Uncomfortable during long & heavy trek", username: "Olivia Westphal", ratingDate: "06-05-2024"),
+  ];
+}
+
+List<Rating> getDummyRatingList3() {
+  return [
+    Rating(rating: 4, ratingComment: "Best for Gym or exercise work", username: "James Roberts", ratingDate: "02-25-2024"),
+    Rating(rating: 2, ratingComment: "It did not have a long life", username: "Tom Clarkson", ratingDate: "03-20-2024"),
+    Rating(rating: 1, ratingComment: "Not liked it", username: "Jane Smith", ratingDate: "07-05-2024"),
+    Rating(rating: 5, ratingComment: "Brilliant look & comfortable", username: "Aviral Kaushik", ratingDate: "10-04-2024"),
+    Rating(rating: 5, ratingComment: "Long lasting", username: "Avichal Kaushik", ratingDate: "09-15-2024"),
+    Rating(rating: 4, ratingComment: "Good product at this rate", username: "David Lee", ratingDate: "06-27-2024"),
+    Rating(rating: 3, ratingComment: "Good product", username: "Patricia Hall", ratingDate: "04-30-2024"),
+    Rating(rating: 2, ratingComment: "Comfortable and loved its softness", username: "Michael Brown", ratingDate: "02-29-2024"),
+    Rating(rating: 1, ratingComment: "Does not like that but still a okay product", username: "Ella Werendell", ratingDate: "05-30-2024"),
+    Rating(rating: 4, ratingComment: "", username: "Linda Wilson", ratingDate: "06-13-2024"),
+    Rating(rating: 4, ratingComment: "Nice Product", username: "Emma Watson", ratingDate: "06-17-2024"),
+    Rating(rating: 4, ratingComment: "Yellow color is the best", username: "Olivia Brown", ratingDate: "08-12-2024"),
+    Rating(rating: 5, ratingComment: "The main reason for purchasing this is its look and that is exceptionally well", username: "Sarah Johnson", ratingDate: "10-21-2024"),
+    Rating(rating: 3, ratingComment: "Okay ok product", username: "Mark Wright", ratingDate: "04-05-2024"),
+    Rating(rating: 3, ratingComment: "Will not purchase this again but okay product at this decent price", username: "Alex Jones", ratingDate: "03-24-2024"),
+    Rating(rating: 5, ratingComment: "Loved it! Will recommend to purchase this", username: "Emma Williams", ratingDate: "02-14-2024"),
+    Rating(rating: 2, ratingComment: "", username: "Lucas Garcia", ratingDate: "04-03-2024"),
+  ];
+}
 
 String referralMessageFromFirebase =  "Flick is an innovative e-commerce application designed to revolutionize online shopping experiences. With a sleek interface and user-friendly features, Flick empowers users to browse, discover, and purchase products effortlessly.";
 

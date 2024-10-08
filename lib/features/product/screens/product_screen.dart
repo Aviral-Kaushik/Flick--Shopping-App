@@ -90,6 +90,27 @@ class _ProductScreenState extends State<ProductScreen> {
     );
   }
 
+  productDescription() {
+    return Column(
+      children: [
+
+        Text(
+          "Product Description",
+          style: GoogleFonts.montserrat(
+              color: blackColor, fontSize: 18, fontWeight: FontWeight.w800),
+        ),
+
+        const SizedBox(height: appPadding,),
+
+        Text(
+          widget.product?.productDescription ?? "",
+          style: GoogleFonts.montserrat(
+              color: blackColor, fontSize: 16, fontWeight: FontWeight.w600),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -163,6 +184,10 @@ class _ProductScreenState extends State<ProductScreen> {
               const SizedBox(height: appPadding * 2,),
 
               addToCartAndBuyNowButtonsWidgets(),
+
+              const SizedBox(height: appPadding * 2,),
+
+              productDescription(),
             ],
           ),
         ),
