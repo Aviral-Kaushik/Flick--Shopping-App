@@ -1,9 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flick/features/product/blocs/ratings/ratings_bloc.dart';
+import 'package:flick/features/product/blocs/ratings/ratings_event.dart';
 import 'package:flick/features/product/blocs/ratings/ratings_state.dart';
+import 'package:flick/features/product/models/ui_related_product_ratings.dart';
 import 'package:flick/features/product/widgets/product_colors_list_view.dart';
 import 'package:flick/features/product/widgets/product_header.dart';
 import 'package:flick/features/product/widgets/product_screen_buttons.dart';
+import 'package:flick/features/product/widgets/products_ratings_widget.dart';
 import 'package:flick/helper/DialogHelper.dart';
 import 'package:flick/locator.dart';
 import 'package:flick/models/Product.dart';
@@ -27,12 +30,17 @@ class _ProductScreenState extends State<ProductScreen> {
   final RatingsBloc ratingsBloc = locator.get<RatingsBloc>();
   late DialogHelper dialogHelper;
 
+  UIRelatedProductRatings? uiRelatedProductRatings;
 
   @override
   void initState() {
     super.initState();
 
     dialogHelper = DialogHelper(context);
+
+    if (widget.product != null) {
+      ratingsBloc.add(FetchProductRating(widget.product!.id));
+    }
   }
 
   priceAndColorsRowWidget() {
@@ -107,6 +115,8 @@ class _ProductScreenState extends State<ProductScreen> {
 
   productDescription() {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
 
         Text(
@@ -120,8 +130,34 @@ class _ProductScreenState extends State<ProductScreen> {
         Text(
           widget.product?.productDescription ?? "",
           style: GoogleFonts.montserrat(
-              color: blackColor, fontSize: 16, fontWeight: FontWeight.w600),
+              color: blackColor, fontSize: 14, fontWeight: FontWeight.w400),
         ),
+      ],
+    );
+  }
+
+  productRatingsWidget() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Rating and Reviews",
+          style: GoogleFonts.raleway(
+              color: blackColor,
+              fontSize: 18,
+              fontWeight: FontWeight.w800),
+        ),
+
+        const SizedBox(height: appPadding,),
+
+        if (uiRelatedProductRatings != null)
+          ProductRatingsWidget(
+              context: context,
+              uiRelatedProductRatings: uiRelatedProductRatings!)
+
+        // if (productRatings == null)
+        //   No Reviw UI should be shown
       ],
     );
   }
@@ -138,7 +174,8 @@ class _ProductScreenState extends State<ProductScreen> {
           }
 
           if (state is ProductRatingsFetched) {
-
+            uiRelatedProductRatings = state.productRatings;
+            setState(() {});
           }
 
           if (state is RatingsError) {
@@ -218,9 +255,13 @@ class _ProductScreenState extends State<ProductScreen> {
 
                   addToCartAndBuyNowButtonsWidgets(),
 
-                  const SizedBox(height: appPadding * 2,),
+                  const SizedBox(height: appPadding * 3,),
 
                   productDescription(),
+
+                  const SizedBox(height: appPadding * 3,),
+
+                  productRatingsWidget(),
                 ],
               ),
             ),

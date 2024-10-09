@@ -1,3 +1,4 @@
+import 'package:flick/features/product/models/ui_related_product_ratings.dart';
 import 'package:flick/models/product_ratings.dart';
 
 abstract class RatingsState {
@@ -16,7 +17,7 @@ class RatingsProgress extends RatingsState {
 }
 
 class ProductRatingsFetched extends RatingsState {
-  final ProductRatings productRatings;
+  final UIRelatedProductRatings productRatings;
 
   const ProductRatingsFetched(this.productRatings);
 }

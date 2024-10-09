@@ -13,7 +13,7 @@ class ProductRatings {
   ProductRatings.empty();
 
   String? productId;
-  int? avgRating;
+  double? avgRating;
   int? totalNumberOfRating;
   List<Rating>? ratings;
 
