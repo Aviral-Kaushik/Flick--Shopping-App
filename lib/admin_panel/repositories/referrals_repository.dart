@@ -1,7 +1,7 @@
 import 'package:flick/admin_panel/converter/converter.dart';
 import 'package:flick/admin_panel/models/referrals/referral_data.dart';
 import 'package:flick/admin_panel/models/referrals/ui_related_referral_data.dart';
-import 'package:flick/admin_panel/services/firebase_services.dart';
+import 'package:flick/services/firebase_services.dart';
 import 'package:tuple/tuple.dart';
 
 class ReferralsRepository {

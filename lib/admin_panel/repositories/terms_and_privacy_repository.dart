@@ -1,4 +1,4 @@
-import 'package:flick/admin_panel/services/firebase_services.dart';
+import 'package:flick/services/firebase_services.dart';
 import 'package:tuple/tuple.dart';
 
 class TermsAndPrivacyRepository {

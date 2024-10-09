@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flick/admin_panel/services/firebase_services.dart';
+import 'package:flick/services/firebase_services.dart';
 import 'package:flick/data/database/hive_database.dart';
 import 'package:flick/data/session/session_manager.dart';
 import 'package:flick/features/auth/widgets/auth_divider.dart';

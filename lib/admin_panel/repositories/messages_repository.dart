@@ -1,4 +1,4 @@
-import 'package:flick/admin_panel/services/firebase_services.dart';
+import 'package:flick/services/firebase_services.dart';
 import 'package:flick/helper/MailHelper.dart';
 import 'package:flick/locator.dart';
 import 'package:flick/models/Message.dart';

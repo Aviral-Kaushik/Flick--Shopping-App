@@ -3,7 +3,7 @@ import 'package:flick/admin_panel/models/MiscellaneousDataModel.dart';
 import 'package:flick/admin_panel/models/dashboard/DashboardData.dart';
 import 'package:flick/admin_panel/models/dashboard/DeviceWiseUserData.dart';
 import 'package:flick/admin_panel/models/dashboard/MonthWiseUserData.dart';
-import 'package:flick/admin_panel/services/firebase_services.dart';
+import 'package:flick/services/firebase_services.dart';
 import 'package:flick/models/User.dart';
 import 'package:intl/intl.dart';
 

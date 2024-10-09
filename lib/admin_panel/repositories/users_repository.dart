@@ -1,5 +1,5 @@
 import 'package:flick/admin_panel/helper/UserFilter.dart';
-import 'package:flick/admin_panel/services/firebase_services.dart';
+import 'package:flick/services/firebase_services.dart';
 import 'package:flick/models/User.dart';
 import 'package:intl/intl.dart';
 import 'package:tuple/tuple.dart';

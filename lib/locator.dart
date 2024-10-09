@@ -10,7 +10,9 @@ import 'package:flick/admin_panel/repositories/referrals_repository.dart';
 import 'package:flick/admin_panel/repositories/settings_repository.dart';
 import 'package:flick/admin_panel/repositories/terms_and_privacy_repository.dart';
 import 'package:flick/admin_panel/repositories/users_repository.dart';
-import 'package:flick/admin_panel/services/firebase_services.dart';
+import 'package:flick/features/product/blocs/ratings/ratings_bloc.dart';
+import 'package:flick/repositories/ratings_repository.dart';
+import 'package:flick/services/firebase_services.dart';
 import 'package:flick/data/database/hive_database.dart';
 import 'package:flick/data/session/session_manager.dart';
 import 'package:flick/features/address/blocs/add_edit_address_boc/add_edit_address_bloc.dart';
@@ -50,4 +52,6 @@ void setup() {
           () => AddressBloc(AddressRepository(firebaseServices)));
   locator.registerLazySingleton<AddEditAddressBloc>(
           () => AddEditAddressBloc(AddressRepository(firebaseServices)));
+  locator.registerLazySingleton<RatingsBloc>(
+          () => RatingsBloc(RatingsRepository(firebaseServices)));
 }
