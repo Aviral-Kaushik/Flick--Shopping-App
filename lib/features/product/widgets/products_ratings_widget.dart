@@ -2,7 +2,7 @@ import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flick/features/product/models/ui_related_product_ratings.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flick/widgets/user_review_card.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -10,20 +10,34 @@ class ProductRatingsWidget extends StatelessWidget {
   const ProductRatingsWidget(
       {super.key,
       required this.context,
-      required this.uiRelatedProductRatings});
+      required this.uiRelatedProductRatings,
+      required this.onSeeAllReviewsButtonInteraction});
 
   final BuildContext context;
   final UIRelatedProductRatings uiRelatedProductRatings;
+  final Function() onSeeAllReviewsButtonInteraction;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       children: [
-        avgRatingStarsAndNumberOfReviewLayout(),
+        Row(
+          children: [
+            avgRatingStarsAndNumberOfReviewLayout(),
 
-        const SizedBox(width: appPadding,),
+            const SizedBox(width: appPadding,),
 
-        numberWiseReviewDistributionLayout(),
+            numberWiseReviewDistributionLayout(),
+          ],
+        ),
+
+        const SizedBox(width: appPadding * 2,),
+
+        show3ReviewsListView(),
+
+        const SizedBox(width: appPadding * 3,),
+
+        ratingsAndReviewsSectionActionButtonWidget(),
       ],
     );
   }
@@ -62,7 +76,6 @@ class ProductRatingsWidget extends StatelessWidget {
   }
 
   numberWiseReviewDistributionLayout() {
-    var data = {1: 1, 2: 1, 3: 0, 4: 1, 5: 0};
     return Flexible(
       child: ListView.builder(
         reverse: true,
@@ -114,56 +127,48 @@ class ProductRatingsWidget extends StatelessWidget {
     );
   }
 
-  // numberWiseReviewDistributionLayout() {
-  //   return ConstrainedBox(
-  //     constraints: BoxConstraints(
-  //       maxWidth: MediaQuery.of(context).size.width, // Constrain width to the device screen width
-  //     ),
-  //     child: ListView.builder(
-  //       shrinkWrap: true,
-  //       physics: const NeverScrollableScrollPhysics(), // Disable scrolling
-  //       itemCount: 5,
-  //       itemBuilder: (context, index) {
-  //         return Padding(
-  //           padding: const EdgeInsets.symmetric(vertical: appPadding / 4), // Padding for spacing between rows
-  //           child: Row(
-  //             children: [
-  //               // Constraining the width of the Text widget
-  //               SizedBox(
-  //                 width: 20, // Assign a fixed width for the index Text
-  //                 child: Text(
-  //                   index.toString(),
-  //                   style: GoogleFonts.montserrat(
-  //                     color: blackColor,
-  //                     fontSize: 12,
-  //                   ),
-  //                 ),
-  //               ),
-  //
-  //               const SizedBox(width: appPadding / 4,),
-  //
-  //               // Wrap the progress bar inside Expanded so it takes remaining space
-  //               Expanded(
-  //                 child: SizedBox(
-  //                   height: 18,
-  //                   child: ClipRRect(
-  //                     borderRadius: BorderRadius.circular(appPadding), // Rounded corners
-  //                     child: LinearProgressIndicator(
-  //                       value: (uiRelatedProductRatings.numberWiseReviewData[index] ?? 0) /
-  //                           (uiRelatedProductRatings.productRatings.totalNumberOfRating ?? 1), // Avoid division by zero
-  //                       backgroundColor: Colors.grey,
-  //                       color: Colors.blueAccent,
-  //                       valueColor: const AlwaysStoppedAnimation(Colors.blueAccent),
-  //                       minHeight: 18,
-  //                     ),
-  //                   ),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
+  show3ReviewsListView() {
+    return ListView.builder(
+        shrinkWrap: true, // Make it shrink-wrap so it takes minimal vertical space
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: 3,
+        itemBuilder: (context, index) {
+          if (uiRelatedProductRatings.productRatings.ratings != null &&
+              index < uiRelatedProductRatings.productRatings.ratings!.length) {
+            return UserReviewCard(rating: uiRelatedProductRatings.productRatings.ratings![index]);
+          } else {
+            return const SizedBox.shrink();
+          }
+        },
+      padding: const EdgeInsets.symmetric(vertical: appPadding / 2),
+    );
+  }
+
+  ratingsAndReviewsSectionActionButtonWidget() {
+    return Column(
+      children: [
+        GestureDetector(
+          onTap: () => onSeeAllReviewsButtonInteraction,
+          child: Container(
+            decoration: BoxDecoration(
+                color: const Color(0xFFF1F1F1),
+                borderRadius: BorderRadius.circular(12)),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 14),
+              child: Center(
+                child: Text(
+                  "See all reviews",
+                  style: TextStyle(
+                      color: blackColor,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }

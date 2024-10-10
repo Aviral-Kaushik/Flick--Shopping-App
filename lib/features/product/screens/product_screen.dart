@@ -151,15 +151,60 @@ class _ProductScreenState extends State<ProductScreen> {
 
         const SizedBox(height: appPadding,),
 
-        if (uiRelatedProductRatings != null)
+        if (uiRelatedProductRatings?.productRatings.ratings?.isNotEmpty ?? false)
           ProductRatingsWidget(
               context: context,
-              uiRelatedProductRatings: uiRelatedProductRatings!)
+            uiRelatedProductRatings: uiRelatedProductRatings!,
+            onSeeAllReviewsButtonInteraction: () {
+                // TODO Show Write A Review Dialog
+            }
+          )
+        else
+          SizedBox(
+            height: 70,
+            child: Center(
+              child: Text(
+                "No Reviews Yet!",
+                style: GoogleFonts.raleway(
+                    color: blackColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600),
+              ),
+            ),
+          ),
 
-        // if (productRatings == null)
-        //   No Reviw UI should be shown
+        const SizedBox(height: appPadding,),
+
+        if (shouldShowWriteAReviewButton())
+          GestureDetector(
+            onTap: () {
+              // TODO Handle Write A Review Button Interaction
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                  color: darkGreyButtonBackground,
+                  borderRadius: BorderRadius.circular(12)),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                child: Center(
+                  child: Text(
+                    "Write a Review",
+                    style: TextStyle(
+                        color: whiteTextColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
       ],
     );
+  }
+
+  bool shouldShowWriteAReviewButton() {
+    return true;
   }
 
   @override
