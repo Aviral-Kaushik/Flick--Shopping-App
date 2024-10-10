@@ -10,6 +10,8 @@ import 'package:flick/features/product/widgets/products_ratings_widget.dart';
 import 'package:flick/helper/DialogHelper.dart';
 import 'package:flick/locator.dart';
 import 'package:flick/models/Product.dart';
+import 'package:flick/models/User.dart';
+import 'package:flick/models/rating.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
@@ -32,15 +34,23 @@ class _ProductScreenState extends State<ProductScreen> {
 
   UIRelatedProductRatings? uiRelatedProductRatings;
 
+  User? user;
+
   @override
   void initState() {
     super.initState();
 
     dialogHelper = DialogHelper(context);
 
+    loadUserData();
+
     if (widget.product != null) {
       ratingsBloc.add(FetchProductRating(widget.product!.id));
     }
+  }
+
+  void loadUserData() async {
+    user = await User.instance;
   }
 
   priceAndColorsRowWidget() {
@@ -156,7 +166,10 @@ class _ProductScreenState extends State<ProductScreen> {
               context: context,
             uiRelatedProductRatings: uiRelatedProductRatings!,
             onSeeAllReviewsButtonInteraction: () {
-                // TODO Show Write A Review Dialog
+              Navigator.pushNamed(
+                  context, "/allReviewsScreen",
+                  arguments: uiRelatedProductRatings?.productRatings.ratings ??
+                      List.empty());
             }
           )
         else
@@ -178,7 +191,12 @@ class _ProductScreenState extends State<ProductScreen> {
         if (shouldShowWriteAReviewButton())
           GestureDetector(
             onTap: () {
-              // TODO Handle Write A Review Button Interaction
+              dialogHelper.showAddAReviewDialog((rating, review) {
+                debugPrint("Rating: $rating");
+                debugPrint("Rating: $review");
+                ratingsBloc.add(AddNewProductRating(
+                    getRating(rating, review), widget.product!.id));
+              });
             },
             child: Container(
               decoration: BoxDecoration(
@@ -204,7 +222,22 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 
   bool shouldShowWriteAReviewButton() {
-    return true;
+    if (user == null || uiRelatedProductRatings?.productRatings.ratings == null) {
+      return false;
+    }
+
+    bool hasUserAlreadySubmittedReview = uiRelatedProductRatings!.productRatings.ratings!
+        .any((rating) => rating.username == user!.username);
+
+    return !hasUserAlreadySubmittedReview;
+  }
+
+  Rating getRating(int rating, String review) {
+    return Rating(
+        rating: rating,
+        ratingComment: review,
+        username: user?.name ?? "",
+        ratingDate: DateTime.now().toString());
   }
 
   @override

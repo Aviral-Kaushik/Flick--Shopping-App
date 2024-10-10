@@ -1,6 +1,7 @@
 import 'package:flick/admin_panel/components/widgets/dialogs/ProgressDialog.dart';
 import 'package:flick/admin_panel/components/widgets/dialogs/SuccessfulAndErrorDialog.dart';
 import 'package:flick/admin_panel/components/widgets/dialogs/WarningDialog.dart';
+import 'package:flick/widgets/dialogs/AddReviewDialog.dart';
 import 'package:flutter/material.dart';
 
 class DialogHelper {
@@ -8,7 +9,6 @@ class DialogHelper {
 
   DialogHelper(this.context);
 
-  // TODO Use this dialog for showing progress dialog everywhere
   void showProgressDialog(String message, Function()? afterDismissCallback) {
     showDialog(
         barrierDismissible: false,
@@ -51,5 +51,15 @@ class DialogHelper {
               onPressed: onPressed,
               firstButtonColor: firstButtonColor,
             )).then((value) => afterDismissCallBack);
+  }
+
+  void showAddAReviewDialog(
+      Function(int rating, String review) onRatingAndReviewSubmitted
+  ) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => AddReviewDialog(
+            onReviewAndRatingSubmitted: (int rating, String review) =>
+                onRatingAndReviewSubmitted(rating, review)));
   }
 }

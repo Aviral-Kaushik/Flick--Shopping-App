@@ -37,7 +37,7 @@ class ProductRatingsWidget extends StatelessWidget {
 
         const SizedBox(width: appPadding * 3,),
 
-        ratingsAndReviewsSectionActionButtonWidget(),
+        seeAllReviewsActionButtonWidget(),
       ],
     );
   }
@@ -144,31 +144,27 @@ class ProductRatingsWidget extends StatelessWidget {
     );
   }
 
-  ratingsAndReviewsSectionActionButtonWidget() {
-    return Column(
-      children: [
-        GestureDetector(
-          onTap: () => onSeeAllReviewsButtonInteraction,
-          child: Container(
-            decoration: BoxDecoration(
-                color: const Color(0xFFF1F1F1),
-                borderRadius: BorderRadius.circular(12)),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 14),
-              child: Center(
-                child: Text(
-                  "See all reviews",
-                  style: TextStyle(
-                      color: blackColor,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16
-                  ),
-                ),
+  seeAllReviewsActionButtonWidget() {
+    return GestureDetector(
+      onTap: () => onSeeAllReviewsButtonInteraction(),
+      child: Container(
+        decoration: BoxDecoration(
+            color: const Color(0xFFF1F1F1),
+            borderRadius: BorderRadius.circular(12)),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          child: Center(
+            child: Text(
+              "See all reviews",
+              style: TextStyle(
+                  color: blackColor,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16
               ),
             ),
           ),
         ),
-      ],
+      ),
     );
   }
 }

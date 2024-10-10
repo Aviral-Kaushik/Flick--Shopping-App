@@ -16,9 +16,11 @@ import 'package:flick/features/intro/IntroScreen.dart';
 import 'package:flick/features/product/screens/product_screen.dart';
 import 'package:flick/features/profile/screens/profile_home/profile_home.dart';
 import 'package:flick/features/referral/screens/referral_screen.dart';
+import 'package:flick/features/review/screen/all_reviews_screen.dart';
 import 'package:flick/features/settings/screens/settings_screen.dart';
 import 'package:flick/features/terms_and_privacy/screens/terms_and_privacy_screen.dart';
 import 'package:flick/models/Product.dart';
+import 'package:flick/models/rating.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -83,6 +85,9 @@ class Routers {
       case "/productScreen":
         final args = settings.arguments as Product;
         return MaterialPageRoute(builder: (_) => ProductScreen(product: args));
+      case "/allReviewsScreen":
+        final args = settings.arguments as List<Rating>;
+        return MaterialPageRoute(builder: (_) => AllReviewsScreen(ratings: args));
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(
