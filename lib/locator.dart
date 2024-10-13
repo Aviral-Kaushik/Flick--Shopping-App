@@ -35,23 +35,23 @@ void setup() {
   // Get it initialization for Admin Panel Blocs
   locator.registerLazySingleton<TermsAndPrivacyRepository>(
       () => TermsAndPrivacyRepository(firebaseServices));
-  locator.registerLazySingleton<TermsAndPrivacyBloc>(
+  locator.registerFactory<TermsAndPrivacyBloc>(
       () => TermsAndPrivacyBloc(TermsAndPrivacyRepository(firebaseServices)));
-  locator.registerLazySingleton<MessagesBloc>(
+  locator.registerFactory<MessagesBloc>(
       () => MessagesBloc(MessageRepository(firebaseServices)));
-  locator.registerLazySingleton<SettingsBloc>(
+  locator.registerFactory<SettingsBloc>(
       () => SettingsBloc(SettingsRepository(firebaseServices)));
-  locator.registerLazySingleton<ReferralsBloc>(
+  locator.registerFactory<ReferralsBloc>(
       () => ReferralsBloc(ReferralsRepository(firebaseServices)));
-  locator.registerLazySingleton<DashboardBloc>(
+  locator.registerFactory<DashboardBloc>(
       () => DashboardBloc(DashboardRepository(firebaseServices)));
-  locator.registerLazySingleton<UsersBloc>(
+  locator.registerFactory<UsersBloc>(
       () => UsersBloc(UsersRepository(firebaseServices)));
 
-  locator.registerLazySingleton<AddressBloc>(
+  locator.registerFactory<AddressBloc>(
           () => AddressBloc(AddressRepository(firebaseServices)));
-  locator.registerLazySingleton<AddEditAddressBloc>(
+  locator.registerFactory<AddEditAddressBloc>(
           () => AddEditAddressBloc(AddressRepository(firebaseServices)));
-  locator.registerLazySingleton<RatingsBloc>(
+  locator.registerFactory<RatingsBloc>(
           () => RatingsBloc(RatingsRepository(firebaseServices)));
 }

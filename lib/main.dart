@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flick/core/Routers.dart';
-import 'package:flick/core/models/CartItem.dart';
+import 'package:flick/core/models/cart_item.dart';
 import 'package:flick/locator.dart';
 import 'package:flick/models/User.dart';
 import 'package:flick/utils/auth.dart';

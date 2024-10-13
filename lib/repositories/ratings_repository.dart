@@ -12,7 +12,7 @@ class RatingsRepository {
   RatingsRepository(this.firebaseServices);
 
   Future<UIRelatedProductRatings> fetchProductRatings(String productId) async {
-    List<Rating> ratings = getDummyRatingList2();
+    List<Rating> ratings = getDummyRatingList3();
     int sumOfAllRatings = 1;
 
     for (Rating rating in ratings) {

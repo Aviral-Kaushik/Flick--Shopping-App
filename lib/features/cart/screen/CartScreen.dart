@@ -1,6 +1,6 @@
 import 'package:flick/components/CartItemTile.dart';
-import 'package:flick/core/models/CartItem.dart';
-import 'package:flick/core/models/ShoppingItem.dart';
+import 'package:flick/core/models/cart_item.dart';
+import 'package:flick/core/models/shopping_item.dart';
 import 'package:flick/models/Product.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

@@ -17,6 +17,8 @@ import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:flick/core/models/cart_item.dart';
 
 class ProductScreen extends StatefulWidget {
   const ProductScreen({super.key, required this.product});
@@ -107,7 +109,7 @@ class _ProductScreenState extends State<ProductScreen> {
         ProductScreenButtons(
             buttonText: "Add To Cart!",
             onActionPerformed: () {
-              // Add item to cart
+              Provider.of<CartItem>(context, listen: false).addItemToCart(widget.product!);
             },
             showAddToCartButton: true),
 

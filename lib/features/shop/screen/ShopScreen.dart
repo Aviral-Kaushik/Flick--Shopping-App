@@ -1,6 +1,6 @@
 import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/components/ItemTile.dart';
-import 'package:flick/core/models/CartItem.dart';
+import 'package:flick/core/models/cart_item.dart';
 import 'package:flick/models/Product.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flutter/material.dart';
