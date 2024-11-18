@@ -19,6 +19,7 @@ import 'package:flick/features/address/blocs/add_edit_address_boc/add_edit_addre
 import 'package:flick/features/address/blocs/address_bloc/address_bloc.dart';
 import 'package:flick/helper/MailHelper.dart';
 import 'package:flick/repositories/address_repository.dart';
+import 'package:flick/services/storage/storage_service.dart';
 import 'package:get_it/get_it.dart';
 
 final locator = GetIt.instance;
@@ -49,9 +50,11 @@ void setup() {
       () => UsersBloc(UsersRepository(firebaseServices)));
 
   locator.registerFactory<AddressBloc>(
-          () => AddressBloc(AddressRepository(firebaseServices)));
+      () => AddressBloc(AddressRepository(firebaseServices)));
   locator.registerFactory<AddEditAddressBloc>(
-          () => AddEditAddressBloc(AddressRepository(firebaseServices)));
+      () => AddEditAddressBloc(AddressRepository(firebaseServices)));
   locator.registerFactory<RatingsBloc>(
-          () => RatingsBloc(RatingsRepository(firebaseServices)));
+      () => RatingsBloc(RatingsRepository(firebaseServices)));
+
+  locator.registerLazySingleton<StorageService>(() => StorageService());
 }

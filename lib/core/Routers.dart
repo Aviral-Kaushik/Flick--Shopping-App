@@ -2,6 +2,8 @@ import 'package:flick/admin_panel/controllers/AdminPanelController.dart';
 import 'package:flick/admin_panel/features/adminSettings/AdminSettingsScreen.dart';
 import 'package:flick/admin_panel/features/home/AdminPanelHomeScreen.dart';
 import 'package:flick/admin_panel/features/messages/MessagesScreen.dart';
+import 'package:flick/admin_panel/features/product/screens/add_new_product_screen.dart';
+import 'package:flick/admin_panel/features/product/screens/all_prodcuts_screen.dart';
 import 'package:flick/admin_panel/features/referral/admin_referral_screen.dart';
 import 'package:flick/admin_panel/features/termsAndPrivacy/TermsAndPrivacyAdminScreeen.dart';
 import 'package:flick/admin_panel/features/users/UsersListScreen.dart';
@@ -36,26 +38,36 @@ class Routers {
       case "/shopScreen":
         return MaterialPageRoute(builder: (_) => const IntroScreen());
       case "/adminPanel":
-        return MaterialPageRoute(builder: (_) => MultiProvider(
-            providers: [
-              ChangeNotifierProvider(create: (context) => AdminPanelController(),)
-            ],
-            child: const AdminPanelHomeScreen(),
-          ));
+        return MaterialPageRoute(
+            builder: (_) => MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider(
+                      create: (context) => AdminPanelController(),
+                    )
+                  ],
+                  child: const AdminPanelHomeScreen(),
+                ));
       case "/profileHome":
         return MaterialPageRoute(builder: (_) => const ProfileHome());
       case "/adminReferralsScreen":
         return MaterialPageRoute(builder: (_) => const AdminReferralsScreen());
       case "/adminTermsAndCondition":
-        return MaterialPageRoute(builder: (_) => const TermsAndPrivacyAdminScreen());
+        return MaterialPageRoute(
+            builder: (_) => const TermsAndPrivacyAdminScreen());
       case "/adminPrivacyPolicyScreen":
-        return MaterialPageRoute(builder: (_) => const TermsAndPrivacyAdminScreen(showUIForPrivacyPolicy: true));
+        return MaterialPageRoute(
+            builder: (_) =>
+                const TermsAndPrivacyAdminScreen(showUIForPrivacyPolicy: true));
       case "/adminUsersListScreen":
         return MaterialPageRoute(builder: (_) => const UsersListScreen());
       case "/adminMessagesScreen":
         return MaterialPageRoute(builder: (_) => const MessagesScreen());
       case "/adminSettingsScreen":
         return MaterialPageRoute(builder: (_) => const AdminSettingsScreen());
+      case "/adminProductsScreen":
+        return MaterialPageRoute(builder: (_) => const AllProductsScreen());
+      case "/addNewProductScreen":
+        return MaterialPageRoute(builder: (_) => const AddNewProductScreen());
       case "/termsAndConditions":
         return MaterialPageRoute(builder: (_) => const TermsAndPrivacyScreen());
       case "/privacyPolicy":
@@ -75,19 +87,21 @@ class Routers {
       case "/addressesScreen":
         // List argumentList = settings.arguments as List;
         final args = settings.arguments as Map<String, dynamic>?;
-        return MaterialPageRoute(builder: (_) => AddressesScreen(
+        return MaterialPageRoute(
+            builder: (_) => AddressesScreen(
                 showUIForSelectAddressScreen:
                     args?['showUIForSelectAddressScreen'] ?? false));
       case "/addEditAddressScreen":
         final args = settings.arguments as AddEditAddressArguments?;
-        return MaterialPageRoute(builder: (_) =>
-            AddEditAddressScreen(arguments: args));
+        return MaterialPageRoute(
+            builder: (_) => AddEditAddressScreen(arguments: args));
       case "/productScreen":
         final args = settings.arguments as Product;
         return MaterialPageRoute(builder: (_) => ProductScreen(product: args));
       case "/allReviewsScreen":
         final args = settings.arguments as List<Rating>;
-        return MaterialPageRoute(builder: (_) => AllReviewsScreen(ratings: args));
+        return MaterialPageRoute(
+            builder: (_) => AllReviewsScreen(ratings: args));
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(

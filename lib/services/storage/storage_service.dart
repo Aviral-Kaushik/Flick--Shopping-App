@@ -74,7 +74,7 @@ class StorageService {
       // Upload File to firebase storage
       await firebaseStorage.ref(filePath).putFile(file);
 
-      // Fetch the downalod url
+      // Fetch the downaload url
       String downloadUrl = await firebaseStorage.ref(filePath).getDownloadURL();
     } catch (e) {
       debugPrint(e.toString());

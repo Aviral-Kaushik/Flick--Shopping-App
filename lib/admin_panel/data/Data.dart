@@ -89,7 +89,6 @@ List<ReferralInfoModel> referralData = [
     svgSrc: "assets/icons/Linkedin.svg",
     color: adminPanelPrimaryColor,
   ),
-
   ReferralInfoModel(
     title: "Dribble",
     count: 234,
@@ -98,7 +97,8 @@ List<ReferralInfoModel> referralData = [
   ),
 ];
 
-String termsAndCondition = """Welcome to Flick! These Terms and Conditions ("Terms") govern your use of our eCommerce application ("Flick" or the "App"). By accessing or using the App, you agree to comply with and be bound by these Terms. If you do not agree to these Terms, please do not use the App.
+String termsAndCondition =
+    """Welcome to Flick! These Terms and Conditions ("Terms") govern your use of our eCommerce application ("Flick" or the "App"). By accessing or using the App, you agree to comply with and be bound by these Terms. If you do not agree to these Terms, please do not use the App.
 
 1. Use of the App
 1.1 You must be at least 18 years old to use Flick. By using the App, you represent and warrant that you meet this age requirement.
@@ -143,7 +143,8 @@ String termsAndCondition = """Welcome to Flick! These Terms and Conditions ("Ter
 Contact Us
 If you have any questions about these Terms, please contact us at [support@flick.com].""";
 
-String privacyPolicy = """Flick ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and disclose information about you when you use our eCommerce application ("Flick" or the "App").
+String privacyPolicy =
+    """Flick ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and disclose information about you when you use our eCommerce application ("Flick" or the "App").
 
 1. Information We Collect
 1.1 We collect information that you provide directly to us, such as when you create an account, place an order, or contact us for support. This information may include your name, email address, phone number, shipping address, and payment information.
@@ -606,62 +607,197 @@ List<User> getUsersData() {
 
 List<Message> getDummyMessages() {
   return [
-    Message(id: "1", name: "Avichal Kaushik", contactEmail: "avichalkaushik0007@gmail.com", subject: "Become Seller at flick", message: "I want to be a new seller on flick and sell my products can you please specify the further process of becoming seller at flick", dateAndTime: DateTime.now().toString()),
-    Message(id: "2", name: "Jobye Phillipp", contactEmail: "jphillipp2@deviantart.com", subject: "Need details of flick", message: "What is Flick?", dateAndTime: DateTime.now().toString()),
-    Message(id: "3", name: "Ella Werendell", contactEmail: "ewerendell0@yandex.ru", subject: "Flick Working", message: "How does it work?", dateAndTime: DateTime.now().toString()),
-    Message(id: "4", name: "Donnajean Hawse", contactEmail: "dhawse3@printfriendly.com", subject: "Nike Special Edition" , message: "When will new nike new limited edition will come?", dateAndTime: DateTime.now().toString()),
-    Message(id: "5", name: "Ban Steutly", contactEmail: "bsteutly6@booking.com", subject: "Electronic reference" , message: "Does you deals in electronics?", dateAndTime: DateTime.now().toString()),
-    Message(id: "6", name: "Rosamond Fanning", contactEmail: "rfanning9@disqus.com", subject: "Sale information" , message: "When will the special festiv sale will come?", dateAndTime: DateTime.now().toString())
+    Message(
+        id: "1",
+        name: "Avichal Kaushik",
+        contactEmail: "avichalkaushik0007@gmail.com",
+        subject: "Become Seller at flick",
+        message:
+            "I want to be a new seller on flick and sell my products can you please specify the further process of becoming seller at flick",
+        dateAndTime: DateTime.now().toString()),
+    Message(
+        id: "2",
+        name: "Jobye Phillipp",
+        contactEmail: "jphillipp2@deviantart.com",
+        subject: "Need details of flick",
+        message: "What is Flick?",
+        dateAndTime: DateTime.now().toString()),
+    Message(
+        id: "3",
+        name: "Ella Werendell",
+        contactEmail: "ewerendell0@yandex.ru",
+        subject: "Flick Working",
+        message: "How does it work?",
+        dateAndTime: DateTime.now().toString()),
+    Message(
+        id: "4",
+        name: "Donnajean Hawse",
+        contactEmail: "dhawse3@printfriendly.com",
+        subject: "Nike Special Edition",
+        message: "When will new nike new limited edition will come?",
+        dateAndTime: DateTime.now().toString()),
+    Message(
+        id: "5",
+        name: "Ban Steutly",
+        contactEmail: "bsteutly6@booking.com",
+        subject: "Electronic reference",
+        message: "Does you deals in electronics?",
+        dateAndTime: DateTime.now().toString()),
+    Message(
+        id: "6",
+        name: "Rosamond Fanning",
+        contactEmail: "rfanning9@disqus.com",
+        subject: "Sale information",
+        message: "When will the special festiv sale will come?",
+        dateAndTime: DateTime.now().toString())
   ];
 }
 
 List<Rating> getDummyRatingList1() {
   return [
-    Rating(rating: 5, ratingComment: "Loved it! Glad to purchase that! Good & reliable quality", username: "Avichal Kaushik", ratingDate: "09-21-2024"),
-    Rating(rating: 2, ratingComment: "Did not like the color", username: "Daniel Clark", ratingDate: "05-07-2024"),
-    Rating(rating: 3, ratingComment: "An Average product but has a decent price", username: "John Doe", ratingDate: "01-19-2024"),
-    Rating(rating: 1, ratingComment: "Not a good deal to purchase this", username: "Avichal Kaushik", ratingDate: "09-21-2024"),
+    Rating(
+        rating: 5,
+        ratingComment:
+            "Loved it! Glad to purchase that! Good & reliable quality",
+        username: "Avichal Kaushik",
+        ratingDate: "09-21-2024"),
+    Rating(
+        rating: 2,
+        ratingComment: "Did not like the color",
+        username: "Daniel Clark",
+        ratingDate: "05-07-2024"),
+    Rating(
+        rating: 3,
+        ratingComment: "An Average product but has a decent price",
+        username: "John Doe",
+        ratingDate: "01-19-2024"),
+    Rating(
+        rating: 1,
+        ratingComment: "Not a good deal to purchase this",
+        username: "Avichal Kaushik",
+        ratingDate: "09-21-2024"),
   ];
 }
 
 List<Rating> getDummyRatingList2() {
   return [
-    Rating(rating: 4, ratingComment: "Best for Gym or exercise work", username: "Anna Miller", ratingDate: "06-25-2024"),
-    Rating(rating: 2, ratingComment: "It did not have a long life", username: "Lisa Hernandez", ratingDate: "05-07-2024"),
-    Rating(rating: 1, ratingComment: "Uncomfortable during long & heavy trek", username: "Olivia Westphal", ratingDate: "06-05-2024"),
+    Rating(
+        rating: 4,
+        ratingComment: "Best for Gym or exercise work",
+        username: "Anna Miller",
+        ratingDate: "06-25-2024"),
+    Rating(
+        rating: 2,
+        ratingComment: "It did not have a long life",
+        username: "Lisa Hernandez",
+        ratingDate: "05-07-2024"),
+    Rating(
+        rating: 1,
+        ratingComment: "Uncomfortable during long & heavy trek",
+        username: "Olivia Westphal",
+        ratingDate: "06-05-2024"),
   ];
 }
 
 List<Rating> getDummyRatingList3() {
   return [
-    Rating(rating: 4, ratingComment: "Best for Gym or exercise work", username: "James Roberts", ratingDate: "02-25-2024"),
-    Rating(rating: 2, ratingComment: "It did not have a long life", username: "Tom Clarkson", ratingDate: "03-20-2024"),
-    Rating(rating: 1, ratingComment: "Not liked it", username: "Jane Smith", ratingDate: "07-05-2024"),
-    Rating(rating: 5, ratingComment: "Brilliant look & comfortable", username: "Aviral Kaushik", ratingDate: "10-04-2024"),
-    Rating(rating: 5, ratingComment: "Long lasting", username: "Avichal Kaushik", ratingDate: "09-15-2024"),
-    Rating(rating: 4, ratingComment: "Good product at this rate", username: "David Lee", ratingDate: "06-27-2024"),
-    Rating(rating: 3, ratingComment: "Good product", username: "Patricia Hall", ratingDate: "04-30-2024"),
-    Rating(rating: 2, ratingComment: "Comfortable and loved its softness", username: "Michael Brown", ratingDate: "02-29-2024"),
-    Rating(rating: 1, ratingComment: "Does not like that but still a okay product", username: "Ella Werendell", ratingDate: "05-30-2024"),
-    Rating(rating: 4, ratingComment: "", username: "Linda Wilson", ratingDate: "06-13-2024"),
-    Rating(rating: 4, ratingComment: "Nice Product", username: "Emma Watson", ratingDate: "06-17-2024"),
-    Rating(rating: 4, ratingComment: "Yellow color is the best", username: "Olivia Brown", ratingDate: "08-12-2024"),
-    Rating(rating: 5, ratingComment: "The main reason for purchasing this is its look and that is exceptionally well", username: "Sarah Johnson", ratingDate: "10-21-2024"),
-    Rating(rating: 3, ratingComment: "Okay ok product", username: "Mark Wright", ratingDate: "04-05-2024"),
-    Rating(rating: 3, ratingComment: "Will not purchase this again but okay product at this decent price", username: "Alex Jones", ratingDate: "03-24-2024"),
-    Rating(rating: 5, ratingComment: "Loved it! Will recommend to purchase this", username: "Emma Williams", ratingDate: "02-14-2024"),
-    Rating(rating: 2, ratingComment: "", username: "Lucas Garcia", ratingDate: "04-03-2024"),
+    Rating(
+        rating: 4,
+        ratingComment: "Best for Gym or exercise work",
+        username: "James Roberts",
+        ratingDate: "02-25-2024"),
+    Rating(
+        rating: 2,
+        ratingComment: "It did not have a long life",
+        username: "Tom Clarkson",
+        ratingDate: "03-20-2024"),
+    Rating(
+        rating: 1,
+        ratingComment: "Not liked it",
+        username: "Jane Smith",
+        ratingDate: "07-05-2024"),
+    Rating(
+        rating: 5,
+        ratingComment: "Brilliant look & comfortable",
+        username: "Aviral Kaushik",
+        ratingDate: "10-04-2024"),
+    Rating(
+        rating: 5,
+        ratingComment: "Long lasting",
+        username: "Avichal Kaushik",
+        ratingDate: "09-15-2024"),
+    Rating(
+        rating: 4,
+        ratingComment: "Good product at this rate",
+        username: "David Lee",
+        ratingDate: "06-27-2024"),
+    Rating(
+        rating: 3,
+        ratingComment: "Good product",
+        username: "Patricia Hall",
+        ratingDate: "04-30-2024"),
+    Rating(
+        rating: 2,
+        ratingComment: "Comfortable and loved its softness",
+        username: "Michael Brown",
+        ratingDate: "02-29-2024"),
+    Rating(
+        rating: 1,
+        ratingComment: "Does not like that but still a okay product",
+        username: "Ella Werendell",
+        ratingDate: "05-30-2024"),
+    Rating(
+        rating: 4,
+        ratingComment: "",
+        username: "Linda Wilson",
+        ratingDate: "06-13-2024"),
+    Rating(
+        rating: 4,
+        ratingComment: "Nice Product",
+        username: "Emma Watson",
+        ratingDate: "06-17-2024"),
+    Rating(
+        rating: 4,
+        ratingComment: "Yellow color is the best",
+        username: "Olivia Brown",
+        ratingDate: "08-12-2024"),
+    Rating(
+        rating: 5,
+        ratingComment:
+            "The main reason for purchasing this is its look and that is exceptionally well",
+        username: "Sarah Johnson",
+        ratingDate: "10-21-2024"),
+    Rating(
+        rating: 3,
+        ratingComment: "Okay ok product",
+        username: "Mark Wright",
+        ratingDate: "04-05-2024"),
+    Rating(
+        rating: 3,
+        ratingComment:
+            "Will not purchase this again but okay product at this decent price",
+        username: "Alex Jones",
+        ratingDate: "03-24-2024"),
+    Rating(
+        rating: 5,
+        ratingComment: "Loved it! Will recommend to purchase this",
+        username: "Emma Williams",
+        ratingDate: "02-14-2024"),
+    Rating(
+        rating: 2,
+        ratingComment: "",
+        username: "Lucas Garcia",
+        ratingDate: "04-03-2024"),
   ];
 }
 
-String referralMessageFromFirebase =  "Flick is an innovative e-commerce application designed to revolutionize online shopping experiences. With a sleek interface and user-friendly features, Flick empowers users to browse, discover, and purchase products effortlessly.";
-
+String referralMessageFromFirebase =
+    "Flick is an innovative e-commerce application designed to revolutionize online shopping experiences. With a sleek interface and user-friendly features, Flick empowers users to browse, discover, and purchase products effortlessly.";
 
 int facebookReferralsCountFromFirebase = 240;
 int twitterReferralsCountFromFirebase = 195;
 int linkedinReferralsCountFromFirebase = 135;
 int othersReferralsCountFromFirebase = 95;
-
 
 List<Product> getDummyProducts() {
   return [
@@ -676,27 +812,23 @@ List<Product> getDummyProducts() {
       totalPurchases: 415,
       stock: 153,
       sellerName: "Danar Comel",
-      productFeatures: [""],
       productCategory: 'Sneakers',
       availableColors: [],
     ),
-
     Product(
       id: "2",
       productName: "Air Jordan",
       productDescription:
-          "You\'ve got the hops and the speed lace up that enhances.",
+          "You've got the hops and the speed lace up that enhances.",
       productImages: ["lib/images/air_jordan.png"],
       productRating: 3,
       productPrice: 220,
       totalPurchases: 317,
       stock: 217,
       sellerName: "Lutfhi Chan",
-      productFeatures: [""],
       productCategory: 'Sneakers',
       availableColors: ["FF0000", "00FF00", "0000FF"],
     ),
-
     Product(
       id: "3",
       productName: "KD Treys",
@@ -708,11 +840,9 @@ List<Product> getDummyProducts() {
       totalPurchases: 153,
       stock: 57,
       sellerName: "Devi Carlos",
-      productFeatures: [""],
       productCategory: 'Sneakers',
       availableColors: [],
     ),
-
     Product(
       id: "4",
       productName: "Kyrie 6",
@@ -724,23 +854,26 @@ List<Product> getDummyProducts() {
       totalPurchases: 267,
       stock: 35,
       sellerName: "Karin Lumina",
-      productFeatures: [""],
       productCategory: 'Sneakers',
       availableColors: [],
     ),
-
     Product(
       id: "5",
       productName: "Nike",
       productDescription:
           "Designed for comfortable wear for sports and street style, NIKE is always fun to wear. Upgrade in style with a wide range from the world’s leading and much-loved sports brand, NIKE.",
-      productImages: ["lib/images/nike.png", "lib/images/zoom_freak.png", "lib/images/air_jordan.png", "lib/images/kd_treys.png", "lib/images/kyrie.jpeg"],
+      productImages: [
+        "lib/images/nike.png",
+        "lib/images/zoom_freak.png",
+        "lib/images/air_jordan.png",
+        "lib/images/kd_treys.png",
+        "lib/images/kyrie.jpeg"
+      ],
       productRating: 4.5,
       productPrice: 399,
       totalPurchases: 357,
       stock: 295,
       sellerName: "Avichal Kaushik",
-      productFeatures: [""],
       productCategory: 'Sneakers',
       availableColors: [],
     ),

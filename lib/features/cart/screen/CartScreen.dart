@@ -1,6 +1,5 @@
 import 'package:flick/components/CartItemTile.dart';
 import 'package:flick/core/models/cart_item.dart';
-import 'package:flick/core/models/shopping_item.dart';
 import 'package:flick/models/Product.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,16 +12,15 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-
   void deleteCartItem(Product product) {
     Provider.of<CartItem>(context, listen: false).removeItemInCart(product);
 
     showDialog(
         context: context,
         builder: (context) => const AlertDialog(
-          title: Text("Successfully Delete!"),
-          content: Text("Item removed from cart!"),
-        ));
+              title: Text("Successfully Delete!"),
+              content: Text("Item removed from cart!"),
+            ));
   }
 
   @override

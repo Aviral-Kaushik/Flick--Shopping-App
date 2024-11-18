@@ -15,15 +15,15 @@ class AdminDrawerMenu extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 25.0),
             child: DrawerHeader(
                 child: Image.asset(
-                  "assets/images/logowithtext.png",
-                )),
+              "assets/images/logowithtext.png",
+            )),
           ),
-
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Divider(color: dividerColor,),
+            child: Divider(
+              color: dividerColor,
+            ),
           ),
-
           AdminDrawerListTile(
               title: "Dash Board",
               icon: "assets/icons/Dashboard.svg",
@@ -31,7 +31,6 @@ class AdminDrawerMenu extends StatelessWidget {
               onTap: () {
                 Navigator.pushNamed(context, "/adminPanel");
               }),
-
           AdminDrawerListTile(
               title: "Users",
               icon: "assets/icons/Subscribers.svg",
@@ -39,15 +38,15 @@ class AdminDrawerMenu extends StatelessWidget {
               onTap: () {
                 Navigator.pushNamed(context, "/adminUsersListScreen");
               }),
-
           AdminDrawerListTile(
               title: "Products",
               icon: "assets/icons/Message.svg",
               isSvgImage: false,
               tileIcon: const Icon(Icons.shopping_cart_outlined,
                   color: adminPanelPrimaryColor),
-              onTap: () {}),
-
+              onTap: () {
+                Navigator.pushNamed(context, "/adminProductsScreen");
+              }),
           AdminDrawerListTile(
               title: "Referrals",
               icon: "assets/icons/Referrals.svg",
@@ -57,7 +56,6 @@ class AdminDrawerMenu extends StatelessWidget {
               onTap: () {
                 Navigator.pushNamed(context, "/adminReferralsScreen");
               }),
-
           AdminDrawerListTile(
               title: "Messages",
               icon: "assets/icons/Message.svg",
@@ -65,7 +63,6 @@ class AdminDrawerMenu extends StatelessWidget {
               onTap: () {
                 Navigator.pushNamed(context, "/adminMessagesScreen");
               }),
-
           AdminDrawerListTile(
               title: "Terms of Use",
               icon: "assets/icons/Policy.svg",
@@ -75,7 +72,6 @@ class AdminDrawerMenu extends StatelessWidget {
               onTap: () {
                 Navigator.pushNamed(context, "/adminTermsAndCondition");
               }),
-
           AdminDrawerListTile(
               title: "Privacy Policy",
               icon: "assets/icons/Policy.svg",
@@ -85,12 +81,12 @@ class AdminDrawerMenu extends StatelessWidget {
               onTap: () {
                 Navigator.pushNamed(context, "/adminPrivacyPolicyScreen");
               }),
-
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Divider(color: dividerColor,),
+            child: Divider(
+              color: dividerColor,
+            ),
           ),
-
           AdminDrawerListTile(
               title: "Settings",
               icon: "assets/icons/Setting.svg",
@@ -98,7 +94,6 @@ class AdminDrawerMenu extends StatelessWidget {
               onTap: () {
                 Navigator.pushNamed(context, "/adminSettingsScreen");
               }),
-
           AdminDrawerListTile(
               title: "Logout",
               icon: "assets/icons/Logout.svg",

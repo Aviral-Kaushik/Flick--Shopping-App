@@ -45,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> signInWithEmailAndPassword() async {
-    showProgressDialog("Please Wait1 Signing In");
+    showProgressDialog("Please Wait! Signing In");
     try {
       await Auth().signInWithEmailAndPassword(
           emailController.text,
