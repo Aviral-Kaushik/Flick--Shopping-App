@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/components/border_text_area.dart';
 import 'package:flick/components/border_text_field.dart';
@@ -6,6 +8,7 @@ import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddNewProductContent extends StatefulWidget {
   const AddNewProductContent({super.key});
@@ -15,6 +18,9 @@ class AddNewProductContent extends StatefulWidget {
 }
 
 class _AddNewProductContentState extends State<AddNewProductContent> {
+
+  List<XFile>? productImages = [];
+  ImagePicker imagePicker = ImagePicker();
 
   List<DropdownMenuItem<String>> get productCategories {
     List<DropdownMenuItem<String>> menuItems = [
@@ -41,6 +47,14 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
   TextEditingController productStockController = TextEditingController();
   TextEditingController productCategoryController = TextEditingController();
   TextEditingController productColorController = TextEditingController();
+
+  Future<void> getProductImagesFromGalley() async {
+    List<XFile>? images = await imagePicker.pickMultiImage();
+
+    setState(() {
+      productImages = images;
+    });
+  }
 
   textFieldTitleTextWidget(String title) {
     return Text(
@@ -85,6 +99,39 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
           });
         }
       },
+    );
+  }
+
+  getProductImagesWidget() {
+    if (productImages == null || productImages!.isEmpty) {
+      return const SizedBox();
+    }
+
+    return SizedBox(
+      width: double.infinity,
+      height: 75,
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          shrinkWrap: true,
+          itemCount: productImages!.length > 3 ? 3 : productImages!.length,
+          itemBuilder: (context, index) {
+
+            return Padding(
+              padding: const EdgeInsets.only(right: appPadding),
+
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(appPadding),
+
+                child: Image.file(
+                  File(productImages![index].path),
+                  width: 75,
+                  height: 75,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            );
+          }
+      ),
     );
   }
 
@@ -239,11 +286,43 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
               height: appPadding / 2,
             ),
 
+            // TODO Add Color Picker Screen
             BorderTextField(
                 labelText: "Product Color",
                 controller: productColorController,
                 onChanged: (String currentText) {
                   productColorController.text = currentText;
+                }),
+
+            if (productImages != null && productImages!.isNotEmpty)
+              const SizedBox(height: appPadding * 2,),
+
+              getProductImagesWidget(),
+
+              if (productImages!.length > 3 &&
+                  productImages!.length - 3 > 0)
+                Padding(
+                  padding: const EdgeInsets.only(right: appPadding, top: 4.0),
+                  child: Text(
+                    "And ${productImages!.length - 3} more images",
+                    style: GoogleFonts.poppins(
+                        fontSize: 12,
+                        color: blackColor,
+                        fontWeight: FontWeight.w600),
+                  ),
+                ),
+
+            const SizedBox(
+              height: appPadding * 1.5,
+            ),
+
+            SimpleButton(
+                buttonText: "Upload Images",
+                backgroundColor: Colors.transparent,
+                textColor: Colors.black,
+                showBorder: true,
+                onPressed: () {
+                  getProductImagesFromGalley();
                 }),
 
             const SizedBox(

@@ -53,34 +53,48 @@ class StorageService {
 
   // Upload Images
 
-  Future<void> uploadImage() async {
+  Future<void> uploadImage(String productName, List<XFile>? productImages,
+      Function(List<String>) onSuccess, Function() onFailure) async {
     // start uploading
     _isUploading = true;
 
-    final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    List<String> downloadURLs = [];
+    productName = productName.replaceAll(" ", "_");
 
-    if (image == null) {
+    if (productImages == null) {
       _isUploading = false;
       return;
     }
 
-    File file = File(image.path);
+    for (XFile xFile in productImages) {
+      File file = File(xFile.path);
 
-    try {
-      // File Path
-      String filePath = "products/product_id/${DateTime.now()}.png";
+      try {
+        // File Path
+        String filePath = "products/product_id/$productName${DateTime
+            .now()}.png";
 
-      // Upload File to firebase storage
-      await firebaseStorage.ref(filePath).putFile(file);
+        // Upload File to firebase storage
+        await firebaseStorage.ref(filePath).putFile(file);
 
-      // Fetch the downaload url
-      String downloadUrl = await firebaseStorage.ref(filePath).getDownloadURL();
-    } catch (e) {
-      debugPrint(e.toString());
-    } finally {
-      // stop uploading
-      _isUploading = false;
+        // Fetch the download url
+        downloadURLs.add(await firebaseStorage.ref(filePath)
+            .getDownloadURL());
+      } catch (e) {
+        debugPrint(e.toString());
+        onFailure();
+        break;
+      }
     }
+
+    // stop uploading
+    _isUploading = false;
+
+    if (downloadURLs.isNotEmpty) {
+      onSuccess(downloadURLs);
+    } else {
+      onFailure();
+    }
+
   }
 }

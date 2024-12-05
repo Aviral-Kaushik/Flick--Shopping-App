@@ -8,6 +8,8 @@
 	<string>Allow access to your camera</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSLocationAlwaysAndWhenInUsageDescription</key>
+    <string>App app want's to access your location to get address</string>
 	<key>CFBundleDisplayName</key>
 	<string>Flick</string>
 	<key>CFBundleExecutable</key>
