@@ -168,6 +168,7 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
                 Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Product Price
                       textFieldTitleTextWidget("Product Price"),
@@ -193,6 +194,7 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
                 Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Product Stock
                       textFieldTitleTextWidget("Product Stock"),
