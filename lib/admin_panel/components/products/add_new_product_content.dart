@@ -1,14 +1,24 @@
 import 'dart:io';
 
+import 'package:flick/admin_panel/blocs/add_new_product/add_new_product_bloc.dart';
+import 'package:flick/admin_panel/blocs/add_new_product/add_new_product_event.dart';
+import 'package:flick/admin_panel/blocs/add_new_product/add_new_product_state.dart';
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/components/border_text_area.dart';
 import 'package:flick/components/border_text_field.dart';
 import 'package:flick/components/simple_button.dart';
+import 'package:flick/helper/DialogHelper.dart';
+import 'package:flick/helper/SnackbarHelper.dart';
+import 'package:flick/locator.dart';
+import 'package:flick/models/Product.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../../../models/User.dart';
 
 class AddNewProductContent extends StatefulWidget {
   const AddNewProductContent({super.key});
@@ -19,8 +29,21 @@ class AddNewProductContent extends StatefulWidget {
 
 class _AddNewProductContentState extends State<AddNewProductContent> {
 
+  AddNewProductBloc addNewProductBloc = locator.get<AddNewProductBloc>();
+
+  late DialogHelper dialogHelper;
+
   List<XFile>? productImages = [];
   ImagePicker imagePicker = ImagePicker();
+
+  bool isAnyDialogShowing = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    dialogHelper = DialogHelper(context);
+  }
 
   List<DropdownMenuItem<String>> get productCategories {
     List<DropdownMenuItem<String>> menuItems = [
@@ -54,6 +77,60 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
     setState(() {
       productImages = images;
     });
+  }
+
+    Product getProduct(User user) {
+    return Product(
+        id: "",
+        productName: productNameController.text,
+        productDescription: productDescriptionController.text,
+        productImages: [],
+        productRating: 0.0,
+        productPrice: int.parse(productPriceController.text),
+        totalPurchases: 0,
+        stock: int.parse(productStockController.text),
+        sellerName: user.name,
+        productCategory: productCategoryController.text,
+        availableColors: []);
+  }
+
+  void validateAndProcessProductDetails() async {
+    User? user = await User.instance;
+
+    if (productNameController.text.isEmpty
+        || productDescriptionController.text.isEmpty
+        || productPriceController.text.isEmpty
+        || productStockController.text.isEmpty
+        || productCategoryController.text.isEmpty
+    ) {
+      SnackBarHelper().showSnackBar(context, "Please fill all the fields");
+      return;
+    }
+
+    if (user == null) {
+      SnackBarHelper().showSnackBar(context, "Can't create product right now");
+      return;
+    }
+
+    int? productStock = int.tryParse(productStockController.text);
+    int? productPrice = int.tryParse(productPriceController.text);
+
+    if (productStock == null) {
+      SnackBarHelper().showSnackBar(context, "Please enter valid stock");
+      return;
+    }
+
+    if (productPrice == null) {
+      SnackBarHelper().showSnackBar(context, "Please enter valid price");
+      return;
+    }
+
+    if (productImages == null || (productImages ?? []).isEmpty) {
+      SnackBarHelper().showSnackBar(context, "Please select product images");
+      return;
+    }
+
+    addNewProductBloc.add(AddNewProduct(getProduct(user), productImages ?? []));
   }
 
   textFieldTitleTextWidget(String title) {
@@ -135,209 +212,271 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
     );
   }
 
+  showProgressDialog(String message) {
+    isAnyDialogShowing = true;
+
+    dialogHelper.showProgressDialog(message, () {
+      isAnyDialogShowing = false;
+    });
+  }
+
+  showSuccessAndErrorDialog(String message, bool showUIForErrorDialog) {
+    isAnyDialogShowing = true;
+
+    dialogHelper.showSuccessfulOrErrorDialog(
+        showUIForErrorDialog ? "Oops!" : "Success",
+        message,
+        showUIForErrorDialog ? "Dismiss" : "Okay",
+        showUIForErrorDialog, () {
+      isAnyDialogShowing = false;
+    });
+  }
+
+
+  dismissAllDialogs() {
+    if (isAnyDialogShowing) {
+
+      isAnyDialogShowing = false;
+
+      Navigator.pop(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.only(
-            bottom: appPadding, left: appPadding, right: appPadding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const AdminAppBar(),
-            const SizedBox(
-              height: appPadding * 2,
-            ),
+    return BlocProvider(
+      create: (_) => addNewProductBloc,
+      child: BlocListener<AddNewProductBloc, AddNewProductState>(
+        listener: (context, state) {
 
-            Text("Create New Product",
-                style: GoogleFonts.poppins(
-                    fontSize: 24,
-                    color: blackColor,
-                    fontWeight: FontWeight.w800)),
+          if (state is AddNewProductLoading) {
+            dismissAllDialogs();
+            showProgressDialog(state.progressMessage);
+          }
 
-            const SizedBox(
-              height: appPadding,
-            ),
+          if (state is ProductImagesUploadedSuccessfully) {
+            print("Product Images Uploaded Successfully");
+          }
 
-            /* We need to take the following inputs from the user
-            1. Product Name
-            2. Product Description
-            3. Product Price
-            4. Stock
-            5. Product Category
-            6. Available Colors
-            */
+          if (state is ProductImagesUploadFailed) {
+            dismissAllDialogs();
+            showSuccessAndErrorDialog(state.errorMessage, true);
+          }
 
-            // Product Name
-            textFieldTitleTextWidget("Product Name"),
+          if (state is ProductAddedSuccessfully) {
+            dismissAllDialogs();
+            showSuccessAndErrorDialog("Product Added Successfully", false);
+          }
 
-            const SizedBox(
-              height: appPadding / 2,
-            ),
+          if (state is ProductAddFailed) {
+            dismissAllDialogs();
+            showSuccessAndErrorDialog(state.errorMessage, true);
+          }
 
-            BorderTextField(
-                labelText: "Product Name",
-                controller: productNameController,
-                onChanged: (String currentText) {
-                  productNameController.text = currentText;
-                }),
-
-            const SizedBox(
-              height: appPadding,
-            ),
-
-            // Product Description
-            textFieldTitleTextWidget("Product Description"),
-
-            const SizedBox(
-              height: appPadding / 2,
-            ),
-
-            BorderTextArea(
-                labelText: "Product Description",
-                controller: productDescriptionController,
-                minLines: 1,
-                maxLines: 5,
-                onChanged: (String currentText) {
-                  productDescriptionController.text = currentText;
-                }),
-
-            const SizedBox(
-              height: appPadding,
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        },
+        child: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.only(
+                bottom: appPadding, left: appPadding, right: appPadding),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
               children: [
+                const AdminAppBar(),
+                const SizedBox(
+                  height: appPadding * 2,
+                ),
 
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Product Price
-                      textFieldTitleTextWidget("Product Price"),
+                Text("Create New Product",
+                    style: GoogleFonts.poppins(
+                        fontSize: 24,
+                        color: blackColor,
+                        fontWeight: FontWeight.w800)),
 
-                      const SizedBox(
-                        height: appPadding / 2,
+                const SizedBox(
+                  height: appPadding,
+                ),
+
+                /* We need to take the following inputs from the user
+                1. Product Name
+                2. Product Description
+                3. Product Price
+                4. Stock
+                5. Product Category
+                6. Available Colors
+                */
+
+                // Product Name
+                textFieldTitleTextWidget("Product Name"),
+
+                const SizedBox(
+                  height: appPadding / 2,
+                ),
+
+                BorderTextField(
+                    labelText: "Product Name",
+                    controller: productNameController,
+                    onChanged: (String currentText) {
+                      productNameController.text = currentText;
+                    }),
+
+                const SizedBox(
+                  height: appPadding,
+                ),
+
+                // Product Description
+                textFieldTitleTextWidget("Product Description"),
+
+                const SizedBox(
+                  height: appPadding / 2,
+                ),
+
+                BorderTextArea(
+                    labelText: "Product Description",
+                    controller: productDescriptionController,
+                    minLines: 1,
+                    maxLines: 5,
+                    onChanged: (String currentText) {
+                      productDescriptionController.text = currentText;
+                    }),
+
+                const SizedBox(
+                  height: appPadding,
+                ),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Product Price
+                          textFieldTitleTextWidget("Product Price"),
+
+                          const SizedBox(
+                            height: appPadding / 2,
+                          ),
+
+                          BorderTextField(
+                              labelText: "Product Price",
+                              controller: productPriceController,
+                              onChanged: (String currentText) {
+                                productPriceController.text = currentText;
+                              }),
+                        ],
                       ),
+                    ),
 
-                      BorderTextField(
-                          labelText: "Product Price",
-                          controller: productPriceController,
-                          onChanged: (String currentText) {
-                            productPriceController.text = currentText;
-                          }),
-                    ],
-                  ),
+                    const SizedBox(
+                      width: appPadding,
+                    ),
+
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Product Stock
+                          textFieldTitleTextWidget("Product Stock"),
+
+                          const SizedBox(
+                            height: appPadding / 2,
+                          ),
+
+                          BorderTextField(
+                              labelText: "Product Stock",
+                              controller: productStockController,
+                              onChanged: (String currentText) {
+                                productStockController.text = currentText;
+                              }),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
 
                 const SizedBox(
-                  width: appPadding,
+                  height: appPadding,
                 ),
 
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Product Stock
-                      textFieldTitleTextWidget("Product Stock"),
+                // Product Category
+                textFieldTitleTextWidget("Product Category"),
 
-                      const SizedBox(
-                        height: appPadding / 2,
+                const SizedBox(
+                  height: appPadding / 2,
+                ),
+
+                productCategoryDropdownWidget(),
+
+                const SizedBox(
+                  height: appPadding,
+                ),
+
+                // Product Color
+                textFieldTitleTextWidget("Product Color"),
+
+                const SizedBox(
+                  height: appPadding / 2,
+                ),
+
+                // TODO Add Color Picker Screen
+                BorderTextField(
+                    labelText: "Product Color",
+                    controller: productColorController,
+                    onChanged: (String currentText) {
+                      productColorController.text = currentText;
+                    }),
+
+                if (productImages != null && productImages!.isNotEmpty)
+                  const SizedBox(height: appPadding * 2,),
+
+                  getProductImagesWidget(),
+
+                  if (productImages!.length > 3 &&
+                      productImages!.length - 3 > 0)
+                    Padding(
+                      padding: const EdgeInsets.only(right: appPadding, top: 4.0),
+                      child: Text(
+                        "And ${productImages!.length - 3} more images",
+                        style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            color: blackColor,
+                            fontWeight: FontWeight.w600),
                       ),
+                    ),
 
-                      BorderTextField(
-                          labelText: "Product Stock",
-                          controller: productStockController,
-                          onChanged: (String currentText) {
-                            productStockController.text = currentText;
-                          }),
-                    ],
-                  ),
+                const SizedBox(
+                  height: appPadding * 1.5,
                 ),
+
+                SimpleButton(
+                    buttonText: "Upload Images",
+                    backgroundColor: Colors.transparent,
+                    textColor: Colors.black,
+                    showBorder: true,
+                    onPressed: () {
+                      getProductImagesFromGalley();
+                    }),
+
+                const SizedBox(
+                  height: appPadding * 1.5,
+                ),
+
+                SimpleButton(
+                    buttonText: "Submit",
+                    backgroundColor: Colors.blueAccent,
+                    onPressed: () {
+                      // TODO Create Product Here
+                    })
+
+                // Library Can be used for color picker feature https://pub.dev/packages/flex_color_picker/example
               ],
             ),
-
-            const SizedBox(
-              height: appPadding,
-            ),
-
-            // Product Category
-            textFieldTitleTextWidget("Product Category"),
-
-            const SizedBox(
-              height: appPadding / 2,
-            ),
-
-            productCategoryDropdownWidget(),
-
-            const SizedBox(
-              height: appPadding,
-            ),
-
-            // Product Color
-            textFieldTitleTextWidget("Product Color"),
-
-            const SizedBox(
-              height: appPadding / 2,
-            ),
-
-            // TODO Add Color Picker Screen
-            BorderTextField(
-                labelText: "Product Color",
-                controller: productColorController,
-                onChanged: (String currentText) {
-                  productColorController.text = currentText;
-                }),
-
-            if (productImages != null && productImages!.isNotEmpty)
-              const SizedBox(height: appPadding * 2,),
-
-              getProductImagesWidget(),
-
-              if (productImages!.length > 3 &&
-                  productImages!.length - 3 > 0)
-                Padding(
-                  padding: const EdgeInsets.only(right: appPadding, top: 4.0),
-                  child: Text(
-                    "And ${productImages!.length - 3} more images",
-                    style: GoogleFonts.poppins(
-                        fontSize: 12,
-                        color: blackColor,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ),
-
-            const SizedBox(
-              height: appPadding * 1.5,
-            ),
-
-            SimpleButton(
-                buttonText: "Upload Images",
-                backgroundColor: Colors.transparent,
-                textColor: Colors.black,
-                showBorder: true,
-                onPressed: () {
-                  getProductImagesFromGalley();
-                }),
-
-            const SizedBox(
-              height: appPadding * 1.5,
-            ),
-
-            SimpleButton(
-                buttonText: "Submit",
-                backgroundColor: Colors.blueAccent,
-                onPressed: () {
-                  // TODO Create Product Here
-                })
-
-            // Library Can be used for color picker feature https://pub.dev/packages/flex_color_picker/example
-          ],
+          ),
         ),
       ),
     );
