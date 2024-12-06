@@ -62,5 +62,4 @@ void setup() {
   locator.registerFactory<RatingsBloc>(
       () => RatingsBloc(RatingsRepository(firebaseServices)));
 
-  locator.registerLazySingleton<StorageService>(() => StorageService());
 }

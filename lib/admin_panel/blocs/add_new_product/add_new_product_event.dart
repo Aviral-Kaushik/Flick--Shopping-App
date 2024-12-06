@@ -8,7 +8,8 @@ abstract class AddNewProductEvent {
 
 class AddNewProduct extends AddNewProductEvent {
   final Product product;
+  final String sellerName;
   final List<XFile> localProductImages;
 
-  AddNewProduct(this.product, this.localProductImages);
+  AddNewProduct(this.product, this.sellerName, this.localProductImages);
 }

@@ -53,8 +53,9 @@ class StorageService {
 
   // Upload Images
 
-  Future<void> uploadImage(String productName, List<XFile>? productImages,
-      Function(List<String>) onSuccess, Function() onFailure) async {
+  Future<void> uploadImage(String sellerName, String productName,
+      List<XFile>? productImages, Function(List<String>) onSuccess,
+      Function() onFailure) async {
     // start uploading
     _isUploading = true;
 
@@ -71,15 +72,15 @@ class StorageService {
 
       try {
         // File Path
-        String filePath = "products/product_id/$productName${DateTime
+        String filePath = "products/$sellerName-$productName${DateTime
             .now()}.png";
 
         // Upload File to firebase storage
         await firebaseStorage.ref(filePath).putFile(file);
 
         // Fetch the download url
-        downloadURLs.add(await firebaseStorage.ref(filePath)
-            .getDownloadURL());
+        String downloadURL = await firebaseStorage.ref(filePath).getDownloadURL();
+        downloadURLs.add(downloadURL);
       } catch (e) {
         debugPrint(e.toString());
         onFailure();

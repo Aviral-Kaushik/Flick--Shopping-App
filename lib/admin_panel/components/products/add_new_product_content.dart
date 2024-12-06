@@ -35,14 +35,25 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
 
   List<XFile>? productImages = [];
   ImagePicker imagePicker = ImagePicker();
+  SnackBarHelper snackBarHelper = SnackBarHelper();
 
   bool isAnyDialogShowing = false;
+
+  String selectedCategory = "Electronics";
+
+  TextEditingController productNameController = TextEditingController();
+  TextEditingController productDescriptionController = TextEditingController();
+  TextEditingController productPriceController = TextEditingController();
+  TextEditingController productStockController = TextEditingController();
+  TextEditingController productCategoryController = TextEditingController();
+  TextEditingController productColorController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
 
     dialogHelper = DialogHelper(context);
+    productCategoryController.text = productCategories[0].value ?? "";
   }
 
   List<DropdownMenuItem<String>> get productCategories {
@@ -62,15 +73,6 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
     return menuItems;
   }
 
-  String selectedCategory = "Electronics";
-
-  TextEditingController productNameController = TextEditingController();
-  TextEditingController productDescriptionController = TextEditingController();
-  TextEditingController productPriceController = TextEditingController();
-  TextEditingController productStockController = TextEditingController();
-  TextEditingController productCategoryController = TextEditingController();
-  TextEditingController productColorController = TextEditingController();
-
   Future<void> getProductImagesFromGalley() async {
     List<XFile>? images = await imagePicker.pickMultiImage();
 
@@ -79,19 +81,19 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
     });
   }
 
-    Product getProduct(User user) {
+    Product getProduct(User user, int productPrice, int productStock) {
     return Product(
         id: "",
         productName: productNameController.text,
         productDescription: productDescriptionController.text,
         productImages: [],
         productRating: 0.0,
-        productPrice: int.parse(productPriceController.text),
+        productPrice: productPrice,
         totalPurchases: 0,
-        stock: int.parse(productStockController.text),
+        stock: productStock,
         sellerName: user.name,
         productCategory: productCategoryController.text,
-        availableColors: []);
+        availableColors: [productColorController.text]);
   }
 
   void validateAndProcessProductDetails() async {
@@ -103,12 +105,12 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
         || productStockController.text.isEmpty
         || productCategoryController.text.isEmpty
     ) {
-      SnackBarHelper().showSnackBar(context, "Please fill all the fields");
+      snackBarHelper.showSnackBar(context, "Please fill all the fields");
       return;
     }
 
     if (user == null) {
-      SnackBarHelper().showSnackBar(context, "Can't create product right now");
+      snackBarHelper.showSnackBar(context, "Can't create product right now");
       return;
     }
 
@@ -116,21 +118,22 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
     int? productPrice = int.tryParse(productPriceController.text);
 
     if (productStock == null) {
-      SnackBarHelper().showSnackBar(context, "Please enter valid stock");
+      snackBarHelper.showSnackBar(context, "Please enter valid stock");
       return;
     }
 
     if (productPrice == null) {
-      SnackBarHelper().showSnackBar(context, "Please enter valid price");
+      snackBarHelper.showSnackBar(context, "Please enter valid price");
       return;
     }
 
     if (productImages == null || (productImages ?? []).isEmpty) {
-      SnackBarHelper().showSnackBar(context, "Please select product images");
+      snackBarHelper.showSnackBar(context, "Please select product images");
       return;
     }
 
-    addNewProductBloc.add(AddNewProduct(getProduct(user), productImages ?? []));
+    addNewProductBloc.add(AddNewProduct(
+        getProduct(user, productPrice, productStock), user.name, productImages ?? []));
   }
 
   textFieldTitleTextWidget(String title) {
@@ -220,7 +223,7 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
     });
   }
 
-  showSuccessAndErrorDialog(String message, bool showUIForErrorDialog) {
+  showSuccessAndErrorDialog(String message, bool showUIForErrorDialog, bool finalDialog) {
     isAnyDialogShowing = true;
 
     dialogHelper.showSuccessfulOrErrorDialog(
@@ -229,9 +232,11 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
         showUIForErrorDialog ? "Dismiss" : "Okay",
         showUIForErrorDialog, () {
       isAnyDialogShowing = false;
+      if (finalDialog) {
+        Navigator.pop(context);
+      }
     });
   }
-
 
   dismissAllDialogs() {
     if (isAnyDialogShowing) {
@@ -260,17 +265,17 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
 
           if (state is ProductImagesUploadFailed) {
             dismissAllDialogs();
-            showSuccessAndErrorDialog(state.errorMessage, true);
+            showSuccessAndErrorDialog(state.errorMessage, true, false);
           }
 
           if (state is ProductAddedSuccessfully) {
             dismissAllDialogs();
-            showSuccessAndErrorDialog("Product Added Successfully", false);
+            showSuccessAndErrorDialog("Product Added Successfully", false, true);
           }
 
           if (state is ProductAddFailed) {
             dismissAllDialogs();
-            showSuccessAndErrorDialog(state.errorMessage, true);
+            showSuccessAndErrorDialog(state.errorMessage, true, false);
           }
 
         },
@@ -470,7 +475,7 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
                     buttonText: "Submit",
                     backgroundColor: Colors.blueAccent,
                     onPressed: () {
-                      // TODO Create Product Here
+                      validateAndProcessProductDetails();
                     })
 
                 // Library Can be used for color picker feature https://pub.dev/packages/flex_color_picker/example

@@ -12,14 +12,16 @@ class AddNewProductBloc extends Bloc<AddNewProductEvent, AddNewProductState> {
     on<AddNewProduct>((event, emit) async {
       emit(const AddNewProductLoading("Please Wait! Uploading Images..."));
 
-      Tuple2<bool, String> uploadProductImagesResult =
+      Tuple3<bool, String, List<String>> uploadProductImagesResult =
           await addNewProductRepository.uploadProductImages(
-              event.product.productName, event.localProductImages);
+              event.product.productName, event.sellerName, event.localProductImages);
 
       if (uploadProductImagesResult.item1) {
         emit(ProductImagesUploadFailed(uploadProductImagesResult.item2));
       } else {
         emit(const ProductImagesUploadedSuccessfully());
+
+        event.product.productImages = uploadProductImagesResult.item3;
 
         Tuple2<bool, String> addNewProductResult =
             await addNewProductRepository.storeProduct(event.product);
