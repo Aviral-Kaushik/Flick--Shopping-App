@@ -4,6 +4,7 @@ import 'package:flick/admin_panel/blocs/add_new_product/add_new_product_bloc.dar
 import 'package:flick/admin_panel/blocs/add_new_product/add_new_product_event.dart';
 import 'package:flick/admin_panel/blocs/add_new_product/add_new_product_state.dart';
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
+import 'package:flick/admin_panel/features/product/screens/product_color_picker_screen.dart';
 import 'package:flick/components/border_text_area.dart';
 import 'package:flick/components/border_text_field.dart';
 import 'package:flick/components/simple_button.dart';
@@ -46,7 +47,8 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
   TextEditingController productPriceController = TextEditingController();
   TextEditingController productStockController = TextEditingController();
   TextEditingController productCategoryController = TextEditingController();
-  TextEditingController productColorController = TextEditingController();
+
+  List<String> selectedColors = [];
 
   @override
   void initState() {
@@ -93,7 +95,7 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
         stock: productStock,
         sellerName: user.name,
         productCategory: productCategoryController.text,
-        availableColors: [productColorController.text]);
+        availableColors: selectedColors);
   }
 
   void validateAndProcessProductDetails() async {
@@ -234,6 +236,7 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
       isAnyDialogShowing = false;
       if (finalDialog) {
         Navigator.pop(context);
+        Navigator.pop(context);
       }
     });
   }
@@ -260,7 +263,7 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
           }
 
           if (state is ProductImagesUploadedSuccessfully) {
-            print("Product Images Uploaded Successfully");
+            debugPrint("Product Images Uploaded Successfully");
           }
 
           if (state is ProductImagesUploadFailed) {
@@ -422,19 +425,36 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
                 ),
 
                 // Product Color
-                textFieldTitleTextWidget("Product Color"),
-
-                const SizedBox(
-                  height: appPadding / 2,
-                ),
-
-                // TODO Add Color Picker Screen
-                BorderTextField(
-                    labelText: "Product Color",
-                    controller: productColorController,
-                    onChanged: (String currentText) {
-                      productColorController.text = currentText;
+                SimpleButton(
+                    buttonText: "Add Product Color",
+                    backgroundColor: Colors.transparent,
+                    textColor: Colors.black,
+                    showBorder: true,
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(
+                              builder: (_) => ProductColorPickerScreen(
+                                    selectedColors: (List<String> colors) {
+                                      setState(() {
+                                        selectedColors = colors;
+                                      });
+                                    },
+                                  )));
                     }),
+
+                if (selectedColors.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(right: appPadding, top: 4.0),
+                    child: Text(
+                      "Added ${selectedColors.length} colors.",
+
+                      style: GoogleFonts.poppins(
+                          fontSize: 12,
+                          color: blackColor,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+
 
                 if (productImages != null && productImages!.isNotEmpty)
                   const SizedBox(height: appPadding * 2,),
