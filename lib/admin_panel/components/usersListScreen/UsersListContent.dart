@@ -11,6 +11,7 @@ import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class UsersListContent extends StatefulWidget {
   const UsersListContent({super.key});
@@ -198,7 +199,6 @@ class _UsersListContentState extends State<UsersListContent> {
 
                       const SizedBox(height: appPadding * 2,),
 
-                      // TODO Implement Pagination Here like show 10 user on single page then next page
                       Container(
                         padding: const EdgeInsets.all(appPadding),
                         decoration: BoxDecoration(
@@ -281,13 +281,33 @@ class _SingleUserListLayoutState extends State<SingleUserListLayout> {
               //       fit: BoxFit.cover,
               //     )),
 
-              ClipRRect(
-                  borderRadius: BorderRadius.circular(30),
-                  child: Image.asset(
-                    widget.user.profilePhoto,
-                    width: 60, height: 60,
-                    fit: BoxFit.cover,
-                  )),
+              if (widget.user.profilePhoto.isNotEmpty)
+                ClipRRect(
+                    borderRadius: BorderRadius.circular(30),
+                    child: Image.asset(
+                      widget.user.profilePhoto,
+                      width: 60, height: 60,
+                      fit: BoxFit.cover,
+                    ))
+              else
+                SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(30),
+                    child: CircleAvatar(
+                      backgroundColor: btnYellowBackground,
+                      child: Padding(
+                        padding: const EdgeInsets.all(appPadding / 2),
+                        child: Text(widget.user.name[0],
+                            style: GoogleFonts.poppins(
+                            fontSize: 20,
+                            color: blackColor,
+                            fontWeight: FontWeight.w800)),
+                      ),
+                    ),
+                  ),
+                ),
 
               const SizedBox(width: appPadding,),
 
