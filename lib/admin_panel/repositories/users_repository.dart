@@ -1,4 +1,4 @@
-import 'package:flick/admin_panel/helper/UserFilter.dart';
+import 'package:flick/admin_panel/helper/user_product_filter.dart';
 import 'package:flick/services/firebase_services.dart';
 import 'package:flick/models/User.dart';
 import 'package:intl/intl.dart';
@@ -62,7 +62,7 @@ class UsersRepository {
   }
 
   Future<Tuple3<List<User>, bool, String>> applyUserFilter(
-      UserFilter userFilter) async {
+      UserProductFilter userFilter) async {
     bool errorOccurred = false;
     String errorMessage = "";
 

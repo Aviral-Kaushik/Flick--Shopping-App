@@ -1,6 +1,6 @@
-class UserFilter {
+class UserProductFilter {
 
-  UserFilter(
+  UserProductFilter(
       this.filterName,
       this.filterInAscendingOrder
   );

@@ -1,18 +1,22 @@
-import 'package:flick/admin_panel/helper/UserFilter.dart';
+import 'package:flick/admin_panel/helper/user_product_filter.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
 
-class FilterUserDialog extends StatefulWidget {
-  const FilterUserDialog({super.key, required this.filterToBeApplied});
+class FilterDialog extends StatefulWidget {
+  FilterDialog(
+      {super.key,
+      required this.filterToBeApplied,
+      this.title = "Filter Users"});
 
-  final Function(UserFilter) filterToBeApplied;
+  final Function(UserProductFilter) filterToBeApplied;
+  String title;
 
   @override
-  State<FilterUserDialog> createState() => _FilterUserDialogState();
+  State<FilterDialog> createState() => _FilterDialogState();
 }
 
-class _FilterUserDialogState extends State<FilterUserDialog> {
+class _FilterDialogState extends State<FilterDialog> {
 
   bool isAToZChipSelected = false;
   bool isDateCreatedChipSelected = false;
@@ -179,7 +183,7 @@ class _FilterUserDialogState extends State<FilterUserDialog> {
                         borderRadius: BorderRadius.circular(appPadding / 2)),
                     child: GestureDetector(
                       onTap: () {
-                        widget.filterToBeApplied(UserFilter(
+                        widget.filterToBeApplied(UserProductFilter(
                             isAToZChipSelected ? "A to Z" : (isDateCreatedChipSelected ? "Date Created" : ""),
                             isAscendingChipSelected ? true : false));
 

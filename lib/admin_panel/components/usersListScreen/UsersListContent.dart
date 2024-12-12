@@ -2,8 +2,8 @@ import 'package:flick/admin_panel/blocs/users/users_bloc.dart';
 import 'package:flick/admin_panel/blocs/users/users_event.dart';
 import 'package:flick/admin_panel/blocs/users/users_state.dart';
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
-import 'package:flick/admin_panel/components/widgets/dialogs/FilterUserDialog.dart';
-import 'package:flick/admin_panel/helper/UserFilter.dart';
+import 'package:flick/admin_panel/components/widgets/dialogs/filter_dialog.dart';
+import 'package:flick/admin_panel/helper/user_product_filter.dart';
 import 'package:flick/helper/DialogHelper.dart';
 import 'package:flick/locator.dart';
 import 'package:flick/models/User.dart';
@@ -76,11 +76,11 @@ class _UsersListContentState extends State<UsersListContent> {
     }
   }
 
-  showFilterDialog() {
+  void showFilterDialog() {
     showDialog(
         context: context,
-        builder: (BuildContext context) => FilterUserDialog(
-            filterToBeApplied: (UserFilter userFilter) {
+        builder: (BuildContext context) => FilterDialog(
+            filterToBeApplied: (UserProductFilter userFilter) {
               usersBloc.add(ApplyFilter(userFilter));
             }
         ));
@@ -300,7 +300,7 @@ class _SingleUserListLayoutState extends State<SingleUserListLayout> {
                       child: Padding(
                         padding: const EdgeInsets.all(appPadding / 2),
                         child: Text(widget.user.name[0],
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.lato(
                             fontSize: 20,
                             color: blackColor,
                             fontWeight: FontWeight.w800)),
