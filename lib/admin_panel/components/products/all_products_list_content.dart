@@ -5,7 +5,6 @@ import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/admin_panel/components/products/product_search_bar.dart';
 import 'package:flick/admin_panel/components/products/single_product_list_item.dart';
 import 'package:flick/admin_panel/components/widgets/dialogs/filter_dialog.dart';
-import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/admin_panel/helper/user_product_filter.dart';
 import 'package:flick/helper/DialogHelper.dart';
 import 'package:flick/locator.dart';
@@ -38,7 +37,7 @@ class _AllProductsListContentState extends State<AllProductsListContent> {
   void initState() {
     super.initState();
 
-    products = getDummyProducts();
+    // products = getDummyProducts();
 
     dialogHelper = DialogHelper(context);
 
@@ -56,7 +55,8 @@ class _AllProductsListContentState extends State<AllProductsListContent> {
             filterToBeApplied: (UserProductFilter productFilter) {
               productBloc.add(ApplyFilter(productFilter));
             },
-            title: "Filter Products"
+            title: "Filter Products",
+            showDateCreatedFilter: false
         ));
   }
 
@@ -133,46 +133,6 @@ class _AllProductsListContentState extends State<AllProductsListContent> {
                         showProductFilterDialog();
                       }),
 
-                  // Column(
-                      //   children: [
-                      //     SearchBarWithButton(
-                      //       searchController: searchController,
-                      //       onPressed: () {
-                      //         // Search Button Pressed
-                      //       },
-                      //       labelText: "Search Product",
-                      //       showIconButton: true,
-                      //     ),
-                      //   ],
-                      // ),
-                      //
-                      // const SizedBox(
-                      //   width: appPadding / 2,
-                      // ),
-                      //
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.end,
-                      //   children: [
-                      //     ElevatedButton(
-                      //       onPressed: () {
-                      //         showProductFilterDialog();
-                      //       },
-                      //         style: ButtonStyle(
-                      //           backgroundColor: MaterialStateProperty.resolveWith((states) {
-                      //             return Colors.blueAccent;
-                      //           }),
-                      //           textStyle: MaterialStateProperty.resolveWith((states) {
-                      //             return TextStyle(
-                      //               color: whiteTextColor,
-                      //               fontSize: 13,
-                      //             );
-                      //           })
-                      //         ),
-                      //         child: Icon(Icons.filter_list_alt, color: whiteColor)
-                      //     ),
-                      //   ],
-                      // ),
-
                       const SizedBox(
                         height: 12,
                       ),
@@ -205,7 +165,7 @@ class _AllProductsListContentState extends State<AllProductsListContent> {
                                 itemBuilder: (context, index) =>
                                     GestureDetector(
                                       onTap: () {
-                                        // TODO Open Product User Page Here
+                                        // TODO Open Product Page Here
                                       },
                                       child: SingleProductListLayout(
                                         product: products[index],
@@ -225,7 +185,8 @@ class _AllProductsListContentState extends State<AllProductsListContent> {
                   ),
                 ),
               ],
-            )),
+            )
+        ),
       ),
     );
   }

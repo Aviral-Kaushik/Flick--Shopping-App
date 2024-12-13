@@ -7,10 +7,12 @@ class FilterDialog extends StatefulWidget {
   FilterDialog(
       {super.key,
       required this.filterToBeApplied,
-      this.title = "Filter Users"});
+      this.title = "Filter Users",
+      this.showDateCreatedFilter = true});
 
   final Function(UserProductFilter) filterToBeApplied;
   String title;
+  bool showDateCreatedFilter = true;
 
   @override
   State<FilterDialog> createState() => _FilterDialogState();
@@ -91,18 +93,19 @@ class _FilterDialogState extends State<FilterDialog> {
                 selectedShadowColor: Colors.greenAccent.withOpacity(0.3),
               ),
 
-              FilterChip(
-                label: const Text("Date Created"),
-                selected: isDateCreatedChipSelected,
-                onSelected: (bool value) {
-                  setState(() {
-                    isDateCreatedChipSelected = value;
-                    isAToZChipSelected = false;
-                  });
-                },
-                selectedColor: Colors.greenAccent,
-                selectedShadowColor: Colors.greenAccent.withOpacity(0.3),
-              ),
+              if (widget.showDateCreatedFilter)
+                FilterChip(
+                  label: const Text("Date Created"),
+                  selected: isDateCreatedChipSelected,
+                  onSelected: (bool value) {
+                    setState(() {
+                      isDateCreatedChipSelected = value;
+                      isAToZChipSelected = false;
+                    });
+                  },
+                  selectedColor: Colors.greenAccent,
+                  selectedShadowColor: Colors.greenAccent.withOpacity(0.3),
+                ),
             ],
           ),
 

@@ -41,7 +41,7 @@ class Product {
         totalPurchases: data?["total_purchases"],
         stock: data?["stock"],
         sellerName: data?["seller_name"],
-        productCategory: data?["product_category"],
+        productCategory: data?["product_category"] ?? "",
         availableColors: data?["available_colors"] is Iterable
             ? List.from(data?["available_colors"])
             : List.empty());

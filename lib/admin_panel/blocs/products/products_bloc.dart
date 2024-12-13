@@ -19,14 +19,12 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
       if (productsResponse.item2) {
         emit(ProductsError(
             "Cannot fetch products at this moment: ${productsResponse.item3}"));
-      } else {
-        emit(FetchedAllProducts(productsResponse.item1));
       }
+
+      emit(FetchedAllProducts(productsResponse.item1));
     });
 
     on<SearchProducts>((event, emit) async {
-      emit(const ProductLoading("Searching...."));
-
       List<Product> filteredProducts =
           await productsRepository.searchProduct(event.query);
 
@@ -41,10 +39,10 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
 
       if (userUpdateResponse.item1) {
         emit(const ProductEditedSuccessfully());
-      } else {
-        emit(ProductsError(
-            "Cannot update product at this moment: ${userUpdateResponse.item2}"));
       }
+
+      emit(ProductsError(
+          "Cannot update product at this moment: ${userUpdateResponse.item2}"));
     });
 
     on<DeleteProduct>((event, emit) async {
@@ -55,19 +53,23 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
 
       if (productDeletionResponse.item1) {
         emit(const ProductDeletedSuccessfully());
-      } else {
-        emit(ProductsError(
-            "Cannot Delete product at this moment: ${productDeletionResponse.item2}"));
       }
+
+      emit(ProductsError(
+          "Cannot Delete product at this moment: ${productDeletionResponse.item2}"));
     });
 
     on<ApplyFilter>((event, emit) async {
       emit(const ProductLoading("Applying Filter! Please Wait"));
 
-      List<Product> filteredProducts =
+      Tuple3<List<Product>, bool, String> filteredProducts =
           await productsRepository.applyProductsFilter(event.productFilter);
 
-      emit(FetchedAllProducts(filteredProducts));
+      if (filteredProducts.item2) {
+        emit(ProductsError("Error: ${filteredProducts.item3}"));
+      }
+
+      emit(FetchedAllProducts(filteredProducts.item1));
     });
 
   }
