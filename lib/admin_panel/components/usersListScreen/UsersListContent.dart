@@ -35,8 +35,6 @@ class _UsersListContentState extends State<UsersListContent> {
   @override
   void initState() {
     super.initState();
-    // usersData = getUsersData();
-    // totalNumberOfUsers = 10;
 
     dialogHelper = DialogHelper(context);
 

@@ -68,7 +68,6 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
           await productsRepository.applyProductsFilter(event.productFilter);
 
       emit(FetchedAllProducts(filteredProducts));
-
     });
 
   }

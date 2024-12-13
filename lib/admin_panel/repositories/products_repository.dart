@@ -1,5 +1,5 @@
 import 'package:flick/admin_panel/data/Data.dart';
-import 'package:flick/admin_panel/helper/ProductFilter.dart';
+import 'package:flick/admin_panel/helper/user_product_filter.dart';
 import 'package:flick/services/firebase_services.dart';
 import 'package:flick/models/Product.dart';
 import 'package:tuple/tuple.dart';
@@ -78,7 +78,7 @@ class ProductsRepository {
     return Tuple2(isProductDeletedSuccessfully, errorMessage);
   }
 
-  Future<List<Product>> applyProductsFilter(ProductFilter productFilter) async {
+  Future<List<Product>> applyProductsFilter(UserProductFilter productFilter) async {
     return products;
   }
 
