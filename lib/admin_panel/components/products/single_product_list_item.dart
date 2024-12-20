@@ -28,23 +28,21 @@ class _SingleProductListLayoutState extends State<SingleProductListLayout> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
 
-              if (widget.product.productImages.isNotEmpty &&
-                  widget.product.productImages[0].contains("http"))
-                ClipRRect(
-                    borderRadius: BorderRadius.circular(30),
-                    child: Image.network(
-                      widget.product.productImages[0],
-                      width: 60, height: 60,
-                      fit: BoxFit.cover,
-                    ))
-              else
-                ClipRRect(
-                    borderRadius: BorderRadius.circular(30),
-                    child: Image.asset(
-                      "lib/images/zoom_freak.png",
-                      width: 60, height: 60,
-                      fit: BoxFit.cover,
-                    )),
+              // ClipRRect(
+              //     borderRadius: BorderRadius.circular(30),
+              //     child: Image.network(
+              //       widget.product.productImages[0],
+              //       width: 60, height: 60,
+              //       fit: BoxFit.cover,
+              //     )),
+
+              ClipRRect(
+                  borderRadius: BorderRadius.circular(30),
+                  child: Image.asset(
+                    widget.product.productImages[0],
+                    width: 60, height: 60,
+                    fit: BoxFit.cover,
+                  )),
 
               const SizedBox(width: appPadding,),
 

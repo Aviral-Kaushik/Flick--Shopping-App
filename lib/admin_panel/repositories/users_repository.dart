@@ -18,6 +18,8 @@ class UsersRepository {
     users = await firebaseServices.fetchAllUsers();
 
     return Tuple3(users, hasErrorOccurred, errorMessage);
+    // users = getUsersData();
+    // firebaseServices.storeAllUsersData(users);
   }
 
   Future<List<User>> searchUsers(String query) async {

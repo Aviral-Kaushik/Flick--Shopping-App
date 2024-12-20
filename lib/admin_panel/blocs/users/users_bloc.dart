@@ -24,6 +24,8 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
     });
 
     on<SearchUser>((event, emit) async {
+      // emit(const UsersLoading("Searching ..."));
+
       List<User> users = await usersRepository.searchUsers(event.searchQuery);
 
       emit(FetchedAllUsers(users));

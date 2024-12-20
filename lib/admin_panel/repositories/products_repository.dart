@@ -1,3 +1,4 @@
+import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/admin_panel/helper/user_product_filter.dart';
 import 'package:flick/services/firebase_services.dart';
 import 'package:flick/models/Product.dart';
@@ -15,7 +16,7 @@ class ProductsRepository {
     bool isErrorOccurred = false;
     String errorMessage = "";
 
-    products = await firebaseServices.fetchAllProducts();
+    products = getDummyProducts();
 
     return Tuple3(products, isErrorOccurred, errorMessage);
   }
@@ -51,74 +52,34 @@ class ProductsRepository {
       return Tuple2(isProductUpdatedSuccessfully, errorMessage);
     }
 
-    Tuple2<bool, String> updateUserResponse =
-    await firebaseServices.updateProduct(product);
+    products[products.indexWhere((element) => element.id == product.id)] = product;
+    isProductUpdatedSuccessfully = true;
 
-    if (!updateUserResponse.item1) {
-      products[products.indexWhere((element) => element.id == product.id)] =
-          product;
-      isProductUpdatedSuccessfully = true;
-    }
-
-    return updateUserResponse;
+    return Tuple2(isProductUpdatedSuccessfully, errorMessage);
   }
 
   Future<Tuple2<bool, String>> deleteProduct(Product product) async {
-    bool hasErrorOccurred = false;
+    bool isProductDeletedSuccessfully = false;
     String errorMessage = "";
 
-    Tuple2<bool, String> deleteUserResponse =
-    await firebaseServices.deleteProduct(product);
+    if (!products.contains(product)) {
+      isProductDeletedSuccessfully = false;
+      errorMessage = "Product doesn't exists";
 
-    if (deleteUserResponse.item1) {
-      hasErrorOccurred = true;
-      errorMessage = "Firebase Exception";
-    } else {
-      hasErrorOccurred = false;
-      errorMessage = "";
+      return Tuple2(isProductDeletedSuccessfully, errorMessage);
     }
 
-    return Tuple2(hasErrorOccurred, errorMessage);
+    if (products.remove(product)) {
+      isProductDeletedSuccessfully = true;
+    } else {
+      errorMessage = "Cannot remove product";
+    }
+
+    return Tuple2(isProductDeletedSuccessfully, errorMessage);
   }
 
-  Future<Tuple3<List<Product>, bool, String>> applyProductsFilter(
-      UserProductFilter productFilter) async {
-    bool errorOccurred = false;
-    String errorMessage = "";
-
-    String filterName = productFilter.filterName;
-    bool filterUserInAscendingOrder = productFilter.filterInAscendingOrder;
-
-    List<Product> filteredProducts = products;
-
-    if (filterName == "A to Z") {
-      filteredProducts.sort((a, b) {
-        return a.productName.toLowerCase().compareTo(b.productName.toLowerCase());
-      });
-
-      if (!filterUserInAscendingOrder) {
-        filteredProducts = filteredProducts.reversed.toList();
-      }
-    } else if (filterName == "Date Created") {
-      // filteredProducts.sort((a, b) {
-      //   DateFormat dateFormat = DateFormat('MM-dd-yyyy');
-      //
-      //   // DateTime dateTime1 = dateFormat.parse(a.joiningDate);
-      //   // DateTime dateTime2 = dateFormat.parse(b.joiningDate);
-      //
-      //   // return dateTime1.compareTo(dateTime2);
-      // });
-
-      if (!filterUserInAscendingOrder) {
-        filteredProducts = filteredProducts.reversed.toList();
-      }
-    } else {
-      errorOccurred = true;
-      errorMessage = "Invalid Filter";
-      return Tuple3(filteredProducts, errorOccurred, errorMessage);
-    }
-
-    return Tuple3(filteredProducts, errorOccurred, errorMessage);
+  Future<List<Product>> applyProductsFilter(UserProductFilter productFilter) async {
+    return products;
   }
 
 }
