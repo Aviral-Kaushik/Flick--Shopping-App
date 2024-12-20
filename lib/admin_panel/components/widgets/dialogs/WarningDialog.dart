@@ -26,7 +26,7 @@ class WarningDialog extends StatelessWidget {
     );
   }
 
-  warningDialogContent(BuildContext context) {
+  Widget warningDialogContent(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(appPadding),
 

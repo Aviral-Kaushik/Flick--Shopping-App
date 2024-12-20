@@ -20,7 +20,7 @@ class ProgressDialog extends StatelessWidget {
     );
   }
 
-  progressDialogContent(BuildContext context) {
+  Widget progressDialogContent(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(appPadding),
 

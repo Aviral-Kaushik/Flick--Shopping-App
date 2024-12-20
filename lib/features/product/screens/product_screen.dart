@@ -119,6 +119,11 @@ class _ProductScreenState extends State<ProductScreen> {
             buttonText: "Buy Now!",
             onActionPerformed: () {
               // Buy that item
+              if (widget.product != null) {
+                dialogHelper.showProductQuantityDialog(widget.product!, (int quantity) {
+                  debugPrint("Buying $quantity items");
+                });
+              }
             },
             showAddToCartButton: false),
       ],
