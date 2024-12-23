@@ -66,6 +66,11 @@ class _ProductScreenState extends State<ProductScreen> {
     );
   }
 
+  void showLoginWarningDialog(Function() onLoginButtonPressed) {
+    dialogHelper.showWarningDialog("Please! Login to Continue", "Login",
+        "Cancel", onLoginButtonPressed, Colors.blueAccent, () {});
+  }
+
   priceAndColorsRowWidget() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -211,12 +216,21 @@ class _ProductScreenState extends State<ProductScreen> {
             buttonText: "Buy Now!",
             onActionPerformed: () {
               // Buy that item
-              Navigator.pushNamed(context, "/addressesScreen",
-                  arguments: {
-                    'showUIForSelectAddressScreen': true,
-                    'preOrder': getPreOrder()
-                  }
+              if (user != null && user!.id.isNotEmpty) {
+                Navigator.pushNamed(context, "/addressesScreen",
+                    arguments: {
+                      'showUIForSelectAddressScreen': true,
+                      'preOrder': getPreOrder()
+                    }
                 );
+              } else {
+                showLoginWarningDialog(() {
+                  Navigator.pushNamed(
+                      context,
+                      "/loginScreen"
+                  );
+                });
+              }
             },
             showAddToCartButton: false),
       ],

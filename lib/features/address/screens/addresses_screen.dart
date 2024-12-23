@@ -45,12 +45,6 @@ class _AddressesScreenState extends State<AddressesScreen> {
 
     dialogHelper = DialogHelper(context);
 
-    if (widget.preOrder != null) {
-      debugPrint("PreOrder Product length: ${widget.preOrder!.products.length}");
-      debugPrint("PreOrder Quantity: ${widget.preOrder!.quantity}");
-      debugPrint("PreOrder Total Price: ${widget.preOrder!.totalPriceAtCheckout}");
-    }
-
     loadAddress();
   }
 
@@ -171,6 +165,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
           if (state is AddressLoaded) {
             dismissAllDialogs();
             addresses = state.addresses;
+            addresses = [];
             setState(() {});
           }
 
@@ -252,8 +247,15 @@ class _AddressesScreenState extends State<AddressesScreen> {
                           )
                       ),
 
-                    // if (addresses == null || (addresses != null && addresses!.isEmpty)
-                    //   // TODO UI for No Address Saved Yet Case
+                      if (addresses == null || (addresses != null && addresses!.isEmpty))
+                        Center(child: Text(
+                          "No Addresses Found! Please add an address.",
+                          style: GoogleFonts.poppins(
+                              color: textColor,
+                              fontSize: 15
+                            ),
+                          )
+                        ),
 
                   ],
                 ),

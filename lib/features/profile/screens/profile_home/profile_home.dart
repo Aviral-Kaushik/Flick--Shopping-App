@@ -16,28 +16,28 @@ class ProfileHome extends StatefulWidget {
 
 class _ProfileHomeState extends State<ProfileHome> {
 
-  User? user = null;
+  User? _user;
 
   @override
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      initUser();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await initUser();
     });
   }
 
   Future<void> initUser() async {
     if (Auth().currentUser != null) {
-      User? _user = await User.instance;
+      User? user = await User.instance;
       setState(() {
         // Navigator.pop(context);
-        user = _user;
+        _user = user;
       });
     } else {
       setState(() {
         // Navigator.pop(context);
-        user = null;
+        _user = null;
       });
     }
 
@@ -52,16 +52,36 @@ class _ProfileHomeState extends State<ProfileHome> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
 
-          const CircleAvatar(
-            radius: 56,
-            backgroundColor: adminPanelPrimaryColor,
-            child: Padding(
-              padding: EdgeInsets.all(appPadding / 16),
-              child: ClipOval(
-                child: Image(image: AssetImage("assets/images/photo8.jpg")),
+          if (_user == null || _user!.profilePhoto.isNotEmpty)
+            const CircleAvatar(
+              radius: 56,
+              backgroundColor: adminPanelPrimaryColor,
+              child: Padding(
+                padding: EdgeInsets.all(appPadding / 16),
+                child: ClipOval(                  child: Image(image: AssetImage("assets/images/photo8.jpg")),
+                ),
+              ),
+            )
+          else
+            SizedBox(
+              width: 80,
+              height: 80,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(30),
+                child: CircleAvatar(
+                  backgroundColor: btnYellowBackground,
+                  child: Padding(
+                    padding: const EdgeInsets.all(appPadding / 2),
+                    child: Text(_user!.name[0],
+                        style: GoogleFonts.lato(
+                            fontSize: 20,
+                            color: blackColor,
+                            fontWeight: FontWeight.w800)
+                    ),
+                  ),
+                ),
               ),
             ),
-          ),
 
           const SizedBox(width: appPadding),
 
@@ -74,7 +94,7 @@ class _ProfileHomeState extends State<ProfileHome> {
               children: [
 
                 Text(
-                  user?.name ?? "Avichal Kaushik",
+                  _user?.name ?? "Avichal Kaushik",
                   style: GoogleFonts.poppins(
                       color: adminPanelPrimaryColor,
                       fontSize: 22,
@@ -82,7 +102,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                 ),
 
                 Text(
-                  user?.username ?? "@avichal_1106",
+                  _user?.username ?? "@avichal_1106",
                   style: GoogleFonts.poppins(
                     color: textColor.withOpacity(0.3),
                     fontSize: 16,
@@ -203,9 +223,9 @@ class _ProfileHomeState extends State<ProfileHome> {
             height: 4.0,
           ),
 
-          profileMenuWidget(user != null ? "Sign out" : "Log In", LineAwesomeIcons.alternate_sign_out,
+          profileMenuWidget(_user != null ? "Sign out" : "Log In", LineAwesomeIcons.alternate_sign_out,
               false, "", () {
-                if (user != null) {
+                if (_user != null) {
                   Auth().signOut();
                 }
 
