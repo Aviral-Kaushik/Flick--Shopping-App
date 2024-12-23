@@ -58,7 +58,8 @@ class _ProfileHomeState extends State<ProfileHome> {
               backgroundColor: adminPanelPrimaryColor,
               child: Padding(
                 padding: EdgeInsets.all(appPadding / 16),
-                child: ClipOval(                  child: Image(image: AssetImage("assets/images/photo8.jpg")),
+                child: ClipOval(
+                  child: Image(image: AssetImage("assets/images/photo8.jpg")),
                 ),
               ),
             )

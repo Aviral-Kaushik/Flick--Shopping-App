@@ -38,6 +38,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
   bool isAnyDialogShowing = false;
 
   late User? user;
+  int selectedAddressIndex = -1;
 
   @override
   void initState() {
@@ -165,7 +166,15 @@ class _AddressesScreenState extends State<AddressesScreen> {
           if (state is AddressLoaded) {
             dismissAllDialogs();
             addresses = state.addresses;
-            addresses = [];
+            if (addresses != null) {
+              addresses!.add(state.addresses[0]);
+              addresses!.add(state.addresses[0]);
+              addresses!.add(state.addresses[0]);
+              addresses!.add(state.addresses[0]);
+              addresses!.add(state.addresses[0]);
+              // addresses!.addAll(state.addresses);
+              // addresses!.addAll(state.addresses);
+            }
             setState(() {});
           }
 
@@ -184,23 +193,28 @@ class _AddressesScreenState extends State<AddressesScreen> {
             backgroundColor: whiteColor,
 
             floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-            floatingActionButton: ClipRRect(
-              borderRadius: BorderRadius.circular(appPadding * 8),
+            floatingActionButton: Padding(
+              padding: widget.showUIForSelectAddressScreen
+                  ? const EdgeInsets.only(bottom: appPadding * 2.5)
+                  : EdgeInsets.zero,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(appPadding * 8),
 
-              child: FloatingActionButton(
-                backgroundColor: blueThemeColor,
-                onPressed: () {
-                  Navigator.pushNamed(context, "/addEditAddressScreen",
-                      arguments: AddEditAddressArguments(
-                          address: Address(
-                              addressId: "",
-                              userId: "",
-                              address: "",
-                              pinCode: "",
-                              contactNumber: ""),
-                          showUiForEditAddressScreen: false));
-                },
-                child: const Icon(Icons.add, color: Colors.white,),
+                child: FloatingActionButton(
+                  backgroundColor: blueThemeColor,
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/addEditAddressScreen",
+                        arguments: AddEditAddressArguments(
+                            address: Address(
+                                addressId: "",
+                                userId: "",
+                                address: "",
+                                pinCode: "",
+                                contactNumber: ""),
+                            showUiForEditAddressScreen: false));
+                  },
+                  child: const Icon(Icons.add, color: Colors.white,),
+                ),
               ),
             ),
 
@@ -231,20 +245,36 @@ class _AddressesScreenState extends State<AddressesScreen> {
                     ),
 
                     if (addresses != null && addresses!.isNotEmpty)
-                      ListView.separated(
-                        physics: const BouncingScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount:  addresses!.length ,
-                        itemBuilder: (context, index) => AddressCard(
-                          address: addresses![index],
-                          showUIForSelectAddress: widget.showUIForSelectAddressScreen,
-                          onDeleteButtonPressed: () {
-                            showDeleteAddressWarningDialog(addresses![index].addressId);
-                          },
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.73,
+                        child: ListView.separated(
+                          physics: const BouncingScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount:  addresses!.length ,
+                          itemBuilder: (context, index) => AddressCard(
+                            address: addresses![index],
+                            showUIForSelectAddress: widget.showUIForSelectAddressScreen,
+                            onDeleteButtonPressed: () {
+                              showDeleteAddressWarningDialog(addresses![index].addressId);
+                            },
+                            isSelected: selectedAddressIndex >= 0
+                                ? selectedAddressIndex == index
+                                : false,
+                            addressSelected: () {
+                              if (selectedAddressIndex == index) {
+                                selectedAddressIndex = -1;
+                              } else {
+                                selectedAddressIndex = index;
+                              }
+                              debugPrint("Address Selected: $index");
+                              debugPrint("selectedAddressIndex: $selectedAddressIndex");
+                              setState(() {});
+                            },
+                          ),
+                            separatorBuilder: (context, index) => const SizedBox(
+                              height: appPadding * 1.5,
+                            )
                         ),
-                          separatorBuilder: (context, index) => const SizedBox(
-                            height: appPadding * 1.5,
-                          )
                       ),
 
                       if (addresses == null || (addresses != null && addresses!.isEmpty))
@@ -256,6 +286,23 @@ class _AddressesScreenState extends State<AddressesScreen> {
                             ),
                           )
                         ),
+
+                      if (widget.showUIForSelectAddressScreen)
+                        Padding(
+                          padding: const EdgeInsets.only(top: appPadding),
+                          child: SimpleButton(
+                              buttonText: "Proceed to Checkout",
+                              backgroundColor: selectedAddressIndex >= 0
+                                  ? green
+                                  : green.withOpacity(0.5),
+                              onPressed: () {
+                                if (widget.preOrder != null && selectedAddressIndex >= 0) {
+                                  Navigator.pushNamed(context, "/confirmationScreen",
+                                      arguments: widget.preOrder);
+                                }
+                              }
+                          ),
+                        )
 
                   ],
                 ),
@@ -273,11 +320,15 @@ class AddressCard extends StatefulWidget {
       {super.key,
       required this.address,
       required this.showUIForSelectAddress,
-      required this.onDeleteButtonPressed});
+      required this.onDeleteButtonPressed,
+      required this.isSelected,
+      required this.addressSelected,});
 
   final Address address;
   final bool showUIForSelectAddress;
   final Function() onDeleteButtonPressed;
+  final bool isSelected;
+  final Function() addressSelected;
 
   @override
   State<AddressCard> createState() => _AddressCardState();
@@ -285,118 +336,114 @@ class AddressCard extends StatefulWidget {
 
 class _AddressCardState extends State<AddressCard> {
 
-  bool isSelected = false;
-
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: isSelected ? 10 : 0,
+    return GestureDetector(
+      onTap: () {
+        if (widget.showUIForSelectAddress) {
+          widget.addressSelected();
+        }
+      },
+      child: Card(
+        elevation: widget.isSelected ? 10 : 0,
 
-      child: Container(
+        child: Container(
 
-        decoration: BoxDecoration(
-            color: whiteColor,
-            borderRadius: BorderRadius.circular(appPadding / 2),
+          decoration: BoxDecoration(
+              color: whiteColor,
+              borderRadius: BorderRadius.circular(appPadding / 2),
 
-            border: Border.all(color: isSelected
-                ? Colors.blueAccent.shade400
-                : Colors.black12),
+              border: Border.all(color: widget.isSelected
+                  ? Colors.blueAccent.shade400
+                  : Colors.black12),
 
-            boxShadow: [
-              BoxShadow(
-                  color: isSelected
-                      ? Colors.blueAccent.shade400
-                      : Colors.black12,
-                  blurRadius: 10.0,
-                  spreadRadius: 1.0,
-                  offset: isSelected ? const Offset(0, 0) : const Offset(0, 10),
-              )
-            ]),
+              boxShadow: [
+                BoxShadow(
+                    color: widget.isSelected
+                        ? Colors.blueAccent.shade400
+                        : Colors.black12,
+                    blurRadius: 10.0,
+                    spreadRadius: 1.0,
+                    offset: widget.isSelected ? const Offset(0, 0) : const Offset(0, 10),
+                )
+              ]),
 
-        child: Padding(
-          padding: const EdgeInsets.all(appPadding),
+          child: Padding(
+            padding: const EdgeInsets.all(appPadding),
 
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
 
-            children: [
+              children: [
 
-              Text(
-                widget.address.address,
-                maxLines: 5,
-                overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.poppins(
-                  color: textColor,
-                  fontSize: 15,
-                ),
-              ),
-
-              const SizedBox(height: appPadding,),
-
-              RichText(
-                text: TextSpan(
+                Text(
+                  widget.address.address,
+                  maxLines: 5,
+                  overflow: TextOverflow.ellipsis,
                   style: GoogleFonts.poppins(
-                      color: textColor,
-                      fontSize: 15
+                    color: textColor,
+                    fontSize: 15,
                   ),
-                  children: <TextSpan>[
-                    TextSpan(text: "Pin Code: ", style: GoogleFonts.poppins(
-                        color: textColor,
-                        fontSize: 15,
-                      fontWeight: FontWeight.bold
-                    ),),
-
-                    TextSpan(text: widget.address.pinCode)
-                  ]
                 ),
-              ),
 
-              const SizedBox(height: appPadding,),
+                const SizedBox(height: appPadding,),
 
-              RichText(
-                text: TextSpan(
+                RichText(
+                  text: TextSpan(
                     style: GoogleFonts.poppins(
                         color: textColor,
                         fontSize: 15
                     ),
                     children: <TextSpan>[
-                      TextSpan(text: "Contact Number: ", style: GoogleFonts.poppins(
+                      TextSpan(text: "Pin Code: ", style: GoogleFonts.poppins(
                           color: textColor,
                           fontSize: 15,
-                          fontWeight: FontWeight.bold
+                        fontWeight: FontWeight.bold
                       ),),
 
-                      TextSpan(text: widget.address.contactNumber)
+                      TextSpan(text: widget.address.pinCode)
                     ]
+                  ),
                 ),
-              ),
 
-              const SizedBox(height: appPadding * 1.5,),
+                const SizedBox(height: appPadding,),
 
-              if (!widget.showUIForSelectAddress)
-                RowWithTwoButtonsWidget(
-                    firstBtnTitle: "Edit Address",
-                    secondBtnTitle: "Delete Address",
-                    onFirstButtonPressed: () {
-                      Navigator.pushNamed(context, "/addEditAddressScreen",
-                          arguments: AddEditAddressArguments(
-                              address: widget.address,
-                              showUiForEditAddressScreen: true));
-                    },
-                    onSecondButtonPressed: widget.onDeleteButtonPressed,
-                    firstButtonColor: Colors.white,
-                    secondButtonColor: Colors.redAccent),
+                RichText(
+                  text: TextSpan(
+                      style: GoogleFonts.poppins(
+                          color: textColor,
+                          fontSize: 15
+                      ),
+                      children: <TextSpan>[
+                        TextSpan(text: "Contact Number: ", style: GoogleFonts.poppins(
+                            color: textColor,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold
+                        ),),
 
-              if (widget.showUIForSelectAddress)
-                SimpleButton(
-                    buttonText: "Select this Address",
-                    backgroundColor: Colors.blueAccent,
-                    onPressed: () {
-                      isSelected = !isSelected;
-                      setState(() {});
-                    })
-            ],
+                        TextSpan(text: widget.address.contactNumber)
+                      ]
+                  ),
+                ),
+
+                const SizedBox(height: appPadding * 1.5,),
+
+                if (!widget.showUIForSelectAddress)
+                  RowWithTwoButtonsWidget(
+                      firstBtnTitle: "Edit Address",
+                      secondBtnTitle: "Delete Address",
+                      onFirstButtonPressed: () {
+                        Navigator.pushNamed(context, "/addEditAddressScreen",
+                            arguments: AddEditAddressArguments(
+                                address: widget.address,
+                                showUiForEditAddressScreen: true));
+                      },
+                      onSecondButtonPressed: widget.onDeleteButtonPressed,
+                      firstButtonColor: Colors.white,
+                      secondButtonColor: Colors.redAccent),
+              ],
+            ),
           ),
         ),
       ),
