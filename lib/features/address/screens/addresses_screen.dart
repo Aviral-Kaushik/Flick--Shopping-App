@@ -8,6 +8,7 @@ import 'package:flick/helper/DialogHelper.dart';
 import 'package:flick/locator.dart';
 import 'package:flick/models/Address.dart';
 import 'package:flick/models/User.dart';
+import 'package:flick/models/pre_order.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +16,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AddressesScreen extends StatefulWidget {
-  const AddressesScreen({super.key, required this.showUIForSelectAddressScreen});
+  AddressesScreen({
+    super.key,
+    required this.showUIForSelectAddressScreen,
+    this.preOrder});
 
   final bool showUIForSelectAddressScreen;
+  PreOrder? preOrder;
 
   @override
   State<AddressesScreen> createState() => _AddressesScreenState();
@@ -39,6 +44,12 @@ class _AddressesScreenState extends State<AddressesScreen> {
     super.initState();
 
     dialogHelper = DialogHelper(context);
+
+    if (widget.preOrder != null) {
+      debugPrint("PreOrder Product length: ${widget.preOrder!.products.length}");
+      debugPrint("PreOrder Quantity: ${widget.preOrder!.quantity}");
+      debugPrint("PreOrder Total Price: ${widget.preOrder!.totalPriceAtCheckout}");
+    }
 
     loadAddress();
   }
@@ -209,7 +220,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
                     ),
 
                     addressHeaderWithRefreshButton(widget.showUIForSelectAddressScreen
-                        ? "Select Address"
+                        ? "Proceed to Checkout"
                         : "Your Addresses"),
 
                     const SizedBox(

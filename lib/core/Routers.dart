@@ -90,7 +90,8 @@ class Routers {
         return MaterialPageRoute(
             builder: (_) => AddressesScreen(
                 showUIForSelectAddressScreen:
-                    args?['showUIForSelectAddressScreen'] ?? false));
+                    args?['showUIForSelectAddressScreen'] ?? false,
+              preOrder: args?['preOrder'],));
       case "/addEditAddressScreen":
         final args = settings.arguments as AddEditAddressArguments?;
         return MaterialPageRoute(

@@ -11,6 +11,7 @@ import 'package:flick/helper/DialogHelper.dart';
 import 'package:flick/locator.dart';
 import 'package:flick/models/Product.dart';
 import 'package:flick/models/User.dart';
+import 'package:flick/models/pre_order.dart';
 import 'package:flick/models/rating.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
@@ -55,6 +56,14 @@ class _ProductScreenState extends State<ProductScreen> {
 
   void loadUserData() async {
     user = await User.instance;
+  }
+
+  PreOrder getPreOrder() {
+    return PreOrder(
+        products: [widget.product!],
+        quantity: selectedQuantity,
+        totalPriceAtCheckout: widget.product!.productPrice * selectedQuantity,
+    );
   }
 
   priceAndColorsRowWidget() {
@@ -202,6 +211,12 @@ class _ProductScreenState extends State<ProductScreen> {
             buttonText: "Buy Now!",
             onActionPerformed: () {
               // Buy that item
+              Navigator.pushNamed(context, "/addressesScreen",
+                  arguments: {
+                    'showUIForSelectAddressScreen': true,
+                    'preOrder': getPreOrder()
+                  }
+                );
             },
             showAddToCartButton: false),
       ],
