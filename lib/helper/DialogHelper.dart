@@ -1,8 +1,6 @@
 import 'package:flick/admin_panel/components/widgets/dialogs/ProgressDialog.dart';
 import 'package:flick/admin_panel/components/widgets/dialogs/SuccessfulAndErrorDialog.dart';
 import 'package:flick/admin_panel/components/widgets/dialogs/WarningDialog.dart';
-import 'package:flick/components/dialogs/product_quantity_dialog.dart';
-import 'package:flick/models/Product.dart';
 import 'package:flick/widgets/dialogs/add_review_dialog.dart';
 import 'package:flutter/material.dart';
 
@@ -63,17 +61,5 @@ class DialogHelper {
         builder: (BuildContext context) => AddReviewDialog(
             onReviewAndRatingSubmitted: (int rating, String review) =>
                 onRatingAndReviewSubmitted(rating, review)));
-  }
-
-  void showProductQuantityDialog(
-      Product product,
-      Function(int quantity) onBuyNowButtonPressed
-  ) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) => ProductQuantityDialog(
-            product: product,
-            onBuyNowButtonPressed: (int quantity) =>
-                onBuyNowButtonPressed(quantity)));
   }
 }
