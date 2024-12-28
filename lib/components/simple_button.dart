@@ -9,13 +9,15 @@ class SimpleButton extends StatelessWidget {
       required this.backgroundColor,
       required this.onPressed,
       this.textColor,
-      this.showBorder});
+      this.showBorder,
+      this.borderColor});
 
   final String buttonText;
   final Color backgroundColor;
   final Function() onPressed;
   final Color? textColor;
   final bool? showBorder;
+  final Color? borderColor;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class SimpleButton extends StatelessWidget {
               color: backgroundColor,
               borderRadius: BorderRadius.circular(appPadding / 2),
               border: (showBorder != null && showBorder!)
-                  ? Border.all(color: Colors.black12)
+                  ? Border.all(color: borderColor ?? Colors.black12)
                   : null),
 
           child: Center(

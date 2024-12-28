@@ -11,6 +11,7 @@ import 'package:flick/helper/DialogHelper.dart';
 import 'package:flick/locator.dart';
 import 'package:flick/models/Product.dart';
 import 'package:flick/models/User.dart';
+import 'package:flick/models/order_product.dart';
 import 'package:flick/models/pre_order.dart';
 import 'package:flick/models/rating.dart';
 import 'package:flick/utils/Colors.dart';
@@ -60,8 +61,9 @@ class _ProductScreenState extends State<ProductScreen> {
 
   PreOrder getPreOrder() {
     return PreOrder(
-        products: [widget.product!],
-        quantity: selectedQuantity,
+        orderProducts: [
+          OrderProduct.fromProduct(widget.product!, selectedQuantity)
+        ],
         totalPriceAtCheckout: widget.product!.productPrice * selectedQuantity,
     );
   }
@@ -86,7 +88,7 @@ class _ProductScreenState extends State<ProductScreen> {
               fontWeight: FontWeight.w600
             ),),
 
-            Text("\$ ${widget.product?.productPrice}", style: GoogleFonts.raleway(
+            Text("₹ ${widget.product?.productPrice}", style: GoogleFonts.raleway(
                 color: blackColor,
                 fontSize: 18,
                 fontWeight: FontWeight.bold

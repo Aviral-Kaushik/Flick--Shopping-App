@@ -15,6 +15,7 @@ import 'package:flick/features/cart/screen/CartScreen.dart';
 import 'package:flick/features/contact_us/screens/contact_us.dart';
 import 'package:flick/features/home/screen/HomeScreen.dart';
 import 'package:flick/features/intro/IntroScreen.dart';
+import 'package:flick/features/order/screens/confirmation_screen.dart';
 import 'package:flick/features/product/screens/product_screen.dart';
 import 'package:flick/features/profile/screens/profile_home/profile_home.dart';
 import 'package:flick/features/referral/screens/referral_screen.dart';
@@ -22,6 +23,7 @@ import 'package:flick/features/review/screen/all_reviews_screen.dart';
 import 'package:flick/features/settings/screens/settings_screen.dart';
 import 'package:flick/features/terms_and_privacy/screens/terms_and_privacy_screen.dart';
 import 'package:flick/models/Product.dart';
+import 'package:flick/models/pre_order.dart';
 import 'package:flick/models/rating.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -85,13 +87,13 @@ class Routers {
       case "/registerScreen":
         return MaterialPageRoute(builder: (_) => const RegisterScreen());
       case "/addressesScreen":
-        // List argumentList = settings.arguments as List;
         final args = settings.arguments as Map<String, dynamic>?;
+        final preOrder = args?['preOrder'] as PreOrder;
         return MaterialPageRoute(
             builder: (_) => AddressesScreen(
                 showUIForSelectAddressScreen:
                     args?['showUIForSelectAddressScreen'] ?? false,
-              preOrder: args?['preOrder'],));
+              preOrder: preOrder,));
       case "/addEditAddressScreen":
         final args = settings.arguments as AddEditAddressArguments?;
         return MaterialPageRoute(
@@ -103,6 +105,11 @@ class Routers {
         final args = settings.arguments as List<Rating>;
         return MaterialPageRoute(
             builder: (_) => AllReviewsScreen(ratings: args));
+      case "/confirmationScreen":
+        final args = settings.arguments as Map<String, dynamic>?;
+        final preOrder = args?['preOrder'] as PreOrder;
+        return MaterialPageRoute(
+            builder: (_) => ConfirmationScreen(preOrder: preOrder));
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(

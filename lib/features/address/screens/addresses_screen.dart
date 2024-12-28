@@ -57,7 +57,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
     }
   }
 
-  addressHeaderWithRefreshButton(String title) {
+  Widget addressHeaderWithRefreshButton(String title) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -104,7 +104,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
     );
   }
 
-  showProgressDialog(String message) {
+  void showProgressDialog(String message) {
     isAnyDialogShowing = true;
 
     dialogHelper.showProgressDialog(message, () {
@@ -112,7 +112,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
     });
   }
 
-  showSuccessfulDialog(String successfulMessage) {
+  void showSuccessfulDialog(String successfulMessage) {
     isAnyDialogShowing = true;
 
     dialogHelper.showSuccessfulOrErrorDialog(
@@ -121,7 +121,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
     });
   }
 
-  showErrorDialog(String message) {
+  void showErrorDialog(String message) {
     isAnyDialogShowing = true;
 
     dialogHelper.showSuccessfulOrErrorDialog("Oops!", message, "Dismiss", true,
@@ -130,7 +130,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
         });
   }
 
-  showDeleteAddressWarningDialog(String addressId) {
+  void showDeleteAddressWarningDialog(String addressId) {
     isAnyDialogShowing = true;
 
     dialogHelper.showWarningDialog("Are you sure want to delete this address?",
@@ -141,7 +141,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
     });
   }
 
-  dismissAllDialogs() {
+  void dismissAllDialogs() {
     if (isAnyDialogShowing) {
 
       isAnyDialogShowing = false;
@@ -166,15 +166,6 @@ class _AddressesScreenState extends State<AddressesScreen> {
           if (state is AddressLoaded) {
             dismissAllDialogs();
             addresses = state.addresses;
-            if (addresses != null) {
-              addresses!.add(state.addresses[0]);
-              addresses!.add(state.addresses[0]);
-              addresses!.add(state.addresses[0]);
-              addresses!.add(state.addresses[0]);
-              addresses!.add(state.addresses[0]);
-              // addresses!.addAll(state.addresses);
-              // addresses!.addAll(state.addresses);
-            }
             setState(() {});
           }
 
@@ -266,8 +257,6 @@ class _AddressesScreenState extends State<AddressesScreen> {
                               } else {
                                 selectedAddressIndex = index;
                               }
-                              debugPrint("Address Selected: $index");
-                              debugPrint("selectedAddressIndex: $selectedAddressIndex");
                               setState(() {});
                             },
                           ),
@@ -297,8 +286,14 @@ class _AddressesScreenState extends State<AddressesScreen> {
                                   : green.withOpacity(0.5),
                               onPressed: () {
                                 if (widget.preOrder != null && selectedAddressIndex >= 0) {
-                                  Navigator.pushNamed(context, "/confirmationScreen",
-                                      arguments: widget.preOrder);
+                                  widget.preOrder!.address = addresses![selectedAddressIndex].address;
+                                  Navigator.pushNamed(context,
+                                      "/confirmationScreen",
+                                      arguments: {
+                                        'showUIForSelectAddressScreen': true,
+                                        'preOrder': widget.preOrder
+                                      }
+                                  );
                                 }
                               }
                           ),

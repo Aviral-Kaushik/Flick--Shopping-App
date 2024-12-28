@@ -85,7 +85,7 @@ class ProductTile extends StatelessWidget {
                                 ),
                                 // Price
                                 Text(
-                                  "\$ ${product.productPrice}",
+                                  "₹ ${product.productPrice}",
                                   style: TextStyle(color: subTitleTextColor),
                                 )
                               ],

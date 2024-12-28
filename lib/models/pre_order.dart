@@ -1,15 +1,13 @@
-import 'package:flick/models/Product.dart';
+import 'package:flick/models/order_product.dart';
 
 class PreOrder {
 
-  final List<Product> products;
-  final int quantity;
+  final List<OrderProduct> orderProducts;
   final int totalPriceAtCheckout;
   String address;
 
   PreOrder({
-    required this.products,
-    required this.quantity,
+    required this.orderProducts,
     required this.totalPriceAtCheckout,
     this.address = ""});
 }

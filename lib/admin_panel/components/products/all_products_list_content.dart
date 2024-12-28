@@ -133,46 +133,6 @@ class _AllProductsListContentState extends State<AllProductsListContent> {
                         showProductFilterDialog();
                       }),
 
-                  // Column(
-                      //   children: [
-                      //     SearchBarWithButton(
-                      //       searchController: searchController,
-                      //       onPressed: () {
-                      //         // Search Button Pressed
-                      //       },
-                      //       labelText: "Search Product",
-                      //       showIconButton: true,
-                      //     ),
-                      //   ],
-                      // ),
-                      //
-                      // const SizedBox(
-                      //   width: appPadding / 2,
-                      // ),
-                      //
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.end,
-                      //   children: [
-                      //     ElevatedButton(
-                      //       onPressed: () {
-                      //         showProductFilterDialog();
-                      //       },
-                      //         style: ButtonStyle(
-                      //           backgroundColor: MaterialStateProperty.resolveWith((states) {
-                      //             return Colors.blueAccent;
-                      //           }),
-                      //           textStyle: MaterialStateProperty.resolveWith((states) {
-                      //             return TextStyle(
-                      //               color: whiteTextColor,
-                      //               fontSize: 13,
-                      //             );
-                      //           })
-                      //         ),
-                      //         child: Icon(Icons.filter_list_alt, color: whiteColor)
-                      //     ),
-                      //   ],
-                      // ),
-
                       const SizedBox(
                         height: 12,
                       ),

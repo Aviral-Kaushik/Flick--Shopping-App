@@ -56,7 +56,7 @@ class _SingleProductListLayoutState extends State<SingleProductListLayout> {
                   ),),
 
                   Text(
-                    "\$${widget.product.productPrice}", style: TextStyle(
+                    "₹${widget.product.productPrice}", style: TextStyle(
                     color: textColor.withOpacity(0.4),
                     fontSize: 13,
                     overflow: TextOverflow.ellipsis,
