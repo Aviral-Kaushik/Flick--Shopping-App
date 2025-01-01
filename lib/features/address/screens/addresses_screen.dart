@@ -290,7 +290,6 @@ class _AddressesScreenState extends State<AddressesScreen> {
                                   Navigator.pushNamed(context,
                                       "/confirmationScreen",
                                       arguments: {
-                                        'showUIForSelectAddressScreen': true,
                                         'preOrder': widget.preOrder
                                       }
                                   );

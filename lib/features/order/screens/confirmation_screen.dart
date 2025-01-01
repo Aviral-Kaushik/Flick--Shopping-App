@@ -1,4 +1,5 @@
 import 'package:flick/components/simple_button.dart';
+import 'package:flick/components/simple_header.dart';
 import 'package:flick/features/order/components/order_summary_card.dart';
 import 'package:flick/models/pre_order.dart';
 import 'package:flick/utils/Colors.dart';
@@ -98,7 +99,14 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
           SimpleButton(
               buttonText: "Proceed to Checkout",
               backgroundColor: Colors.black,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context,
+                    "/paymentScreen",
+                    arguments: {
+                      'preOrder': widget.preOrder
+                    }
+                );
+              },
               textColor: whiteColor,
               borderColor: whiteColor
           ),
@@ -117,7 +125,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
           child: Column(
             children: [
 
-              confirmationScreenHeaderWidget(),
+              const SimpleHeader(title: "Order Summary"),
 
               const SizedBox(
                 height: appPadding,
