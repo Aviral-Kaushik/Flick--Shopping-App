@@ -1,8 +1,8 @@
 import 'package:custom_rating_bar/custom_rating_bar.dart';
+import 'package:flick/components/user_review_card.dart';
 import 'package:flick/features/product/models/ui_related_product_ratings.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
-import 'package:flick/widgets/user_review_card.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

@@ -3,9 +3,11 @@ import 'package:flick/core/Routers.dart';
 import 'package:flick/core/models/cart_item.dart';
 import 'package:flick/locator.dart';
 import 'package:flick/models/User.dart';
+import 'package:flick/utils/Constants.dart';
 import 'package:flick/utils/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 
@@ -17,11 +19,11 @@ void main() async {
   Hive.registerAdapter(UserAdapter());
   setup();
   initUserInstance();
+
+  Stripe.publishableKey = stripePublishableKey;
+
   runApp(const MyApp());
 }
-
-// TODO Implement Review Collection with product id to fetch reviews for a product
-// TODO Only Hex Color Code must be saved as string in firebase for different product color
 
 bool isAdmin = false;
 
