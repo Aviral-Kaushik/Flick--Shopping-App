@@ -1,7 +1,7 @@
+import 'package:flick/components/user_review_card.dart';
 import 'package:flick/features/review/widgets/all_reviews_header.dart';
 import 'package:flick/models/rating.dart';
 import 'package:flick/utils/Constants.dart';
-import 'package:flick/widgets/user_review_card.dart';
 import 'package:flutter/material.dart';
 
 class AllReviewsScreen extends StatelessWidget {

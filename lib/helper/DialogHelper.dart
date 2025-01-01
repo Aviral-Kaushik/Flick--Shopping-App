@@ -1,7 +1,7 @@
 import 'package:flick/admin_panel/components/widgets/dialogs/ProgressDialog.dart';
 import 'package:flick/admin_panel/components/widgets/dialogs/SuccessfulAndErrorDialog.dart';
 import 'package:flick/admin_panel/components/widgets/dialogs/WarningDialog.dart';
-import 'package:flick/widgets/dialogs/add_review_dialog.dart';
+import 'package:flick/components/dialogs/add_review_dialog.dart';
 import 'package:flutter/material.dart';
 
 class DialogHelper {
