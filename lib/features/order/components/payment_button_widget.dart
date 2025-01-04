@@ -15,43 +15,46 @@ class PaymentButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(appPadding),
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        padding: const EdgeInsets.all(appPadding),
 
-      decoration: BoxDecoration(
-        color: whiteColor,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 1.5,
-            blurRadius: 5,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
+        decoration: BoxDecoration(
+          color: whiteColor,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 1.5,
+              blurRadius: 5,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
 
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
 
-          Icon(
-            icon,
-            color: Colors.blueAccent,
-            size: 30,
-          ),
+            Icon(
+              icon,
+              color: Colors.blueAccent,
+              size: 30,
+            ),
 
-          const SizedBox(
-            width: 30,
-          ),
+            const SizedBox(
+              width: 30,
+            ),
 
-          Text(title, style: GoogleFonts.lato(
-            color: blackColor,
-            fontWeight: FontWeight.w800,
-            fontSize: 17
-          ),)
-        ],
+            Text(title, style: GoogleFonts.lato(
+              color: blackColor,
+              fontWeight: FontWeight.w800,
+              fontSize: 17
+            ),)
+          ],
+        ),
       ),
     );
   }

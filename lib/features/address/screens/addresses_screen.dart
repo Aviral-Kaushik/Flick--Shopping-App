@@ -53,6 +53,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
     user = await User.instance;
 
     if (user != null) {
+      widget.preOrder?.userName = user!.name;
       addressBloc.add(LoadAddresses(user!.id));
     }
   }
@@ -286,7 +287,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
                                   : green.withOpacity(0.5),
                               onPressed: () {
                                 if (widget.preOrder != null && selectedAddressIndex >= 0) {
-                                  widget.preOrder!.address = addresses![selectedAddressIndex].address;
+                                  widget.preOrder!.address = addresses![selectedAddressIndex];
                                   Navigator.pushNamed(context,
                                       "/confirmationScreen",
                                       arguments: {

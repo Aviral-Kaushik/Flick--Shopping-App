@@ -1,6 +1,7 @@
 import 'package:flick/components/simple_header.dart';
 import 'package:flick/features/order/components/payment_button_widget.dart';
 import 'package:flick/models/pre_order.dart';
+import 'package:flick/services/stripe_service.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,8 @@ class PaymentScreen extends StatefulWidget {
 
 class _PaymentScreenState extends State<PaymentScreen> {
 
+  final StripeService _stripeService = StripeService.instance;
+
   Widget paymentOptionsWidget() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -27,7 +30,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
         PaymentButtonWidget(
           icon: Icons.credit_card,
           title: "Pay Using Card",
-          onPressed: () {},
+          onPressed: () {
+            _stripeService.makePayment(
+              widget.preOrder.totalPriceAtCheckout,
+              () {
+                debugPrint("Payment Success on Payment Screen");
+              }, () {
+                debugPrint("Payment Failure on Payment Screen");
+              },
+            );
+          },
         ),
 
         const SizedBox(
