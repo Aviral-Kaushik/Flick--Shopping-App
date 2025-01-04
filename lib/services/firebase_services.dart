@@ -9,6 +9,7 @@ import 'package:flick/models/Product.dart';
 import 'package:flick/models/product_ratings.dart';
 import 'package:flick/models/rating.dart';
 import 'package:flick/models/User.dart';
+import 'package:flick/models/order.dart' as flick_order;
 import 'package:flick/utils/mapper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:tuple/tuple.dart';
@@ -638,6 +639,22 @@ class FirebaseServices {
         .get();
 
     return snapshot["secret_key"];
+  }
+
+  Future<bool> createOrder(flick_order.Order order) async {
+    bool orderCreatedSuccessfully = false;
+
+    DocumentReference newUserReference =
+    database.collection(ordersCollection).doc();
+    order.orderId = newUserReference.id;
+
+    await newUserReference.set(order.toFirestore()).then((value) {
+      orderCreatedSuccessfully = true;
+    }).catchError((error) {
+      orderCreatedSuccessfully = false;
+    });
+
+    return orderCreatedSuccessfully;
   }
 
 }

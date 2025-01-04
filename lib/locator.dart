@@ -18,6 +18,8 @@ import 'package:flick/data/database/hive_database.dart';
 import 'package:flick/data/session/session_manager.dart';
 import 'package:flick/features/address/blocs/add_edit_address_boc/add_edit_address_bloc.dart';
 import 'package:flick/features/address/blocs/address_bloc/address_bloc.dart';
+import 'package:flick/features/order/bloc/order_bloc.dart';
+import 'package:flick/features/order/repository/order_repository.dart';
 import 'package:flick/features/product/blocs/ratings/ratings_bloc.dart';
 import 'package:flick/helper/MailHelper.dart';
 import 'package:flick/repositories/address_repository.dart';
@@ -65,5 +67,7 @@ void setup() {
       () => AddEditAddressBloc(AddressRepository(firebaseServices)));
   locator.registerFactory<RatingsBloc>(
       () => RatingsBloc(RatingsRepository(firebaseServices)));
+  locator.registerFactory<OrderBloc>(
+          () => OrderBloc(OrderRepository(firebaseServices)));
 
 }

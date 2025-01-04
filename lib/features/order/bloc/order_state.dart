@@ -14,9 +14,9 @@ class OrderLoadingState extends OrderState {
   const OrderLoadingState(this.progressMessage);
 }
 
-class OrderPosted extends OrderState {
+class OrderCreated extends OrderState {
 
-  const OrderPosted();
+  const OrderCreated();
 }
 
 class OrderError extends OrderState {

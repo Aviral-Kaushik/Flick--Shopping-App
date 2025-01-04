@@ -5,9 +5,9 @@ abstract class OrderEvent {
   const OrderEvent();
 }
 
-class PostOrder extends OrderEvent {
+class CreateOrder extends OrderEvent {
 
   final PreOrder preOrder;
 
-  const PostOrder(this.preOrder);
+  const CreateOrder(this.preOrder);
 }

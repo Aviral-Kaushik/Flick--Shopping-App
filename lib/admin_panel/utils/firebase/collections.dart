@@ -13,3 +13,4 @@ String miscellaneousCollection = "Miscellaneous";
 String addressesCollection = "Addresses";
 String ratingsCollection = "Rating";
 String credentialsCollection = "Credentials";
+String ordersCollection = "Orders";
