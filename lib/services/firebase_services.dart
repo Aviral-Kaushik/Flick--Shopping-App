@@ -630,4 +630,14 @@ class FirebaseServices {
     return ProductRatings.fromFirestore(documentSnapshot);
   }
 
+  Future<String> getStripeSecretKey() async {
+
+    DocumentSnapshot<Map<String, dynamic>> snapshot = await database
+        .collection(credentialsCollection)
+        .doc("Stripe Secret Key")
+        .get();
+
+    return snapshot["secret_key"];
+  }
+
 }

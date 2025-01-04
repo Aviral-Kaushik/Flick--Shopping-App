@@ -12,3 +12,4 @@ String dashboardCollection = "Dashboard";
 String miscellaneousCollection = "Miscellaneous";
 String addressesCollection = "Addresses";
 String ratingsCollection = "Rating";
+String credentialsCollection = "Credentials";

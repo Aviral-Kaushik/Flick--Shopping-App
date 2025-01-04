@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flick/locator.dart';
+import 'package:flick/services/firebase_services.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -7,12 +9,23 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 
 class StripeService {
 
+  FirebaseServices firebaseServices = locator.get<FirebaseServices>();
+
+  String secretKey = "";
+
   Function()? onPaymentSuccess;
   Function()? onPaymentFailure;
 
-  StripeService._();
+  StripeService._() {
+    getStripeSecretKey();
+  }
 
   static final StripeService instance = StripeService._();
+
+  void getStripeSecretKey() async {
+    secretKey  = await firebaseServices.getStripeSecretKey();
+    debugPrint("Secret Key: $secretKey");
+  }
 
   Future<void> makePayment(int paymentAmount,
       Function() onPaymentSuccess,
@@ -71,7 +84,7 @@ class StripeService {
       var response = await http.post(
         Uri.parse('https://api.stripe.com/v1/payment_intents'),
         headers: {
-          'Authorization': 'Bearer $stipeSecretKey',
+          'Authorization': 'Bearer $secretKey',
           'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: data,
@@ -101,7 +114,7 @@ class StripeService {
   //     var response = await http.post(
   //       Uri.parse('https://api.stripe.com/v1/customers'),
   //       headers: {
-  //         'Authorization': 'Bearer $stipeSecretKey',
+  //         'Authorization': 'Bearer secretKey',
   //       },
   //       body: data,
   //     );
