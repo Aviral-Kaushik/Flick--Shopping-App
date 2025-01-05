@@ -288,7 +288,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
                               onPressed: () {
                                 if (widget.preOrder != null && selectedAddressIndex >= 0) {
                                   widget.preOrder!.address = addresses![selectedAddressIndex];
-                                  Navigator.pushNamed(context,
+                                  Navigator.pushReplacementNamed(context,
                                       "/confirmationScreen",
                                       arguments: {
                                         'preOrder': widget.preOrder

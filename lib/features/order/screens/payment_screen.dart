@@ -121,10 +121,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
           if (state is OrderCreated) {
             dismissAllDialogs();
-            // Navigator.pushReplacementNamed(
-            //     context,
-            //     "/orderSuccessfulScreen"
-            // );
+            Navigator.pushReplacementNamed(
+                context,
+                "/orderSuccessfulScreen"
+            );
           }
         },
         child: SafeArea(

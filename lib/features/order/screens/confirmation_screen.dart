@@ -100,7 +100,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
               buttonText: "Proceed to Checkout",
               backgroundColor: Colors.black,
               onPressed: () {
-                Navigator.pushNamed(context,
+                Navigator.pushReplacementNamed(context,
                     "/paymentScreen",
                     arguments: {
                       'preOrder': widget.preOrder

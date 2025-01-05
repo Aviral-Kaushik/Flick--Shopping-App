@@ -17,6 +17,7 @@ import 'package:flick/features/home/screen/HomeScreen.dart';
 import 'package:flick/features/intro/IntroScreen.dart';
 import 'package:flick/features/order/screens/confirmation_screen.dart';
 import 'package:flick/features/order/screens/payment_screen.dart';
+import 'package:flick/features/order/screens/order_successful_screen.dart';
 import 'package:flick/features/product/screens/product_screen.dart';
 import 'package:flick/features/profile/screens/profile_home/profile_home.dart';
 import 'package:flick/features/referral/screens/referral_screen.dart';
@@ -116,6 +117,9 @@ class Routers {
         final preOrder = args?['preOrder'] as PreOrder;
         return MaterialPageRoute(
             builder: (_) => PaymentScreen(preOrder: preOrder));
+      case "/orderSuccessfulScreen":
+        return MaterialPageRoute(
+            builder: (_) => const OrderSuccessfulScreen());
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(
