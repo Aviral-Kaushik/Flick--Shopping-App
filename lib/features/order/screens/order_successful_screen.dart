@@ -1,38 +1,95 @@
+import 'package:flick/components/simple_header.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class OrderSuccessfulScreen extends StatefulWidget {
+class OrderSuccessfulScreen extends StatelessWidget {
   const OrderSuccessfulScreen({super.key});
 
-  @override
-  State<OrderSuccessfulScreen> createState() => _OrderSuccessfulScreenState();
-}
+  Widget checkCircleWidget() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
 
-class _OrderSuccessfulScreenState extends State<OrderSuccessfulScreen> {
+        Container(
+          padding: const EdgeInsets.all(appPadding * 3),
+
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(40),
+            color: whiteColor
+          ),
+
+          child: const Icon(
+            Icons.check,
+            color: Colors.green,
+            size: 70,
+          ),
+
+        )
+
+      ],
+    );
+  }
+
+  Widget orderSuccessfulWidget() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+
+        checkCircleWidget(),
+
+        const SizedBox(height: appPadding * 2,),
+
+        Text("Order Placed!", style: GoogleFonts.lato(
+          color: whiteColor,
+          fontSize: 20,
+          fontWeight: FontWeight.bold
+        ),),
+
+        const SizedBox(height: appPadding * 2,),
+
+        Text("You will receive an email shortly.", style: GoogleFonts.lato(
+          color: whiteColor,
+          fontSize: 18,
+        ),),
+
+        const SizedBox(height: appPadding * 1.5,),
+
+        Text("Continue Shopping!", style: GoogleFonts.lato(
+          color: whiteColor,
+          fontSize: 16,
+        ),),
+
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: primaryColor,
+        backgroundColor: green,
         body: Padding(
           padding: const EdgeInsets.all(appPadding),
           child: Column(
             children: [
 
-              Expanded(
-                  flex: 2,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.greenAccent,
-                    ),
-
-                    child: Column(),
-                  )
+              SimpleHeader(
+                  title: "",
+                  backgroundColor: green,
+                  textColor: whiteColor,
+                  borderColor: whiteColor
               ),
 
-              Expanded(flex: 1, child: Container()),
+              const SizedBox(
+                height: appPadding * 5,
+              ),
+
+              orderSuccessfulWidget(),
 
             ],
           ),
