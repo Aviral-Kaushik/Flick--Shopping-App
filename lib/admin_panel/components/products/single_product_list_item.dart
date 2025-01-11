@@ -28,17 +28,9 @@ class _SingleProductListLayoutState extends State<SingleProductListLayout> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
 
-              // ClipRRect(
-              //     borderRadius: BorderRadius.circular(30),
-              //     child: Image.network(
-              //       widget.product.productImages[0],
-              //       width: 60, height: 60,
-              //       fit: BoxFit.cover,
-              //     )),
-
               ClipRRect(
                   borderRadius: BorderRadius.circular(30),
-                  child: Image.asset(
+                  child: Image.network(
                     widget.product.productImages[0],
                     width: 60, height: 60,
                     fit: BoxFit.cover,

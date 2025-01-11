@@ -2,7 +2,7 @@ import 'package:flick/admin_panel/controllers/AdminPanelController.dart';
 import 'package:flick/admin_panel/features/adminSettings/AdminSettingsScreen.dart';
 import 'package:flick/admin_panel/features/home/AdminPanelHomeScreen.dart';
 import 'package:flick/admin_panel/features/messages/MessagesScreen.dart';
-import 'package:flick/admin_panel/features/product/screens/add_new_product_screen.dart';
+import 'package:flick/admin_panel/features/product/screens/add_edit_product_screen.dart';
 import 'package:flick/admin_panel/features/product/screens/all_prodcuts_screen.dart';
 import 'package:flick/admin_panel/features/referral/admin_referral_screen.dart';
 import 'package:flick/admin_panel/features/termsAndPrivacy/TermsAndPrivacyAdminScreeen.dart';
@@ -70,8 +70,11 @@ class Routers {
         return MaterialPageRoute(builder: (_) => const AdminSettingsScreen());
       case "/adminProductsScreen":
         return MaterialPageRoute(builder: (_) => const AllProductsScreen());
-      case "/addNewProductScreen":
-        return MaterialPageRoute(builder: (_) => const AddNewProductScreen());
+      case "/addEditProductScreen":
+        final args = settings.arguments as Map<String, dynamic>?;
+        final product = args?['product'] as Product?;
+        return MaterialPageRoute(builder: (_) => AddEditProductScreen(
+            product: product));
       case "/termsAndConditions":
         return MaterialPageRoute(builder: (_) => const TermsAndPrivacyScreen());
       case "/privacyPolicy":

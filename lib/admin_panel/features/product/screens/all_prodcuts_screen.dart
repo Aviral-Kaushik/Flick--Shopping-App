@@ -23,7 +23,7 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
           borderRadius: BorderRadius.circular(appPadding * 2),
         ),
         onPressed: () {
-          Navigator.pushNamed(context, "/addNewProductScreen");
+          Navigator.pushNamed(context, "/addEditProductScreen");
         },
         child: Icon(
           Icons.add,

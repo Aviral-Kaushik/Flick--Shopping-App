@@ -5,7 +5,6 @@ import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/admin_panel/components/products/product_search_bar.dart';
 import 'package:flick/admin_panel/components/products/single_product_list_item.dart';
 import 'package:flick/admin_panel/components/widgets/dialogs/filter_dialog.dart';
-import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/admin_panel/helper/user_product_filter.dart';
 import 'package:flick/helper/DialogHelper.dart';
 import 'package:flick/locator.dart';
@@ -37,8 +36,6 @@ class _AllProductsListContentState extends State<AllProductsListContent> {
   @override
   void initState() {
     super.initState();
-
-    products = getDummyProducts();
 
     dialogHelper = DialogHelper(context);
 
@@ -165,7 +162,11 @@ class _AllProductsListContentState extends State<AllProductsListContent> {
                                 itemBuilder: (context, index) =>
                                     GestureDetector(
                                       onTap: () {
-                                        // TODO Open Product User Page Here
+                                        Navigator.pushNamed(
+                                            context, "/addEditProductScreen",
+                                            arguments: {
+                                              'product': products[index]
+                                            });
                                       },
                                       child: SingleProductListLayout(
                                         product: products[index],

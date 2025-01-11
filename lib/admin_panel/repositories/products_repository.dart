@@ -1,4 +1,3 @@
-import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/admin_panel/helper/user_product_filter.dart';
 import 'package:flick/services/firebase_services.dart';
 import 'package:flick/models/Product.dart';
@@ -16,7 +15,7 @@ class ProductsRepository {
     bool isErrorOccurred = false;
     String errorMessage = "";
 
-    products = getDummyProducts();
+    products = await firebaseServices.fetchAllProducts();
 
     return Tuple3(products, isErrorOccurred, errorMessage);
   }

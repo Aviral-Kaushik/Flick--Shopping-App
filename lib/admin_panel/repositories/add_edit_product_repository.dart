@@ -4,12 +4,12 @@ import 'package:flick/services/storage/storage_service.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tuple/tuple.dart';
 
-class AddNewProductRepository {
+class AddEditProductRepository {
 
   final FirebaseServices firebaseServices;
   final StorageService storageService;
 
-  AddNewProductRepository(this.firebaseServices, this.storageService);
+  AddEditProductRepository(this.firebaseServices, this.storageService);
 
   Future<Tuple3<bool, String, List<String>>> uploadProductImages(
       String sellerName, String productName, List<XFile> productImages) async {

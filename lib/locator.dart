@@ -1,4 +1,4 @@
-import 'package:flick/admin_panel/blocs/add_new_product/add_new_product_bloc.dart';
+import 'package:flick/admin_panel/blocs/add_new_product/add_edit_product_bloc.dart';
 import 'package:flick/admin_panel/blocs/dashboard/dashboard_bloc.dart';
 import 'package:flick/admin_panel/blocs/messages/messages_bloc.dart';
 import 'package:flick/admin_panel/blocs/products/products_bloc.dart';
@@ -6,7 +6,7 @@ import 'package:flick/admin_panel/blocs/referrals/referrals_bloc.dart';
 import 'package:flick/admin_panel/blocs/settings/settings_bloc.dart';
 import 'package:flick/admin_panel/blocs/termsAndPrivacy/terms_and_privacy_bloc.dart';
 import 'package:flick/admin_panel/blocs/users/users_bloc.dart';
-import 'package:flick/admin_panel/repositories/add_new_product_repository.dart';
+import 'package:flick/admin_panel/repositories/add_edit_product_repository.dart';
 import 'package:flick/admin_panel/repositories/dashboard_repository.dart';
 import 'package:flick/admin_panel/repositories/messages_repository.dart';
 import 'package:flick/admin_panel/repositories/products_repository.dart';
@@ -58,8 +58,8 @@ void setup() {
       () => UsersBloc(UsersRepository(firebaseServices)));
   locator.registerFactory<ProductsBloc>(
           () => ProductsBloc(ProductsRepository(firebaseServices)));
-  locator.registerFactory<AddNewProductBloc>(() => AddNewProductBloc(
-      AddNewProductRepository(firebaseServices, storageServices)));
+  locator.registerFactory<AddEditProductBloc>(() => AddEditProductBloc(
+      AddEditProductRepository(firebaseServices, storageServices)));
 
   locator.registerFactory<AddressBloc>(
       () => AddressBloc(AddressRepository(firebaseServices)));

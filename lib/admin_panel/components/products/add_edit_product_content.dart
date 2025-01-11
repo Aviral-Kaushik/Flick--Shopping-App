@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:flick/admin_panel/blocs/add_new_product/add_new_product_bloc.dart';
-import 'package:flick/admin_panel/blocs/add_new_product/add_new_product_event.dart';
-import 'package:flick/admin_panel/blocs/add_new_product/add_new_product_state.dart';
+import 'package:flick/admin_panel/blocs/add_new_product/add_edit_product_bloc.dart';
+import 'package:flick/admin_panel/blocs/add_new_product/add_edit_product_event.dart';
+import 'package:flick/admin_panel/blocs/add_new_product/add_edit_product_state.dart';
 import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/admin_panel/features/product/screens/product_color_picker_screen.dart';
 import 'package:flick/components/border_text_area.dart';
@@ -21,24 +21,28 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../models/User.dart';
 
-class AddNewProductContent extends StatefulWidget {
-  const AddNewProductContent({super.key});
+class AddEditProductContent extends StatefulWidget {
+  const AddEditProductContent({super.key, this.product});
+
+  final Product? product;
 
   @override
-  State<AddNewProductContent> createState() => _AddNewProductContentState();
+  State<AddEditProductContent> createState() => _AddEditProductContentState();
 }
 
-class _AddNewProductContentState extends State<AddNewProductContent> {
+class _AddEditProductContentState extends State<AddEditProductContent> {
 
-  AddNewProductBloc addNewProductBloc = locator.get<AddNewProductBloc>();
+  AddEditProductBloc addNewProductBloc = locator.get<AddEditProductBloc>();
 
   late DialogHelper dialogHelper;
 
-  List<XFile>? productImages = [];
+  List<XFile>? productImagesXFiles = [];
+  List<String> productImagesBackend = [];
   ImagePicker imagePicker = ImagePicker();
   SnackBarHelper snackBarHelper = SnackBarHelper();
 
   bool isAnyDialogShowing = false;
+  bool showUIForProductUpdate = false;
 
   String selectedCategory = "Electronics";
 
@@ -56,6 +60,11 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
 
     dialogHelper = DialogHelper(context);
     productCategoryController.text = productCategories[0].value ?? "";
+
+    if (widget.product != null) {
+      setUpWidgetForProductUpdate();
+    }
+
   }
 
   List<DropdownMenuItem<String>> get productCategories {
@@ -79,7 +88,7 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
     List<XFile>? images = await imagePicker.pickMultiImage();
 
     setState(() {
-      productImages = images;
+      productImagesXFiles = images;
     });
   }
 
@@ -96,6 +105,27 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
         sellerName: user.name,
         productCategory: productCategoryController.text,
         availableColors: selectedColors);
+  }
+
+
+  void setUpWidgetForProductUpdate() {
+    showUIForProductUpdate = true;
+
+    productImagesXFiles = [];
+
+    productNameController.text = widget.product!.productName;
+    productDescriptionController.text = widget.product!.productDescription;
+    productPriceController.text = widget.product!.productPrice.toString();
+    productStockController.text = widget.product!.stock.toString();
+    // TODO Fix this initially product category is not getting set
+    // productCategoryController.text = widget.product!.productCategory;
+
+    selectedColors = widget.product!.availableColors;
+    // selectedCategory = widget.product!.productCategory;
+
+    productImagesBackend = widget.product!.productImages;
+
+    setState(() {});
   }
 
   void validateAndProcessProductDetails() async {
@@ -129,13 +159,13 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
       return;
     }
 
-    if (productImages == null || (productImages ?? []).isEmpty) {
+    if (productImagesXFiles == null || (productImagesXFiles ?? []).isEmpty) {
       snackBarHelper.showSnackBar(context, "Please select product images");
       return;
     }
 
     addNewProductBloc.add(AddNewProduct(
-        getProduct(user, productPrice, productStock), user.name, productImages ?? []));
+        getProduct(user, productPrice, productStock), user.name, productImagesXFiles ?? []));
   }
 
   textFieldTitleTextWidget(String title) {
@@ -184,10 +214,45 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
     );
   }
 
-  getProductImagesWidget() {
-    if (productImages == null || productImages!.isEmpty) {
+  Widget getProductImagesCountWidget() {
+
+    if (showUIForProductUpdate) {
+      if (productImagesBackend.length > 3 &&
+          productImagesBackend.length - 3 > 0) {
+        return Padding(
+          padding: const EdgeInsets.only(right: appPadding, top: 4.0),
+          child: Text(
+            "And ${productImagesBackend.length - 3} more images",
+            style: GoogleFonts.poppins(
+                fontSize: 12,
+                color: blackColor,
+                fontWeight: FontWeight.w600),
+          ),
+        );
+      }
+    }
+
+    if (productImagesXFiles!.length > 3 &&
+        productImagesXFiles!.length - 3 > 0) {
+      return Padding(
+        padding: const EdgeInsets.only(right: appPadding, top: 4.0),
+        child: Text(
+          "And ${productImagesXFiles!.length - 3} more images",
+          style: GoogleFonts.poppins(
+              fontSize: 12, color: blackColor, fontWeight: FontWeight.w600),
+        ),
+      );
+    }
+
+    return const SizedBox();
+  }
+
+  Widget getProductImagesWidget() {
+    if (!showUIForProductUpdate && (productImagesXFiles == null || productImagesXFiles!.isEmpty)) {
       return const SizedBox();
     }
+
+    bool useXFilesForShowingImages = !showUIForProductUpdate;
 
     return SizedBox(
       width: double.infinity,
@@ -195,7 +260,7 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,
-          itemCount: productImages!.length > 3 ? 3 : productImages!.length,
+          itemCount: getProductImagesCount(useXFilesForShowingImages),
           itemBuilder: (context, index) {
 
             return Padding(
@@ -204,17 +269,41 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(appPadding),
 
-                child: Image.file(
-                  File(productImages![index].path),
-                  width: 75,
-                  height: 75,
-                  fit: BoxFit.cover,
-                ),
+                child: getProductImageForShowing(index, useXFilesForShowingImages),
               ),
             );
           }
       ),
     );
+  }
+
+  int getProductImagesCount(bool useXFilesForShowingImages) {
+    return useXFilesForShowingImages
+        ? productImagesXFiles!.length > 3
+            ? 3
+            : productImagesXFiles!.length
+        : productImagesBackend.length > 3
+            ? 3
+            : productImagesBackend.length;
+  }
+
+  Image getProductImageForShowing(int index, bool useXFilesForShowingImages) {
+    if (useXFilesForShowingImages) {
+      return Image.file(
+        File(productImagesXFiles![index].path),
+        width: 75,
+        height: 75,
+        fit: BoxFit.cover,
+      );
+    }
+
+    return Image.network(
+      productImagesBackend[index],
+      width: 75,
+      height: 75,
+      fit: BoxFit.cover,
+    );
+
   }
 
   showProgressDialog(String message) {
@@ -254,7 +343,7 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => addNewProductBloc,
-      child: BlocListener<AddNewProductBloc, AddNewProductState>(
+      child: BlocListener<AddEditProductBloc, AddEditProductState>(
         listener: (context, state) {
 
           if (state is AddNewProductLoading) {
@@ -455,24 +544,16 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
                     ),
                   ),
 
-
-                if (productImages != null && productImages!.isNotEmpty)
-                  const SizedBox(height: appPadding * 2,),
+                if (showUIForProductUpdate ||
+                    (productImagesXFiles != null &&
+                        productImagesXFiles!.isNotEmpty))
+                  const SizedBox(
+                    height: appPadding * 2,
+                  ),
 
                   getProductImagesWidget(),
 
-                  if (productImages!.length > 3 &&
-                      productImages!.length - 3 > 0)
-                    Padding(
-                      padding: const EdgeInsets.only(right: appPadding, top: 4.0),
-                      child: Text(
-                        "And ${productImages!.length - 3} more images",
-                        style: GoogleFonts.poppins(
-                            fontSize: 12,
-                            color: blackColor,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ),
+                  getProductImagesCountWidget(),
 
                 const SizedBox(
                   height: appPadding * 1.5,
@@ -492,7 +573,7 @@ class _AddNewProductContentState extends State<AddNewProductContent> {
                 ),
 
                 SimpleButton(
-                    buttonText: "Submit",
+                    buttonText: showUIForProductUpdate ? "Update Product" : "Submit",
                     backgroundColor: Colors.blueAccent,
                     onPressed: () {
                       validateAndProcessProductDetails();
