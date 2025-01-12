@@ -43,11 +43,14 @@ class StorageService {
 
   // Delete Images
 
-  Future<void> deleteImages(String imagePath) async {
+  Future<bool> deleteImages(String imageURL) async {
     try {
-      await firebaseStorage.ref(imagePath).delete();
+      await firebaseStorage.refFromURL(imageURL).delete();
+      // await firebaseStorage.ref(imagePath).delete();
+      return true;
     } catch (e) {
       debugPrint(e.toString());
+      return false;
     }
   }
 

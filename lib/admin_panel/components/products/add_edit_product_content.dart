@@ -43,8 +43,9 @@ class _AddEditProductContentState extends State<AddEditProductContent> {
 
   bool isAnyDialogShowing = false;
   bool showUIForProductUpdate = false;
+  bool hasImagesUpdatedForProductUpdate = false;
 
-  String selectedCategory = "Electronics";
+  String? selectedCategory = "Electronics";
 
   TextEditingController productNameController = TextEditingController();
   TextEditingController productDescriptionController = TextEditingController();
@@ -88,19 +89,20 @@ class _AddEditProductContentState extends State<AddEditProductContent> {
     List<XFile>? images = await imagePicker.pickMultiImage();
 
     setState(() {
+      hasImagesUpdatedForProductUpdate = true;
       productImagesXFiles = images;
     });
   }
 
     Product getProduct(User user, int productPrice, int productStock) {
     return Product(
-        id: "",
+        id: widget.product != null ? widget.product!.id : "",
         productName: productNameController.text,
         productDescription: productDescriptionController.text,
-        productImages: [],
-        productRating: 0.0,
+        productImages: widget.product != null ? widget.product!.productImages : [],
+        productRating: widget.product != null ? widget.product!.productRating : 0.0,
         productPrice: productPrice,
-        totalPurchases: 0,
+        totalPurchases: widget.product != null ? widget.product!.totalPurchases : 0,
         stock: productStock,
         sellerName: user.name,
         productCategory: productCategoryController.text,
@@ -117,11 +119,12 @@ class _AddEditProductContentState extends State<AddEditProductContent> {
     productDescriptionController.text = widget.product!.productDescription;
     productPriceController.text = widget.product!.productPrice.toString();
     productStockController.text = widget.product!.stock.toString();
-    // TODO Fix this initially product category is not getting set
-    // productCategoryController.text = widget.product!.productCategory;
+    productCategoryController.text = widget.product!.productCategory;
 
     selectedColors = widget.product!.availableColors;
-    // selectedCategory = widget.product!.productCategory;
+    selectedCategory = productCategories
+        .where((element) => element.value == widget.product!.productCategory)
+        .first.value;
 
     productImagesBackend = widget.product!.productImages;
 
@@ -159,13 +162,32 @@ class _AddEditProductContentState extends State<AddEditProductContent> {
       return;
     }
 
-    if (productImagesXFiles == null || (productImagesXFiles ?? []).isEmpty) {
-      snackBarHelper.showSnackBar(context, "Please select product images");
+    if (showUIForProductUpdate) {
+      if (hasImagesUpdatedForProductUpdate &&
+          (productImagesXFiles == null ||
+              (productImagesXFiles ?? []).isEmpty)) {
+        snackBarHelper.showSnackBar(context, "Please select product images");
+        return;
+      }
+    } else {
+      if (productImagesXFiles == null || (productImagesXFiles ?? []).isEmpty) {
+        snackBarHelper.showSnackBar(context, "Please select product images");
+        return;
+      }
+    }
+
+    if (showUIForProductUpdate) {
+      addNewProductBloc.add(EditProduct(
+          getProduct(user, productPrice, productStock),
+          hasImagesUpdatedForProductUpdate,
+          productImagesXFiles ?? []));
       return;
     }
 
     addNewProductBloc.add(AddNewProduct(
-        getProduct(user, productPrice, productStock), user.name, productImagesXFiles ?? []));
+        getProduct(user, productPrice, productStock),
+        user.name,
+        productImagesXFiles ?? []));
   }
 
   textFieldTitleTextWidget(String title) {
@@ -278,7 +300,7 @@ class _AddEditProductContentState extends State<AddEditProductContent> {
   }
 
   int getProductImagesCount(bool useXFilesForShowingImages) {
-    return useXFilesForShowingImages
+    return hasImagesUpdatedForProductUpdate || useXFilesForShowingImages
         ? productImagesXFiles!.length > 3
             ? 3
             : productImagesXFiles!.length
@@ -288,7 +310,7 @@ class _AddEditProductContentState extends State<AddEditProductContent> {
   }
 
   Image getProductImageForShowing(int index, bool useXFilesForShowingImages) {
-    if (useXFilesForShowingImages) {
+    if (hasImagesUpdatedForProductUpdate || useXFilesForShowingImages) {
       return Image.file(
         File(productImagesXFiles![index].path),
         width: 75,
@@ -368,6 +390,11 @@ class _AddEditProductContentState extends State<AddEditProductContent> {
           if (state is ProductAddFailed) {
             dismissAllDialogs();
             showSuccessAndErrorDialog(state.errorMessage, true, false);
+          }
+
+          if (state is ProductEditedSuccessfully) {
+            dismissAllDialogs();
+            showSuccessAndErrorDialog("Product Updated Successfully!", false, true);
           }
 
         },
@@ -523,6 +550,8 @@ class _AddEditProductContentState extends State<AddEditProductContent> {
                       Navigator.push(context,
                           MaterialPageRoute(
                               builder: (_) => ProductColorPickerScreen(
+                                    previouslySelectedColors:
+                                        widget.product?.availableColors,
                                     selectedColors: (List<String> colors) {
                                       setState(() {
                                         selectedColors = colors;

@@ -13,3 +13,11 @@ class AddNewProduct extends AddEditProductEvent {
 
   AddNewProduct(this.product, this.sellerName, this.localProductImages);
 }
+
+class EditProduct extends AddEditProductEvent {
+  final Product product;
+  final bool hasImagesUpdated;
+  final List<XFile> localProductImages;
+
+  EditProduct(this.product, this.hasImagesUpdated, this.localProductImages);
+}

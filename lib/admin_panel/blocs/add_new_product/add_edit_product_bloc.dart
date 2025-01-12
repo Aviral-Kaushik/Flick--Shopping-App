@@ -33,6 +33,42 @@ class AddEditProductBloc extends Bloc<AddEditProductEvent, AddEditProductState> 
         }
       }
     });
+    on<EditProduct>((event, emit) async {
+      emit(const AddNewProductLoading("Please Wait! Updating Product..."));
+
+      if (event.hasImagesUpdated) {
+        bool imagesDeletionResponse = await addEditProductRepository
+            .deleteImages(event.product.productImages);
+
+        if (!imagesDeletionResponse) {
+          emit(const ProductImagesUploadFailed("Failed to delete images!"));
+          return;
+        }
+
+        Tuple3<bool, String, List<String>> uploadProductImagesResult =
+            await addEditProductRepository.uploadProductImages(
+                event.product.productName,
+                event.product.sellerName,
+                event.localProductImages);
+
+        if (uploadProductImagesResult.item1) {
+          emit(ProductImagesUploadFailed(uploadProductImagesResult.item2));
+          return;
+        }
+
+        event.product.productImages = uploadProductImagesResult.item3;
+        emit(const ProductImagesUploadedSuccessfully());
+      }
+
+      Tuple2<bool, String> editProductResult =
+          await addEditProductRepository.updateProduct(event.product);
+
+      if (editProductResult.item1) {
+        emit(ProductAddFailed(editProductResult.item2));
+      } else {
+        emit(const ProductEditedSuccessfully());
+      }
+    });
   }
 
 }

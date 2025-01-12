@@ -35,3 +35,8 @@ class ProductAddFailed extends AddEditProductState {
 
   const ProductAddFailed(this.errorMessage);
 }
+
+class ProductEditedSuccessfully extends AddEditProductState {
+
+  const ProductEditedSuccessfully();
+}

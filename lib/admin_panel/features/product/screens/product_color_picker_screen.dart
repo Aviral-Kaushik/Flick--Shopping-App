@@ -7,8 +7,10 @@ import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
 
 class ProductColorPickerScreen extends StatefulWidget {
-  const ProductColorPickerScreen({super.key, required this.selectedColors});
+  const ProductColorPickerScreen(
+      {super.key, this.previouslySelectedColors, required this.selectedColors});
 
+  final List<String>? previouslySelectedColors;
   final Function(List<String> selectedColors) selectedColors;
 
   @override
@@ -19,6 +21,15 @@ class _ProductColorPickerScreenState extends State<ProductColorPickerScreen> {
   List<String> pickedColors = [];
 
   Color currentColor = const Color(0xFF0000FF);
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.previouslySelectedColors != null) {
+      pickedColors = widget.previouslySelectedColors!;
+    }
+  }
 
   void showSnackBar(String text) {
     SnackBarHelper().showSnackBar(context, text);

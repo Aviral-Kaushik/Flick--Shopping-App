@@ -18,16 +18,9 @@ class AddEditProductRepository {
     List<String> imagesURLs = [];
 
     await storageService.uploadImage(sellerName, productName, productImages, (List<String> imageUrls) {
-      print("Product Images Uploaded Successfully");
-      print("Image URLs size: ${imageUrls.length}");
       imagesURLs = imageUrls;
-      for (String s in imageUrls) {
-        print("URL: ${s}");
-      }
     }, () {
-      print("Product Images Upload Failed");
       hasErrorOccurred = true;
-      errorMessage = "Product Images Upload Failed";
     });
 
     return Tuple3(hasErrorOccurred, errorMessage, imagesURLs);
@@ -38,14 +31,35 @@ class AddEditProductRepository {
     String errorMessage = '';
 
     await firebaseServices.createNewProduct(product).then((value) {
-      print("Product Added Successfully");
     }).catchError((error) {
-      print("Product Add Failed");
       hasErrorOccurred = true;
-      errorMessage = "Product Add Failed";
     });
 
     return Tuple2(hasErrorOccurred, errorMessage);
+  }
+
+  Future<Tuple2<bool, String>> updateProduct(Product product) async {
+    bool hasErrorOccurred = false;
+    String errorMessage = '';
+
+    await firebaseServices.updateProduct(product).then((value) {
+    }).catchError((error) {
+      hasErrorOccurred = true;
+    });
+
+    return Tuple2(hasErrorOccurred, errorMessage);
+  }
+
+  Future<bool> deleteImages(List<String> productImagesURLs) async {
+    for (String imageURL in productImagesURLs) {
+      bool imageDeletionResponse = await storageService.deleteImages(imageURL);
+
+      if (!imageDeletionResponse) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
 }
