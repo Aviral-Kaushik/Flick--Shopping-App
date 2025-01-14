@@ -7,11 +7,17 @@ class BorderTextField extends StatelessWidget {
   const BorderTextField({super.key,
     required this.labelText,
     required this.controller,
-    required this.onChanged});
+    this.backgroundColor,
+    this.readOnly = false,
+    required this.onChanged,
+    this.onTapped});
 
   final String labelText;
-  final Function(String text) onChanged;
   final TextEditingController controller;
+  final bool readOnly;
+  final Color? backgroundColor;
+  final Function(String text) onChanged;
+  final Function()? onTapped;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +31,7 @@ class BorderTextField extends StatelessWidget {
         ),
 
         contentPadding: const EdgeInsets.all(appPadding),
-        fillColor: const Color(0x33E5E4E2),
+        fillColor: backgroundColor ?? const Color(0x33E5E4E2),
         filled: true,
 
         border: OutlineInputBorder(
@@ -42,6 +48,7 @@ class BorderTextField extends StatelessWidget {
       onChanged: (String text) {
         onChanged(text);
       },
-    );
+      onTap: onTapped,
+      readOnly: readOnly);
   }
 }

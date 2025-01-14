@@ -224,7 +224,12 @@ class _UsersListContentState extends State<UsersListContent> {
                                     SingleUserListLayout(
                                       user: usersData[index],
                                       onTap: () {
-                                        // TODO Open Edit User Page Here
+                                        Navigator.pushNamed(context,
+                                            "/editUserScreen",
+                                            arguments: {
+                                              'user': usersData[index]
+                                            }
+                                        );
                                       },
                                     ))
                             : const Center(

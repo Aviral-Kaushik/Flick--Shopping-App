@@ -6,7 +6,8 @@ import 'package:flick/admin_panel/features/product/screens/add_edit_product_scre
 import 'package:flick/admin_panel/features/product/screens/all_prodcuts_screen.dart';
 import 'package:flick/admin_panel/features/referral/admin_referral_screen.dart';
 import 'package:flick/admin_panel/features/termsAndPrivacy/TermsAndPrivacyAdminScreeen.dart';
-import 'package:flick/admin_panel/features/users/UsersListScreen.dart';
+import 'package:flick/admin_panel/features/users/screens/edit_user_screen.dart';
+import 'package:flick/admin_panel/features/users/screens/user_list_screen.dart';
 import 'package:flick/features/address/screens/add_edit_address_screen.dart';
 import 'package:flick/features/address/screens/addresses_screen.dart';
 import 'package:flick/features/auth/screens/login_screen.dart';
@@ -25,6 +26,7 @@ import 'package:flick/features/review/screen/all_reviews_screen.dart';
 import 'package:flick/features/settings/screens/settings_screen.dart';
 import 'package:flick/features/terms_and_privacy/screens/terms_and_privacy_screen.dart';
 import 'package:flick/models/Product.dart';
+import 'package:flick/models/User.dart';
 import 'package:flick/models/pre_order.dart';
 import 'package:flick/models/rating.dart';
 import 'package:flutter/material.dart';
@@ -123,6 +125,11 @@ class Routers {
       case "/orderSuccessfulScreen":
         return MaterialPageRoute(
             builder: (_) => const OrderSuccessfulScreen());
+      case "/editUserScreen":
+        final args = settings.arguments as Map<String, dynamic>?;
+        final user = args?['user'] as User;
+        return MaterialPageRoute(
+            builder: (_) => EditUserScreen(user: user));
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(

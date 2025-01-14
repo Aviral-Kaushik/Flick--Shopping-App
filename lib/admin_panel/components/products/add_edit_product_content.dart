@@ -7,6 +7,7 @@ import 'package:flick/admin_panel/components/appbar/AdminAppBar.dart';
 import 'package:flick/admin_panel/features/product/screens/product_color_picker_screen.dart';
 import 'package:flick/components/border_text_area.dart';
 import 'package:flick/components/border_text_field.dart';
+import 'package:flick/components/drop_down_widget.dart';
 import 'package:flick/components/simple_button.dart';
 import 'package:flick/helper/DialogHelper.dart';
 import 'package:flick/helper/SnackbarHelper.dart';
@@ -201,39 +202,16 @@ class _AddEditProductContentState extends State<AddEditProductContent> {
   }
 
   productCategoryDropdownWidget() {
-    return DropdownButtonFormField(
-      decoration: InputDecoration(
-        alignLabelWithHint: true,
-        labelStyle: GoogleFonts.poppins(
-            fontSize: 14,
-            color: const Color(0xFFA6A6A6)
-        ),
-
-        contentPadding: const EdgeInsets.all(appPadding),
-        fillColor: const Color(0x33E5E4E2),
-        filled: true,
-
-        border: OutlineInputBorder(
-          borderSide: const BorderSide(color: Color(0xFFF1F1F1), width: 1.0),
-          borderRadius: BorderRadius.circular(appPadding / 2),
-        ),
-
-        enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Color(0xFFA6A6A6), width: 1.0),
-          borderRadius: BorderRadius.circular(appPadding / 2),
-        ),
-      ),
-      value: selectedCategory,
-      items: productCategories,
-      onChanged: (String? value) {
-        if (value != null && value.isNotEmpty) {
+    return DropDownWidget(
+        selectedValue: selectedCategory ?? "Electronics",
+        dropDownItems: productCategories,
+        backgroundColor: whiteColor,
+        onChanged: (String value) {
           productCategoryController.text = value;
           setState(() {
             selectedCategory = value;
           });
-        }
-      },
-    );
+        });
   }
 
   Widget getProductImagesCountWidget() {
@@ -406,11 +384,12 @@ class _AddEditProductContentState extends State<AddEditProductContent> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const AdminAppBar(),
+
                 const SizedBox(
                   height: appPadding * 2,
                 ),
 
-                Text("Create New Product",
+                Text(showUIForProductUpdate ? "Update Product" : "Create New Product",
                     style: GoogleFonts.poppins(
                         fontSize: 24,
                         color: blackColor,
