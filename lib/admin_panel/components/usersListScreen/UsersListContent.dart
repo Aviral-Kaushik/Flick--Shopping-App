@@ -108,16 +108,6 @@ class _UsersListContentState extends State<UsersListContent> {
             showSuccessAndErrorDialog(state.errorMessage, true);
           }
 
-          if (state is UserEditedSuccessfully) {
-            dismissAllDialog();
-            showSuccessAndErrorDialog("User Updated Successfully!", false);
-          }
-
-          if (state is UserDeletedSuccessfully) {
-            dismissAllDialog();
-            showSuccessAndErrorDialog("User Deleted Successfully!", false);
-          }
-
         },
         child: SafeArea(
             child: Column(

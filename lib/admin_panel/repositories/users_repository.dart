@@ -42,21 +42,8 @@ class UsersRepository {
   }
 
   Future<Tuple2<bool, String>> editUser(User user) async {
-    bool hasErrorOccurred = false;
-    String errorMessage = "";
-
-    if (!users.contains(user)) {
-      hasErrorOccurred = true;
-      errorMessage = "User not exists";
-      return Tuple2(hasErrorOccurred, errorMessage);
-    }
-
     Tuple2<bool, String> updateUserResponse =
         await firebaseServices.updateUser(user);
-
-    if (!updateUserResponse.item1) {
-      users[users.indexWhere((element) => element.id == user.id)] = user;
-    }
 
     return updateUserResponse;
   }
