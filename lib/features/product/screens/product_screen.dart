@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flick/components/increment_and_decrement_widget.dart';
 import 'package:flick/features/product/blocs/ratings/ratings_bloc.dart';
 import 'package:flick/features/product/blocs/ratings/ratings_event.dart';
 import 'package:flick/features/product/blocs/ratings/ratings_state.dart';
@@ -134,70 +135,19 @@ class _ProductScreenState extends State<ProductScreen> {
 
         const SizedBox(height: appPadding / 2,),
 
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-
-            GestureDetector(
-              onTap: selectedQuantity > 1
+        IncrementAndDecrementWidget(
+            selectedQuantity: selectedQuantity,
+            onIncrementPressed: () {
+              selectedQuantity++;
+              setState(() {});
+            },
+            onDecrementPressed: () {
+              selectedQuantity > 1
                   ? () {
                 selectedQuantity--;
                 setState(() {});
-              }
-                  : null,
-              child: Container(
-                padding: const EdgeInsets.all(5.0),
-
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: selectedQuantity == 1
-                      ? Colors.redAccent.withOpacity(0.5)
-                      : Colors.redAccent,
-                ),
-
-                child: Icon(
-                  Icons.remove,
-                  size: 20,
-                  color: whiteColor,
-                ),
-              ),
-            ),
-
-            const SizedBox(width: 10,),
-
-            Text("$selectedQuantity", style: GoogleFonts.poppins(
-                fontWeight: FontWeight.w600,
-                color: blackColor,
-                fontSize: 15
-              ),
-            ),
-
-            const SizedBox(width: 10,),
-
-            GestureDetector(
-              onTap: () {
-                selectedQuantity++;
-                setState(() {});
-              },
-              child: Container(
-                padding: const EdgeInsets.all(5.0),
-
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.blueAccent,
-                ),
-
-                child: Icon(
-                  Icons.add,
-                  size: 20,
-                  color: whiteColor,
-                ),
-              ),
-            ),
-
-          ],
-        ),
+              }: null;
+            }),
       ],
     );
   }

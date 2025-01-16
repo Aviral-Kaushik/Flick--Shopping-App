@@ -1,16 +1,25 @@
 import 'package:custom_rating_bar/custom_rating_bar.dart';
+import 'package:flick/components/increment_and_decrement_widget.dart';
 import 'package:flick/models/order_product.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class OrderSummaryCard extends StatelessWidget {
+class OrderSummaryCard extends StatefulWidget {
   const OrderSummaryCard({
     super.key,
-    required this.orderProduct});
+    required this.orderProduct,
+    this.cartConfigurations});
 
   final OrderProduct orderProduct;
+  final CartConfigurationsForSummaryCard? cartConfigurations;
+
+  @override
+  State<OrderSummaryCard> createState() => _OrderSummaryCardState();
+}
+
+class _OrderSummaryCardState extends State<OrderSummaryCard> {
 
   Widget boldAndSimpleRowTextWidget(String boldText, String simpleText) {
     return Text.rich(
@@ -34,6 +43,23 @@ class OrderSummaryCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget quantityIncrementAndDecrementWidget() {
+    return IncrementAndDecrementWidget(
+        selectedQuantity: widget.orderProduct.quantity,
+        textSize: widget.cartConfigurations!.textSize,
+        iconSize: widget.cartConfigurations!.iconSize,
+        onIncrementPressed: () {
+          if (widget.cartConfigurations != null) {
+            widget.cartConfigurations!.onIncrementPressed!();
+          }
+        },
+        onDecrementPressed: () {
+          if (widget.cartConfigurations != null) {
+            widget.cartConfigurations!.onDecrementPressed!();
+          }
+        });
   }
 
   @override
@@ -68,7 +94,7 @@ class OrderSummaryCard extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
 
-                  child: Image.asset(orderProduct.productImages[0],
+                  child: Image.asset(widget.orderProduct.productImages[0],
                       width: 100, height: 100, fit: BoxFit.cover),
                 ),
 
@@ -78,7 +104,7 @@ class OrderSummaryCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text(orderProduct.productName,
+                    Text(widget.orderProduct.productName,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         style: GoogleFonts.lato(
@@ -88,15 +114,18 @@ class OrderSummaryCard extends StatelessWidget {
 
                     const SizedBox(height: appPadding / 2),
 
-                    boldAndSimpleRowTextWidget(
-                        "Quantity: ", orderProduct.quantity.toString()),
+                    if (widget.cartConfigurations == null)
+                      boldAndSimpleRowTextWidget(
+                          "Quantity: ", widget.orderProduct.quantity.toString())
+                    else
+                      quantityIncrementAndDecrementWidget(),
 
                     const SizedBox(height: appPadding / 2),
 
                     RatingBar.readOnly(
                       filledIcon: Icons.star,
                       emptyIcon: Icons.star_border,
-                      initialRating: orderProduct.productRating,
+                      initialRating: widget.orderProduct.productRating,
                       maxRating: 5,
                       isHalfAllowed: true,
                       size: 20,
@@ -110,10 +139,25 @@ class OrderSummaryCard extends StatelessWidget {
             const SizedBox(height: appPadding,),
 
             boldAndSimpleRowTextWidget(
-                "Price: ₹", orderProduct.productPrice.toString()),
+                "Price: ₹", widget.orderProduct.productPrice.toString()),
           ],
         ),
       ),
     );
   }
+}
+
+class CartConfigurationsForSummaryCard {
+
+  final double? textSize;
+  final double? iconSize;
+  final Function()? onIncrementPressed;
+  final Function()? onDecrementPressed;
+
+  const CartConfigurationsForSummaryCard({
+    this.textSize,
+    this.iconSize,
+    this.onIncrementPressed,
+    this.onDecrementPressed,
+  });
 }

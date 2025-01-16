@@ -2,7 +2,7 @@ import 'package:flick/models/Product.dart';
 
 class OrderProduct extends Product {
 
-  final int quantity;
+  int quantity;
 
   OrderProduct({
       required super.id,

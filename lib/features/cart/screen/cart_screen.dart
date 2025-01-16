@@ -1,6 +1,6 @@
 import 'package:flick/components/checkout_bottom_card.dart';
 import 'package:flick/core/models/cart_item.dart';
-import 'package:flick/features/order/components/order_summary_card.dart';
+import 'package:flick/components/order_summary_card.dart';
 import 'package:flick/models/Product.dart';
 import 'package:flick/models/order_product.dart';
 import 'package:flick/utils/Constants.dart';
@@ -16,6 +16,12 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   void deleteCartItem(Product product) {
     Provider.of<CartItem>(context, listen: false).removeItemInCart(product);
 
@@ -60,33 +66,62 @@ class _CartScreenState extends State<CartScreen> {
                       child: ListView.builder(
                           itemCount: value.getCartItems().length,
                           itemBuilder: (context, index) {
-                            // get individual shoe
                             OrderProduct orderProduct = OrderProduct.fromProduct(value.getCartItems()[index], 1);
 
                             // return the cart item
-                            return OrderSummaryCard(
-                              orderProduct: orderProduct,
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: appPadding / 2),
+                              child: OrderSummaryCard(
+                                orderProduct: orderProduct,
+
+                                cartConfigurations: CartConfigurationsForSummaryCard(
+                                  textSize: 12,
+                                  iconSize: 15,
+                                  onIncrementPressed: () {
+                                    orderProduct.quantity++;
+                                    setState(() {});
+                                  },
+                                  onDecrementPressed: () {
+                                    if (orderProduct.quantity > 1) {
+                                      orderProduct.quantity--;
+                                      setState(() {});
+                                    }
+                                  }
+                                ),
+                              ),
                             );
                           }),
                     ),
 
-                    const SizedBox(height: appPadding * 2),
+                    const SizedBox(height: appPadding),
 
                   if (value.getCartItems().isNotEmpty)
                     CheckoutBottomCard(
                         checkoutButtonText: "Buy Now!",
-                        totalPrice: getTotalPrice(value.getCartItems()),
-                        onCheckoutButtonPressed: () {})
+                        totalPrice: getTotalPrice(getOrderProductsFromProduct(value.getCartItems())),
+                        onCheckoutButtonPressed: () {}
+                    )
                 ],
               ),
             ));
   }
 
-  String getTotalPrice(List<Product> products) {
+  String getTotalPrice(List<OrderProduct> orderProducts) {
     double totalPrice = 0;
-    for (Product product in products) {
-      totalPrice += product.productPrice;
+    for (OrderProduct orderProducts in orderProducts) {
+      totalPrice += orderProducts.productPrice * orderProducts.quantity;
     }
     return totalPrice.toStringAsFixed(2);
+  }
+
+  // TODO This must be removed when Cart implemented with Hive DB.
+  List<OrderProduct> getOrderProductsFromProduct(List<Product> products) {
+    List<OrderProduct> orderProducts = [];
+
+    for (Product product in products) {
+      orderProducts.add(OrderProduct.fromProduct(product, 1));
+    }
+
+    return orderProducts;
   }
 }

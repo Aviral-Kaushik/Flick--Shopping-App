@@ -1,6 +1,6 @@
 import 'package:flick/components/checkout_bottom_card.dart';
 import 'package:flick/components/simple_header.dart';
-import 'package:flick/features/order/components/order_summary_card.dart';
+import 'package:flick/components/order_summary_card.dart';
 import 'package:flick/models/pre_order.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';

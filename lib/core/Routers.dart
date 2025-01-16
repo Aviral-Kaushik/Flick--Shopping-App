@@ -12,7 +12,7 @@ import 'package:flick/features/address/screens/add_edit_address_screen.dart';
 import 'package:flick/features/address/screens/addresses_screen.dart';
 import 'package:flick/features/auth/screens/login_screen.dart';
 import 'package:flick/features/auth/screens/register_screen.dart';
-import 'package:flick/features/cart/screen/CartScreen.dart';
+import 'package:flick/features/cart/screen/cart_screen.dart';
 import 'package:flick/features/contact_us/screens/contact_us.dart';
 import 'package:flick/features/home/screen/HomeScreen.dart';
 import 'package:flick/features/intro/IntroScreen.dart';
