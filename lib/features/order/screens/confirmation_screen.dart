@@ -1,4 +1,4 @@
-import 'package:flick/components/simple_button.dart';
+import 'package:flick/components/checkout_bottom_card.dart';
 import 'package:flick/components/simple_header.dart';
 import 'package:flick/features/order/components/order_summary_card.dart';
 import 'package:flick/models/pre_order.dart';
@@ -51,67 +51,13 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
   }
 
   Widget getCheckoutBottomCard() {
-    return Container(
-      padding: const EdgeInsets.all(appPadding),
-
-      decoration: BoxDecoration(
-        color: whiteColor,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 1.5,
-            blurRadius: 5,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-
-              Text("Total: ", style: GoogleFonts.lato(
-                color: textColor,
-                fontSize: 20,
-                fontWeight: FontWeight.bold
-              ),),
-
-              const SizedBox(width: 5,),
-
-              Text(
-                "₹${widget.preOrder.totalPriceAtCheckout}",
-                style: GoogleFonts.lato(
-                  color: textColor,
-                  fontSize: 20,
-                )
-              ),
-            ],
-          ),
-
-          const SizedBox(height: appPadding / 2,),
-
-          SimpleButton(
-              buttonText: "Proceed to Checkout",
-              backgroundColor: Colors.black,
-              onPressed: () {
-                Navigator.pushReplacementNamed(context,
-                    "/paymentScreen",
-                    arguments: {
-                      'preOrder': widget.preOrder
-                    }
-                );
-              },
-              textColor: whiteColor,
-              borderColor: whiteColor
-          ),
-        ],
-      ),
+    return CheckoutBottomCard(
+        checkoutButtonText: "Proceed to Checkout",
+        totalPrice: widget.preOrder.totalPriceAtCheckout.toString(),
+        onCheckoutButtonPressed: () {
+          Navigator.pushReplacementNamed(context, "/paymentScreen",
+              arguments: {'preOrder': widget.preOrder});
+        }
     );
   }
 
