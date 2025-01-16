@@ -266,14 +266,6 @@ class _SingleUserListLayoutState extends State<SingleUserListLayout> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
 
-              // ClipRRect(
-              //     borderRadius: BorderRadius.circular(30),
-              //     child: Image.network(
-              //       widget.user.profilePhoto,
-              //       width: 60, height: 60,
-              //       fit: BoxFit.cover,
-              //     )),
-
               if (widget.user.profilePhoto.isNotEmpty)
                 ClipRRect(
                     borderRadius: BorderRadius.circular(30),

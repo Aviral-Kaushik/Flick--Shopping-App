@@ -24,7 +24,8 @@ class DialogHelper {
       String description,
       String buttonText,
       bool showUiForErrorMessage,
-      Function()? afterDismissCallBack) {
+      Function()? afterDismissCallBack,
+      {Function()? onButtonPressed}) {
     showDialog(
         context: context,
         builder: (BuildContext context) => SuccessfulAndErrorDialog(
@@ -32,6 +33,7 @@ class DialogHelper {
               description: description,
               buttonText: buttonText,
               showUIForErrorDialog: showUiForErrorMessage,
+          onButtonPressed: onButtonPressed,
             )).then((value) => afterDismissCallBack);
   }
 

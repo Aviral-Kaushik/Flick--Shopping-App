@@ -162,12 +162,12 @@ class _EditUserScreenState extends State<EditUserScreen> {
         showUIForErrorDialog ? "Oops!" : "Success",
         message,
         showUIForErrorDialog ? "Dismiss" : "Okay",
-        showUIForErrorDialog, () {
-      isAnyDialogShowing = false;
+        showUIForErrorDialog, onButtonPressed: () {
       if (finalDialog) {
         Navigator.pop(context);
-        Navigator.pop(context);
       }
+    }, () {
+      isAnyDialogShowing = false;
     });
   }
 

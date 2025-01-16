@@ -8,10 +8,12 @@ class SuccessfulAndErrorDialog extends StatelessWidget {
       required this.title,
       required this.description,
       required this.buttonText,
-      this.showUIForErrorDialog});
+      this.showUIForErrorDialog,
+      this.onButtonPressed});
 
   final String title, description, buttonText;
   final bool? showUIForErrorDialog;
+  final Function()? onButtonPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +76,12 @@ class SuccessfulAndErrorDialog extends StatelessWidget {
               Align(
                 alignment: Alignment.bottomRight,
                 child:  GestureDetector(
-                  onTap: () => Navigator.pop(context),
+                  onTap: () {
+                    if (onButtonPressed != null) {
+                      onButtonPressed!();
+                    }
+                    Navigator.pop(context);
+                  },
                   child: Container(
                     padding: const EdgeInsets.only(
                     top: appPadding / 2,
