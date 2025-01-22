@@ -1,7 +1,12 @@
 import 'package:flick/models/Product.dart';
+import 'package:hive/hive.dart';
 
+part 'order_product.g.dart';
+
+@HiveType(typeId: 2)
 class OrderProduct extends Product {
 
+  @HiveField(11)
   int quantity;
 
   OrderProduct({

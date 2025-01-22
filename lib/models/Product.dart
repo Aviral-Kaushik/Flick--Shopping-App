@@ -1,5 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hive/hive.dart';
 
+part 'Product.g.dart';
+
+@HiveType(typeId: 1)
 class Product {
   Product(
       {required this.id,
@@ -14,16 +18,37 @@ class Product {
       required this.productCategory,
       required this.availableColors});
 
+  @HiveField(0)
   String id;
+
+  @HiveField(1)
   String productName;
+
+  @HiveField(2)
   String productDescription;
+
+  @HiveField(3)
   List<String> productImages;
+
+  @HiveField(4)
   double productRating;
+
+  @HiveField(5)
   int productPrice;
+
+  @HiveField(6)
   int totalPurchases;
+
+  @HiveField(7)
   int stock;
+
+  @HiveField(8)
   String sellerName;
+
+  @HiveField(9)
   String productCategory;
+
+  @HiveField(10)
   List<String> availableColors;
 
   factory Product.fromFirestore(
