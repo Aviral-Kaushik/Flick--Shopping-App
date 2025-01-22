@@ -1,7 +1,11 @@
 import 'package:flick/components/checkout_bottom_card.dart';
 import 'package:flick/components/order_summary_card.dart';
-import 'package:flick/models/Product.dart';
+import 'package:flick/data/database/hive_service.dart';
+import 'package:flick/helper/DialogHelper.dart';
+import 'package:flick/locator.dart';
+import 'package:flick/models/User.dart';
 import 'package:flick/models/order_product.dart';
+import 'package:flick/models/pre_order.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,15 +19,39 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
 
+  HiveService hiveService = locator.get<HiveService>();
+  late DialogHelper dialogHelper;
+
   List<OrderProduct> cartProducts = [];
+
+  User? user;
 
   @override
   void initState() {
     super.initState();
+    dialogHelper = DialogHelper(context);
+
+    loadUserData();
+
+    getAllProductsInTheCart();
   }
 
-  void deleteCartItem(Product product) {
-    // Provider.of<CartItem>(context, listen: false).removeItemInCart(product);
+
+  void loadUserData() async {
+    user = await User.instance;
+  }
+
+  void getAllProductsInTheCart() {
+    cartProducts = hiveService.gatAllCartProducts();
+    setState(() {});
+  }
+
+  Future<void> updateOrderProductInDB(OrderProduct orderProduct) async {
+    await hiveService.addProductToCart(orderProduct);
+  }
+
+  void deleteCartItem(String productId) async {
+    await hiveService.removeItemFromTheCart(productId);
 
     showDialog(
         context: context,
@@ -31,6 +59,29 @@ class _CartScreenState extends State<CartScreen> {
               title: Text("Successfully Delete!"),
               content: Text("Item removed from cart!"),
             ));
+
+    getAllProductsInTheCart();
+  }
+
+  void showLoginWarningDialog(Function() onLoginButtonPressed) {
+    dialogHelper.showWarningDialog("Please! Login to Continue", "Login",
+        "Cancel", onLoginButtonPressed, Colors.blueAccent, () {});
+  }
+
+  int getTotalPrice() {
+    int totalPrice = 0;
+    for (OrderProduct orderProducts in cartProducts) {
+      totalPrice += orderProducts.productPrice * orderProducts.quantity;
+    }
+    return totalPrice;
+  }
+
+  PreOrder getPreOrder() {
+    return PreOrder(
+      orderProducts: cartProducts,
+      totalPriceAtCheckout: getTotalPrice(),
+      isFromCart: true
+    );
   }
 
   @override
@@ -76,17 +127,22 @@ class _CartScreenState extends State<CartScreen> {
                             cartConfigurations: CartConfigurationsForSummaryCard(
                               textSize: 12,
                               iconSize: 15,
-                              onIncrementPressed: () {
+                              onIncrementPressed: () async {
                                 orderProduct.quantity++;
+                                await updateOrderProductInDB(orderProduct);
                                 setState(() {});
                               },
-                              onDecrementPressed: () {
+                              onDecrementPressed: () async {
                                 if (orderProduct.quantity > 1) {
                                   orderProduct.quantity--;
+                                  await updateOrderProductInDB(orderProduct);
                                   setState(() {});
                                 }
                               }
                             ),
+                            onRemovePressed: () {
+                              deleteCartItem(orderProduct.id);
+                            },
                           ),
                         );
                       }),
@@ -97,20 +153,28 @@ class _CartScreenState extends State<CartScreen> {
               if (cartProducts.isNotEmpty)
                 CheckoutBottomCard(
                     checkoutButtonText: "Buy Now!",
-                    totalPrice: getTotalPrice(cartProducts),
-                    onCheckoutButtonPressed: () {}
+                    totalPrice: getTotalPrice().toString(),
+                    onCheckoutButtonPressed: () {
+                      if (user != null && user!.id.isNotEmpty) {
+                        Navigator.pushNamed(context, "/addressesScreen",
+                            arguments: {
+                              'showUIForSelectAddressScreen': true,
+                              'preOrder': getPreOrder()
+                            }
+                        );
+                      } else {
+                        showLoginWarningDialog(() {
+                          Navigator.pushNamed(
+                              context,
+                              "/loginScreen"
+                          );
+                        });
+                      }
+                    }
                 )
             ],
           ),
         );
-  }
-
-  String getTotalPrice(List<OrderProduct> orderProducts) {
-    double totalPrice = 0;
-    for (OrderProduct orderProducts in orderProducts) {
-      totalPrice += orderProducts.productPrice * orderProducts.quantity;
-    }
-    return totalPrice.toStringAsFixed(2);
   }
 
 }

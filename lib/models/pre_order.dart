@@ -7,11 +7,13 @@ class PreOrder {
   final int totalPriceAtCheckout;
   Address? address;
   String userName;
+  final bool? isFromCart;
 
   PreOrder({
     required this.orderProducts,
     required this.totalPriceAtCheckout,
     this.address,
     this.userName = "",
+    this.isFromCart = false,
   });
 }

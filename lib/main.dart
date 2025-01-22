@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flick/core/Routers.dart';
+import 'package:flick/data/database/hive_box_helper_class.dart';
 import 'package:flick/locator.dart';
 import 'package:flick/models/Product.dart';
 import 'package:flick/models/User.dart';
@@ -14,9 +15,12 @@ import 'package:hive_flutter/adapters.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp();
+
   await Hive.initFlutter();
-  registerHiveAdapters();
+  await registerHiveAdaptersAndOpenBoxes();
+
   setup();
   initUserInstance();
 
@@ -36,10 +40,12 @@ void initUserInstance() async {
   }
 }
 
-void registerHiveAdapters() {
+Future<void> registerHiveAdaptersAndOpenBoxes() async {
   Hive.registerAdapter(UserAdapter());
   Hive.registerAdapter(ProductAdapter());
   Hive.registerAdapter(OrderProductAdapter());
+
+  await HiveBoxHelperClass().openAllBoxes();
 }
 
 class MyApp extends StatelessWidget {

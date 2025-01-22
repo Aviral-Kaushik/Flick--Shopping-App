@@ -1,4 +1,5 @@
 import 'package:flick/components/simple_header.dart';
+import 'package:flick/data/database/hive_service.dart';
 import 'package:flick/features/order/bloc/order_bloc.dart';
 import 'package:flick/features/order/bloc/order_event.dart';
 import 'package:flick/features/order/bloc/order_state.dart';
@@ -28,6 +29,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   final StripeService _stripeService = StripeService.instance;
 
   final OrderBloc _orderBloc = locator.get<OrderBloc>();
+  final HiveService hiveService = locator.get<HiveService>();
 
   late DialogHelper dialogHelper;
 
@@ -109,7 +111,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     return BlocProvider(
       create: (_) => _orderBloc,
       child: BlocListener<OrderBloc, OrderState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is OrderLoadingState) {
             showProgressDialog(state.progressMessage);
           }
@@ -121,6 +123,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
           if (state is OrderCreated) {
             dismissAllDialogs();
+
+            if (widget.preOrder.isFromCart ?? false) {
+              await hiveService.clearCart();
+            }
+
             Navigator.pushReplacementNamed(
                 context,
                 "/orderSuccessfulScreen"

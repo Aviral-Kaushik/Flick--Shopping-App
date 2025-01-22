@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flick/services/firebase_services.dart';
-import 'package:flick/data/database/hive_database.dart';
+import 'package:flick/data/database/hive_service.dart';
 import 'package:flick/data/session/session_manager.dart';
 import 'package:flick/features/auth/widgets/auth_divider.dart';
 import 'package:flick/features/auth/widgets/auth_text_field.dart';
@@ -26,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   FirebaseServices firebaseServices = locator.get<FirebaseServices>();
 
-  HiveDatabase hiveDatabase = locator.get<HiveDatabase>();
+  HiveService hiveDatabase = locator.get<HiveService>();
   SessionManager sessionManager = locator.get<SessionManager>();
 
   late DialogHelper dialogHelper;

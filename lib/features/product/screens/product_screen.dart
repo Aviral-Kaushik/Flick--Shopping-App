@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flick/components/increment_and_decrement_widget.dart';
+import 'package:flick/data/database/hive_service.dart';
 import 'package:flick/features/product/blocs/ratings/ratings_bloc.dart';
 import 'package:flick/features/product/blocs/ratings/ratings_event.dart';
 import 'package:flick/features/product/blocs/ratings/ratings_state.dart';
@@ -20,8 +21,6 @@ import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
-import 'package:flick/core/models/cart_item.dart';
 
 class ProductScreen extends StatefulWidget {
   const ProductScreen({super.key, required this.product});
@@ -35,6 +34,8 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
 
   final RatingsBloc ratingsBloc = locator.get<RatingsBloc>();
+  final HiveService hiveService = locator.get<HiveService>();
+
   late DialogHelper dialogHelper;
 
   UIRelatedProductRatings? uiRelatedProductRatings;
@@ -72,6 +73,11 @@ class _ProductScreenState extends State<ProductScreen> {
   void showLoginWarningDialog(Function() onLoginButtonPressed) {
     dialogHelper.showWarningDialog("Please! Login to Continue", "Login",
         "Cancel", onLoginButtonPressed, Colors.blueAccent, () {});
+  }
+
+  Future<void> addItemToCart() async {
+    await hiveService.addProductToCart(
+        OrderProduct.fromProduct(widget.product!, selectedQuantity));
   }
 
   priceAndColorsRowWidget() {
@@ -157,8 +163,8 @@ class _ProductScreenState extends State<ProductScreen> {
       children: [
         ProductScreenButtons(
             buttonText: "Add To Cart!",
-            onActionPerformed: () {
-              Provider.of<CartItem>(context, listen: false).addItemToCart(widget.product!);
+            onActionPerformed: () async {
+              await addItemToCart();
             },
             showAddToCartButton: true),
 

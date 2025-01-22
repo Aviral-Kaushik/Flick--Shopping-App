@@ -14,7 +14,7 @@ import 'package:flick/admin_panel/repositories/referrals_repository.dart';
 import 'package:flick/admin_panel/repositories/settings_repository.dart';
 import 'package:flick/admin_panel/repositories/terms_and_privacy_repository.dart';
 import 'package:flick/admin_panel/repositories/users_repository.dart';
-import 'package:flick/data/database/hive_database.dart';
+import 'package:flick/data/database/hive_service.dart';
 import 'package:flick/data/session/session_manager.dart';
 import 'package:flick/features/address/blocs/add_edit_address_boc/add_edit_address_bloc.dart';
 import 'package:flick/features/address/blocs/address_bloc/address_bloc.dart';
@@ -38,7 +38,7 @@ void setup() {
   final firebaseServices = locator.get<FirebaseServices>();
   final storageServices = locator.get<StorageService>();
 
-  locator.registerLazySingleton<HiveDatabase>(() => HiveDatabase());
+  locator.registerLazySingleton<HiveService>(() => HiveService());
   locator.registerLazySingleton<SessionManager>(() => SessionManager());
 
   // Get it initialization for Admin Panel Blocs
