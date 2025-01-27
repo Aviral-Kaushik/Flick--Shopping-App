@@ -1,10 +1,11 @@
+import 'package:flick/data/database/hive_service.dart';
+import 'package:flick/locator.dart';
 import 'package:flick/models/Product.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ProductTile extends StatelessWidget {
+class ProductTile extends StatefulWidget {
   final Product product;
   final void Function()? onProductTilePressed;
   final void Function()? onAddToCartButtonPressed;
@@ -18,14 +19,36 @@ class ProductTile extends StatelessWidget {
       required this.isLastTile});
 
   @override
+  State<ProductTile> createState() => _ProductTileState();
+}
+
+class _ProductTileState extends State<ProductTile> {
+
+  final HiveService _hiveService = locator.get<HiveService>();
+
+  bool isProductInCart = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    checkForProductInCart();
+  }
+
+  void checkForProductInCart() async {
+    isProductInCart = await _hiveService.isInCart(widget.product.id);
+    setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
-      margin: isLastTile
+      margin: widget.isLastTile
           ? const EdgeInsets.only(right: appMargin)
           : const EdgeInsets.all(0),
       child: Stack(children: [
         GestureDetector(
-          onTap: onProductTilePressed,
+          onTap: widget.onProductTilePressed,
           child: Container(
             margin: const EdgeInsets.only(left: appMargin),
             width: 200,
@@ -42,7 +65,7 @@ class ProductTile extends StatelessWidget {
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(12),
                       child: Image.asset(
-                        product.productImages[0],
+                        widget.product.productImages[0],
                         width: 150,
                         height: 150,
                       )),
@@ -56,7 +79,7 @@ class ProductTile extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: Text(
-                          product.productDescription,
+                          widget.product.productDescription,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(color: quoteTextColor),
@@ -75,7 +98,7 @@ class ProductTile extends StatelessWidget {
                               children: [
                                 // Item Name
                                 Text(
-                                  product.productName,
+                                  widget.product.productName,
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold, fontSize: 20),
                                 ),
@@ -85,7 +108,7 @@ class ProductTile extends StatelessWidget {
                                 ),
                                 // Price
                                 Text(
-                                  "₹ ${product.productPrice}",
+                                  "₹ ${widget.product.productPrice}",
                                   style: TextStyle(color: subTitleTextColor),
                                 )
                               ],
@@ -105,7 +128,7 @@ class ProductTile extends StatelessWidget {
           bottom: 0,
           right: 0,
           child: GestureDetector(
-            onTap: onAddToCartButtonPressed,
+            onTap: !isProductInCart ? widget.onAddToCartButtonPressed : null,
             child: Container(
                 padding: const EdgeInsets.all(16),
                 margin: const EdgeInsets.only(left: 20.0),
@@ -115,7 +138,7 @@ class ProductTile extends StatelessWidget {
                         bottomRight: Radius.circular(12),
                         topLeft: Radius.circular(12))),
                 child: Icon(
-                  Icons.add,
+                  isProductInCart ? Icons.check : Icons.add,
                   color: whiteColor,
                 )),
           ),

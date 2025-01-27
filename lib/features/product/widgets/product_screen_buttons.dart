@@ -8,12 +8,13 @@ class ProductScreenButtons extends StatelessWidget {
       {super.key,
       required this.buttonText,
       required this.onActionPerformed,
-      required this.showAddToCartButton});
+      required this.showAddToCartButton,
+      this.enabled});
 
   final String buttonText;
   final Function() onActionPerformed;
   final bool showAddToCartButton;
-
+  final bool? enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -24,16 +25,20 @@ class ProductScreenButtons extends StatelessWidget {
       outerColor: showAddToCartButton ? Colors.amber : Colors.black,
       alignment: showAddToCartButton ? Alignment.centerLeft : Alignment.centerRight,
       sliderButtonIcon: Icon(
-        showAddToCartButton ? Icons.shopping_bag_outlined : Icons.currency_rupee,
+        showAddToCartButton
+            ? (enabled ?? true)
+                ? Icons.shopping_bag_outlined
+                : Icons.check
+            : Icons.currency_rupee,
         color: Colors.white70,
         size: 25,
       ),
       text: buttonText,
+      enabled: enabled ?? true,
       sliderRotate: false,
       textStyle: GoogleFonts.poppins(
           color: whiteColor, fontSize: 16, fontWeight: FontWeight.w400),
       onSubmit: () async {
-        // TODO Not Working
         onActionPerformed();
         return Future.value();
       },

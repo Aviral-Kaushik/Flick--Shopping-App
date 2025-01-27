@@ -132,9 +132,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
             Navigator.pushReplacementNamed(
                 context,
                 "/orderSuccessfulScreen",
-              arguments: {
-                "isFromCart": widget.preOrder.isFromCart
-              }
+                arguments: {
+                  "isFromCart": widget.preOrder.isFromCart
+                }
             );
           }
         },

@@ -49,6 +49,10 @@ class HiveService {
     await cartBox.clear();
   }
 
+  Future<bool> isInCart(String productId) async {
+    return cartBox.containsKey(productId);
+  }
+
   // Favorites Functions
 
   Future<void> addProductToFavourites(Product product) async {

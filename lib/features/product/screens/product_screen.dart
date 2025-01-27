@@ -46,6 +46,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
   int selectedQuantity = 1;
 
+  bool isProductAlreadyInCart = false;
   bool isProductAlreadyInFavourites = false;
 
   @override
@@ -68,7 +69,7 @@ class _ProductScreenState extends State<ProductScreen> {
       isProductAlreadyInFavourites =
           await _hiveService.isInFavorites(widget.product!.id);
 
-      debugPrint("Aviral Is Product Already in Favourites: $isProductAlreadyInFavourites");
+      isProductAlreadyInCart = await _hiveService.isInCart(widget.product!.id);
 
       setState(() {});
     }
@@ -180,11 +181,12 @@ class _ProductScreenState extends State<ProductScreen> {
     return Column(
       children: [
         ProductScreenButtons(
-            buttonText: "Add To Cart!",
+            buttonText: isProductAlreadyInCart ? "Already In Cart" : "Add To Cart!",
             onActionPerformed: () async {
               await addItemToCart();
             },
-            showAddToCartButton: true),
+            showAddToCartButton: true,
+            enabled: !isProductAlreadyInCart),
 
         const SizedBox(height: appPadding,),
 
@@ -373,6 +375,8 @@ class _ProductScreenState extends State<ProductScreen> {
                           isProductAlreadyInFavourites = false;
                           setState(() {});
 
+                          _snackBarHelper.showSnackBar(
+                              context, "Removed from Favourites!");
                           return;
                         }
 
