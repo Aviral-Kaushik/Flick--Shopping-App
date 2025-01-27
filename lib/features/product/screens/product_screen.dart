@@ -10,6 +10,7 @@ import 'package:flick/features/product/widgets/product_header.dart';
 import 'package:flick/features/product/widgets/product_screen_buttons.dart';
 import 'package:flick/features/product/widgets/products_ratings_widget.dart';
 import 'package:flick/helper/DialogHelper.dart';
+import 'package:flick/helper/SnackbarHelper.dart';
 import 'package:flick/locator.dart';
 import 'package:flick/models/Product.dart';
 import 'package:flick/models/User.dart';
@@ -34,7 +35,8 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
 
   final RatingsBloc ratingsBloc = locator.get<RatingsBloc>();
-  final HiveService hiveService = locator.get<HiveService>();
+  final HiveService _hiveService = locator.get<HiveService>();
+  final SnackBarHelper _snackBarHelper = SnackBarHelper();
 
   late DialogHelper dialogHelper;
 
@@ -44,20 +46,35 @@ class _ProductScreenState extends State<ProductScreen> {
 
   int selectedQuantity = 1;
 
+  bool isProductAlreadyInFavourites = false;
+
   @override
   void initState() {
     super.initState();
 
     dialogHelper = DialogHelper(context);
 
-    loadUserData();
+    loadInitialData();
 
     if (widget.product != null) {
       ratingsBloc.add(FetchProductRating(widget.product!.id));
     }
   }
 
-  void loadUserData() async {
+  void loadInitialData() async {
+    await loadUserData();
+
+    if (widget.product != null) {
+      isProductAlreadyInFavourites =
+          await _hiveService.isInFavorites(widget.product!.id);
+
+      debugPrint("Aviral Is Product Already in Favourites: $isProductAlreadyInFavourites");
+
+      setState(() {});
+    }
+  }
+
+  Future<void> loadUserData() async {
     user = await User.instance;
   }
 
@@ -67,6 +84,7 @@ class _ProductScreenState extends State<ProductScreen> {
           OrderProduct.fromProduct(widget.product!, selectedQuantity)
         ],
         totalPriceAtCheckout: widget.product!.productPrice * selectedQuantity,
+        isFromCart: false
     );
   }
 
@@ -76,7 +94,7 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 
   Future<void> addItemToCart() async {
-    await hiveService.addProductToCart(
+    await _hiveService.addProductToCart(
         OrderProduct.fromProduct(widget.product!, selectedQuantity));
   }
 
@@ -348,7 +366,26 @@ class _ProductScreenState extends State<ProductScreen> {
                   ProductHeader(
                       backButtonPressed: () {
                         Navigator.pop(context);
-                      }, favoriteButtonPressed: () {}),
+                      }, favoriteButtonPressed: () async {
+                        if (isProductAlreadyInFavourites) {
+                          await _hiveService.removeItemFromFavourites(widget.product!.id);
+
+                          isProductAlreadyInFavourites = false;
+                          setState(() {});
+
+                          return;
+                        }
+
+                        await _hiveService.addProductToFavourites(widget.product!);
+
+                        isProductAlreadyInFavourites = true;
+                        setState(() {});
+
+                        _snackBarHelper.showSnackBar(
+                            context, "Added to Favourites!");
+                      },
+                      isInFavourite: isProductAlreadyInFavourites
+                  ),
 
                   const SizedBox(height: appPadding * 2,),
 

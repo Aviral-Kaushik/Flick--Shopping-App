@@ -125,28 +125,35 @@ class _CartScreenState extends State<CartScreen> {
                         // return the cart item
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: appPadding / 2),
-                          child: OrderSummaryCard(
-                            orderProduct: orderProduct,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, "/productScreen",
+                                  arguments: orderProduct);
+                            },
+                            child: OrderSummaryCard(
+                              orderProduct: orderProduct,
 
-                            cartConfigurations: CartConfigurationsForSummaryCard(
-                              textSize: 12,
-                              iconSize: 15,
-                              onIncrementPressed: () async {
-                                orderProduct.quantity++;
-                                await updateOrderProductInDB(orderProduct);
-                                setState(() {});
-                              },
-                              onDecrementPressed: () async {
-                                if (orderProduct.quantity > 1) {
-                                  orderProduct.quantity--;
+                              cartConfigurations: CartConfigurationsForSummaryCard(
+                                textSize: 12,
+                                iconSize: 15,
+                                onIncrementPressed: () async {
+                                  orderProduct.quantity++;
                                   await updateOrderProductInDB(orderProduct);
                                   setState(() {});
+                                },
+                                onDecrementPressed: () async {
+                                  if (orderProduct.quantity > 1) {
+                                    orderProduct.quantity--;
+                                    await updateOrderProductInDB(orderProduct);
+                                    setState(() {});
+                                  }
                                 }
-                              }
+                              ),
+                              onRemovePressed: () {
+                                deleteCartItem(orderProduct.id);
+                              },
                             ),
-                            onRemovePressed: () {
-                              deleteCartItem(orderProduct.id);
-                            },
                           ),
                         );
                       }),

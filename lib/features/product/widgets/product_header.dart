@@ -8,10 +8,12 @@ class ProductHeader extends StatelessWidget {
   const ProductHeader(
       {super.key,
       required this.backButtonPressed,
-      required this.favoriteButtonPressed});
+      required this.favoriteButtonPressed,
+      required this.isInFavourite});
 
   final Function() backButtonPressed;
   final Function() favoriteButtonPressed;
+  final bool isInFavourite;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +57,7 @@ class ProductHeader extends StatelessWidget {
                   horizontal: appPadding / 2, vertical: appPadding),
               child: Center(
                 child: Icon(
-                  Icons.favorite,
+                  isInFavourite ? Icons.favorite : Icons.favorite_outline,
                   size: 20,
                   color: blackColor,
                 ),

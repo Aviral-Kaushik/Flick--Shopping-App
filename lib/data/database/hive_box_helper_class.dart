@@ -1,4 +1,5 @@
 import 'package:flick/data/database/hive_boxes.dart';
+import 'package:flick/models/Product.dart';
 import 'package:flick/models/User.dart';
 import 'package:flick/models/order_product.dart';
 import 'package:hive/hive.dart';
@@ -13,9 +14,14 @@ class HiveBoxHelperClass {
     await Hive.openBox<OrderProduct>(HiveBoxes.cartBox);
   }
 
+  Future<void> openFavouritesBox() async {
+    await Hive.openBox<Product>(HiveBoxes.favouritesBox);
+  }
+
   Future<void> openAllBoxes() async {
     await openUserBox();
     await openCartBox();
+    await openFavouritesBox();
   }
 
 }

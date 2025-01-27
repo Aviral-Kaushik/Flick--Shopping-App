@@ -127,8 +127,10 @@ class Routers {
         return MaterialPageRoute(
             builder: (_) => PaymentScreen(preOrder: preOrder));
       case "/orderSuccessfulScreen":
+        final args = settings.arguments as Map<String, dynamic>?;
+        final isFromCart = args?['isFromCart'] as bool;
         return MaterialPageRoute(
-            builder: (_) => const OrderSuccessfulScreen());
+            builder: (_) => OrderSuccessfulScreen(isFromCart: isFromCart));
       case "/editUserScreen":
         final args = settings.arguments as Map<String, dynamic>?;
         final user = args?['user'] as User;

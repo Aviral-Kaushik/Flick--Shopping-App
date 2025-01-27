@@ -6,7 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class OrderSuccessfulScreen extends StatelessWidget {
-  const OrderSuccessfulScreen({super.key});
+  const OrderSuccessfulScreen({super.key,
+    required this.isFromCart});
+
+  final bool isFromCart;
 
   Widget checkCircleWidget() {
     return Row(
@@ -84,9 +87,15 @@ class OrderSuccessfulScreen extends StatelessWidget {
                   textColor: whiteColor,
                   borderColor: whiteColor,
                   onBackPressed: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                      context, "/homeScreen", (Route<dynamic> route) => false,
-                      arguments: {"defaultScreenIndex": 1});
+
+                    if (!isFromCart) {
+                      Navigator.pop(context);
+                      return;
+                    } else {
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, "/homeScreen", (Route<dynamic> route) => false,
+                          arguments: {"defaultScreenIndex": 1});
+                    }
                 },
               ),
 

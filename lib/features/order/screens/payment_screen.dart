@@ -10,6 +10,7 @@ import 'package:flick/models/pre_order.dart';
 import 'package:flick/services/stripe_service.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -130,7 +131,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
             Navigator.pushReplacementNamed(
                 context,
-                "/orderSuccessfulScreen"
+                "/orderSuccessfulScreen",
+              arguments: {
+                "isFromCart": widget.preOrder.isFromCart
+              }
             );
           }
         },
