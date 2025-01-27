@@ -36,6 +36,10 @@ class _CartScreenState extends State<CartScreen> {
     getAllProductsInTheCart();
   }
 
+  /// Next Tasks:
+  /// The Screen should be updated when the screen is revisited after pop Order Success Screen.
+  /// Improve 'Successfully added to cart' dialog UI
+  /// We can also show something like already in cart and block add to cart button on Home Screen and Product Screen
 
   void loadUserData() async {
     user = await User.instance;

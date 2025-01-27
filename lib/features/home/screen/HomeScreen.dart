@@ -10,7 +10,9 @@ import 'package:flick/utils/auth.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, this.defaultScreenIndex});
+
+  final int? defaultScreenIndex;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -20,6 +22,15 @@ class _HomeScreenState extends State<HomeScreen> {
   int _bottomNavSelectedIndex = 0;
 
   final User? user = Auth().currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.defaultScreenIndex != null) {
+      navigateBottomNavBar(widget.defaultScreenIndex!);
+    }
+  }
 
   void navigateBottomNavBar(int index) {
     setState(() {
@@ -39,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: primaryColor,
       bottomNavigationBar: UserBottomNavigation(
         onTabChanged: (index) => navigateBottomNavBar(index),
+        defaultIndex: _bottomNavSelectedIndex,
       ),
       body: _bottomNavPages[_bottomNavSelectedIndex],
       appBar: const UserAppBar(),

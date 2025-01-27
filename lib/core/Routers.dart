@@ -38,7 +38,11 @@ class Routers {
       case "/introScreen":
         return MaterialPageRoute(builder: (_) => const IntroScreen());
       case "/homeScreen":
-        return MaterialPageRoute(builder: (_) => const HomeScreen());
+        final args = settings.arguments as Map<String, dynamic>?;
+        final defaultScreenIndex = args?['defaultScreenIndex'] as int?;
+
+        return MaterialPageRoute(builder: (_) => HomeScreen(
+            defaultScreenIndex: defaultScreenIndex));
       case "/cartScreen":
         return MaterialPageRoute(builder: (_) => const CartScreen());
       case "/shopScreen":

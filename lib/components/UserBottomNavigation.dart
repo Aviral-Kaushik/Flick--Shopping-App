@@ -5,10 +5,10 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import '../utils/Colors.dart';
 
 class UserBottomNavigation extends StatelessWidget {
+  const UserBottomNavigation({super.key, required this.onTabChanged, this.defaultIndex});
 
-  void Function(int)? onTabChanged;
-
-  UserBottomNavigation({super.key, required this.onTabChanged});
+  final void Function(int)? onTabChanged;
+  final int? defaultIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +22,7 @@ class UserBottomNavigation extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         tabBorderRadius: 16,
         gap: 8,
+        selectedIndex: defaultIndex ?? 0,
         onTabChange: (value) => onTabChanged!(value),
         tabs: const [
           GButton(

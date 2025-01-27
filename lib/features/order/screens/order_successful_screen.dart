@@ -82,7 +82,12 @@ class OrderSuccessfulScreen extends StatelessWidget {
                   title: "",
                   backgroundColor: green,
                   textColor: whiteColor,
-                  borderColor: whiteColor
+                  borderColor: whiteColor,
+                  onBackPressed: () {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context, "/homeScreen", (Route<dynamic> route) => false,
+                      arguments: {"defaultScreenIndex": 1});
+                },
               ),
 
               const SizedBox(

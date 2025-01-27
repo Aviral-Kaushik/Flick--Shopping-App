@@ -9,12 +9,14 @@ class SimpleHeader extends StatelessWidget {
     this.backgroundColor = Colors.white,
     this.textColor = Colors.black,
     this.borderColor = Colors.black,
+    this.onBackPressed
   });
 
   final String title;
   final Color? backgroundColor;
   final Color? textColor;
   final Color? borderColor;
+  final Function()? onBackPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,13 @@ class SimpleHeader extends StatelessWidget {
         children: [
 
           GestureDetector(
-            onTap: () => Navigator.pop(context),
+            onTap: () {
+              if (onBackPressed == null) {
+                Navigator.pop(context);
+              } else {
+                onBackPressed!();
+              }
+            },
             child: Container(
               padding: const EdgeInsets.all(appPadding / 2),
               decoration: BoxDecoration(
