@@ -14,6 +14,7 @@ import 'package:flick/features/auth/screens/login_screen.dart';
 import 'package:flick/features/auth/screens/register_screen.dart';
 import 'package:flick/features/cart/screen/cart_screen.dart';
 import 'package:flick/features/contact_us/screens/contact_us.dart';
+import 'package:flick/features/favourites/screen/favourite_products_list_screen.dart';
 import 'package:flick/features/home/screen/HomeScreen.dart';
 import 'package:flick/features/intro/IntroScreen.dart';
 import 'package:flick/features/order/screens/confirmation_screen.dart';
@@ -136,6 +137,9 @@ class Routers {
         final user = args?['user'] as User;
         return MaterialPageRoute(
             builder: (_) => EditUserScreen(user: user));
+      case "/favouritesProductScreen":
+        return MaterialPageRoute(
+            builder: (_) => const FavouriteProductsListScreen());
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(

@@ -148,7 +148,9 @@ class _ProfileHomeState extends State<ProfileHome> {
             SizedBox(
               width: 150,
               child: OutlinedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, "/favouritesProductScreen");
+                },
 
                 style: OutlinedButton.styleFrom(
                     shape: StadiumBorder(side: BorderSide(

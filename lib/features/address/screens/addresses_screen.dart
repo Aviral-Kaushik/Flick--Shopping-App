@@ -16,13 +16,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AddressesScreen extends StatefulWidget {
-  AddressesScreen({
+  const AddressesScreen({
     super.key,
     required this.showUIForSelectAddressScreen,
     this.preOrder});
 
   final bool showUIForSelectAddressScreen;
-  PreOrder? preOrder;
+  final PreOrder? preOrder;
 
   @override
   State<AddressesScreen> createState() => _AddressesScreenState();

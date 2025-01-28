@@ -1,3 +1,4 @@
+import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/Colors.dart';
@@ -12,7 +13,7 @@ class SnackBarHelper {
           backgroundColor: blackColor,
           elevation: 10,
           behavior: SnackBarBehavior.floating,
-          margin: const EdgeInsets.all(5),
+          margin: const EdgeInsets.all(appPadding),
     ));
 
   }
