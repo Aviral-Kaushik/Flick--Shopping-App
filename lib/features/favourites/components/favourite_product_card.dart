@@ -83,7 +83,11 @@ class _FavouriteProductCardState extends State<FavouriteProductCard> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    checkIfProductIsInCart();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      checkIfProductIsInCart();
+    });
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: appPadding / 2),
       child: Stack(

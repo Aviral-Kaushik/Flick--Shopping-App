@@ -1,6 +1,7 @@
 import 'package:flick/admin_panel/data/Data.dart';
 import 'package:flick/components/ItemTile.dart';
 import 'package:flick/data/database/hive_service.dart';
+import 'package:flick/helper/SnackbarHelper.dart';
 import 'package:flick/locator.dart';
 import 'package:flick/models/Product.dart';
 import 'package:flick/models/order_product.dart';
@@ -17,19 +18,17 @@ class ShopScreen extends StatefulWidget {
 class _ShopScreenState extends State<ShopScreen> {
 
   final HiveService hiveService = locator.get<HiveService>();
+  final SnackBarHelper snackBarHelper = SnackBarHelper();
 
   final products = getDummyProducts();
 
   void addShoppingItemToCart(Product product) async {
 
-    await hiveService.addProductToCart(OrderProduct.fromProduct(product, 1));
+    await hiveService.addProductToCart(
+        OrderProduct.fromProduct(product, 1));
 
-    showDialog(
-        context: context,
-        builder: (context) => const AlertDialog(
-              title: Text("Successfully Added!"),
-              content: Text("Check Your Cart!"),
-            ));
+    snackBarHelper.showSnackBar(context, "Added to cart!");
+    setState(() {});
   }
 
   @override

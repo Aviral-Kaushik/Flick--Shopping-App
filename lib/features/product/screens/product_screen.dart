@@ -97,6 +97,8 @@ class _ProductScreenState extends State<ProductScreen> {
   Future<void> addItemToCart() async {
     await _hiveService.addProductToCart(
         OrderProduct.fromProduct(widget.product!, selectedQuantity));
+
+    setState(() {});
   }
 
   priceAndColorsRowWidget() {
@@ -334,6 +336,10 @@ class _ProductScreenState extends State<ProductScreen> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      loadInitialData();
+    });
+
     return BlocProvider<RatingsBloc>(
       create: (_) => ratingsBloc,
       child: BlocListener<RatingsBloc, RatingsState>(

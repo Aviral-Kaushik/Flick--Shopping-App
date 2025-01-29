@@ -28,13 +28,6 @@ class _ProductTileState extends State<ProductTile> {
 
   bool isProductInCart = false;
 
-  @override
-  void initState() {
-    super.initState();
-
-    checkForProductInCart();
-  }
-
   void checkForProductInCart() async {
     isProductInCart = await _hiveService.isInCart(widget.product.id);
     setState(() {});
@@ -42,6 +35,10 @@ class _ProductTileState extends State<ProductTile> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      checkForProductInCart();
+    });
+
     return Container(
       margin: widget.isLastTile
           ? const EdgeInsets.only(right: appMargin)

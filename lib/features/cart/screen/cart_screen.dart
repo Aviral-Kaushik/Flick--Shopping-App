@@ -2,6 +2,7 @@ import 'package:flick/components/checkout_bottom_card.dart';
 import 'package:flick/components/order_summary_card.dart';
 import 'package:flick/data/database/hive_service.dart';
 import 'package:flick/helper/DialogHelper.dart';
+import 'package:flick/helper/SnackbarHelper.dart';
 import 'package:flick/locator.dart';
 import 'package:flick/models/User.dart';
 import 'package:flick/models/order_product.dart';
@@ -19,7 +20,9 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
 
-  HiveService hiveService = locator.get<HiveService>();
+  final HiveService hiveService = locator.get<HiveService>();
+  final SnackBarHelper _snackBarHelper = SnackBarHelper();
+
   late DialogHelper dialogHelper;
 
   List<OrderProduct> cartProducts = [];
@@ -35,11 +38,6 @@ class _CartScreenState extends State<CartScreen> {
 
     getAllProductsInTheCart();
   }
-
-  /// Next Tasks:
-  /// The Screen should be updated when the screen is revisited after pop Order Success Screen.
-  /// Improve 'Successfully added to cart' dialog UI
-  /// We can also show something like already in cart and block add to cart button on Home Screen and Product Screen
 
   void loadUserData() async {
     user = await User.instance;
@@ -57,12 +55,7 @@ class _CartScreenState extends State<CartScreen> {
   void deleteCartItem(String productId) async {
     await hiveService.removeItemFromTheCart(productId);
 
-    showDialog(
-        context: context,
-        builder: (context) => const AlertDialog(
-              title: Text("Successfully Delete!"),
-              content: Text("Item removed from cart!"),
-            ));
+    _snackBarHelper.showSnackBar(context, "Removed from Cart!");
 
     getAllProductsInTheCart();
   }
