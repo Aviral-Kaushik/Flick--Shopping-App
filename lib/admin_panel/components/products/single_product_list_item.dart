@@ -17,6 +17,7 @@ class _SingleProductListLayoutState extends State<SingleProductListLayout> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: appPadding),
       child: Row(
@@ -42,10 +43,17 @@ class _SingleProductListLayoutState extends State<SingleProductListLayout> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(widget.product.productName, style: GoogleFonts.poppins(
-                    color: textColor,
-                    fontSize: 15,
-                  ),),
+                  SizedBox(
+                    width: width - 140,
+                    child: Text(
+                      widget.product.productName,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.poppins(
+                        color: textColor,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
 
                   Text(
                     "₹${widget.product.productPrice}", style: TextStyle(

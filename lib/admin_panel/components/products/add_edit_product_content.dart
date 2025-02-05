@@ -323,8 +323,9 @@ class _AddEditProductContentState extends State<AddEditProductContent> {
         showUIForErrorDialog ? "Dismiss" : "Okay",
         showUIForErrorDialog, () {
       isAnyDialogShowing = false;
+    }, onButtonPressed: () {
+      isAnyDialogShowing = false;
       if (finalDialog) {
-        Navigator.pop(context);
         Navigator.pop(context);
       }
     });

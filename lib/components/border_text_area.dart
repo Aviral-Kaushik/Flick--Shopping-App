@@ -3,7 +3,7 @@ import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class BorderTextArea extends StatelessWidget {
+class BorderTextArea extends StatefulWidget {
   const BorderTextArea({super.key,
     required this.labelText,
     required this.controller,
@@ -18,10 +18,15 @@ class BorderTextArea extends StatelessWidget {
   final Function(String) onChanged;
 
   @override
+  State<BorderTextArea> createState() => _BorderTextAreaState();
+}
+
+class _BorderTextAreaState extends State<BorderTextArea> {
+  @override
   Widget build(BuildContext context) {
     return TextField(
       decoration: InputDecoration(
-        labelText: labelText,
+        labelText: widget.labelText,
         alignLabelWithHint: true,
         labelStyle: GoogleFonts.poppins(
             fontSize: 14,
@@ -42,14 +47,28 @@ class BorderTextArea extends StatelessWidget {
           borderRadius: BorderRadius.circular(appPadding / 2),
         ),
       ),
-      controller: controller,
+      controller: widget.controller,
       textCapitalization: TextCapitalization.words,
       keyboardType: TextInputType.multiline,
       minLines: 5,
       maxLines: 20,
       style: GoogleFonts.poppins(
           fontWeight: FontWeight.w400, fontSize: 14, color: blackColor),
-      onChanged: onChanged,
+      onChanged: (currentText) {
+        // Preserve cursor position
+        final cursorPosition = widget.controller.selection.baseOffset;
+
+        // Call the callback function to send text back
+        widget.onChanged(currentText);
+
+        // Restore cursor position after text update
+        setState(() {
+          widget.controller.value = TextEditingValue(
+            text: currentText,
+            selection: TextSelection.collapsed(offset: cursorPosition),
+          );
+        });
+      },
     );
   }
 }

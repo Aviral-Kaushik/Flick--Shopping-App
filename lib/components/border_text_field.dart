@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../utils/Constants.dart';
 
-class BorderTextField extends StatelessWidget {
+class BorderTextField extends StatefulWidget {
   const BorderTextField({super.key,
     required this.labelText,
     required this.controller,
@@ -20,10 +20,15 @@ class BorderTextField extends StatelessWidget {
   final Function()? onTapped;
 
   @override
+  State<BorderTextField> createState() => _BorderTextFieldState();
+}
+
+class _BorderTextFieldState extends State<BorderTextField> {
+  @override
   Widget build(BuildContext context) {
     return TextField(
       decoration: InputDecoration(
-        labelText: labelText,
+        labelText: widget.labelText,
         alignLabelWithHint: true,
         labelStyle: GoogleFonts.poppins(
             fontSize: 14,
@@ -31,7 +36,7 @@ class BorderTextField extends StatelessWidget {
         ),
 
         contentPadding: const EdgeInsets.all(appPadding),
-        fillColor: backgroundColor ?? const Color(0x33E5E4E2),
+        fillColor: widget.backgroundColor ?? const Color(0x33E5E4E2),
         filled: true,
 
         border: OutlineInputBorder(
@@ -44,11 +49,23 @@ class BorderTextField extends StatelessWidget {
           borderRadius: BorderRadius.circular(appPadding / 2),
         ),
       ),
-      controller: controller,
+      controller: widget.controller,
       onChanged: (String text) {
-        onChanged(text);
+        // Call the callback with the updated text
+        final cursorPosition = widget.controller.selection.baseOffset;
+
+        // Call the callback function to send text back
+        widget.onChanged(text);
+
+        // Restore cursor position after text update
+        setState(() {
+          widget.controller.value = TextEditingValue(
+            text: text,
+            selection: TextSelection.collapsed(offset: cursorPosition),
+          );
+        });
       },
-      onTap: onTapped,
-      readOnly: readOnly);
+      onTap: widget.onTapped,
+      readOnly: widget.readOnly);
   }
 }

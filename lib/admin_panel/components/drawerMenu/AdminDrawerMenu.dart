@@ -29,6 +29,7 @@ class AdminDrawerMenu extends StatelessWidget {
               icon: "assets/icons/Dashboard.svg",
               isSvgImage: true,
               onTap: () {
+                Navigator.pop(context);
                 Navigator.pushNamed(context, "/adminPanel");
               }),
           AdminDrawerListTile(
@@ -36,6 +37,7 @@ class AdminDrawerMenu extends StatelessWidget {
               icon: "assets/icons/Subscribers.svg",
               isSvgImage: true,
               onTap: () {
+                Navigator.pop(context);
                 Navigator.pushNamed(context, "/adminUsersListScreen");
               }),
           AdminDrawerListTile(
@@ -45,6 +47,7 @@ class AdminDrawerMenu extends StatelessWidget {
               tileIcon: const Icon(Icons.shopping_cart_outlined,
                   color: adminPanelPrimaryColor),
               onTap: () {
+                Navigator.pop(context);
                 Navigator.pushNamed(context, "/adminProductsScreen");
               }),
           AdminDrawerListTile(
@@ -54,6 +57,7 @@ class AdminDrawerMenu extends StatelessWidget {
               tileIcon: const Icon(Icons.share_outlined,
                   color: adminPanelPrimaryColor),
               onTap: () {
+                Navigator.pop(context);
                 Navigator.pushNamed(context, "/adminReferralsScreen");
               }),
           AdminDrawerListTile(
@@ -61,6 +65,7 @@ class AdminDrawerMenu extends StatelessWidget {
               icon: "assets/icons/Message.svg",
               isSvgImage: true,
               onTap: () {
+                Navigator.pop(context);
                 Navigator.pushNamed(context, "/adminMessagesScreen");
               }),
           AdminDrawerListTile(
@@ -70,6 +75,7 @@ class AdminDrawerMenu extends StatelessWidget {
               tileIcon: const Icon(Icons.terminal_sharp,
                   color: adminPanelPrimaryColor),
               onTap: () {
+                Navigator.pop(context);
                 Navigator.pushNamed(context, "/adminTermsAndCondition");
               }),
           AdminDrawerListTile(
@@ -79,6 +85,7 @@ class AdminDrawerMenu extends StatelessWidget {
               tileIcon: const Icon(Icons.policy_rounded,
                   color: adminPanelPrimaryColor),
               onTap: () {
+                Navigator.pop(context);
                 Navigator.pushNamed(context, "/adminPrivacyPolicyScreen");
               }),
           Padding(
@@ -92,13 +99,17 @@ class AdminDrawerMenu extends StatelessWidget {
               icon: "assets/icons/Setting.svg",
               isSvgImage: true,
               onTap: () {
+                Navigator.pop(context);
                 Navigator.pushNamed(context, "/adminSettingsScreen");
               }),
           AdminDrawerListTile(
               title: "Logout",
               icon: "assets/icons/Logout.svg",
               isSvgImage: true,
-              onTap: () {}),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              }),
         ],
       ),
     );
