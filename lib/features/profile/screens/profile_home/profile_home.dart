@@ -27,7 +27,6 @@ class _ProfileHomeState extends State<ProfileHome> {
 
   Future<bool> _checkUserLoggedIn() async {
     _user = await User.instance;
-    _user = null;
     return _user != null; // Assuming null means not logged in
   }
 

@@ -1,4 +1,4 @@
-import 'package:flick/components/small_profile_photo.dart';
+import 'package:flick/models/User.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool notificationSwitchSelected = true;
   bool updatesOnMailSwitchSelected = false;
 
-  accountSettingsOptionsListLayout() {
+  Widget accountSettingsOptionsListLayout() {
     return Padding(
       padding: const EdgeInsets.only(left: appPadding * 2),
       child: Column(
@@ -52,7 +52,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  notificationSettingsOptionsListLayout() {
+  Future<User?> getUserData() async {
+    return await User.instance;
+  }
+
+  Widget notificationSettingsOptionsListLayout() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: appPadding * 2),
       child: Column(
@@ -83,7 +87,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  othersSettingsOptionsListLayout() {
+  Widget othersSettingsOptionsListLayout() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: appPadding * 2),
 
@@ -106,7 +110,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  settingsOptionListTile(
+  Widget settingsOptionListTile(
       String optionTitle, Function()? onPressed, bool showSwitch) {
     bool selected;
     if (optionTitle == "Notification") {
@@ -159,7 +163,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           );
   }
 
-  settingsOptionTitle(IconData iconData, String title) {
+  Widget settingsOptionTitle(IconData iconData, String title) {
     return Row(
       children: [
 
@@ -182,7 +186,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  settingsOptionListTileWith2Titles(String primaryText, String secondaryText) {
+  Widget settingsOptionListTileWith2Titles(String primaryText, String secondaryText) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -212,61 +216,99 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  Widget settingsWidget(User user) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(vertical: appPadding),
+
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+
+          // Profile Photo
+          Padding(
+            padding: const EdgeInsets.only(left: appPadding),
+            child: SizedBox(
+              width: 52,
+              height: 52,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(30),
+                child: CircleAvatar(
+                  backgroundColor: btnYellowBackground,
+                  child: Padding(
+                    padding: const EdgeInsets.all(appPadding / 2),
+                    child: Text(user.name[0],
+                        style: GoogleFonts.lato(
+                            fontSize: 20,
+                            color: blackColor,
+                            fontWeight: FontWeight.w800)
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+          const SizedBox(
+            height: appPadding * 2,
+          ),
+
+          // Settings Text
+          Padding(
+            padding: const EdgeInsets.only(left: appPadding * 2),
+            child: Text("Settings",
+                style: GoogleFonts.poppins(
+                    color: adminPanelPrimaryColor,
+                    fontSize: 22,
+                    fontWeight: FontWeight.w500)),
+          ),
+
+          const SizedBox(
+            height: appPadding * 1.5,
+          ),
+
+          // Account Settings Options
+          accountSettingsOptionsListLayout(),
+
+          const SizedBox(
+            height: appPadding * 2.5,
+          ),
+
+          // Notification Settings Options
+          notificationSettingsOptionsListLayout(),
+
+          const SizedBox(
+            height: appPadding * 2.5,
+          ),
+
+          // Others Settings Options
+          othersSettingsOptionsListLayout()
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: primaryColor,
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(vertical: appPadding),
-
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-
-              // Profile Photo
-              const SmallProfilePhoto(
-                  profilePhotoPath: "assets/images/photo8.jpg"),
-
-              const SizedBox(
-                height: appPadding * 2,
-              ),
-
-              // Settings Text
-              Padding(
-                padding: const EdgeInsets.only(left: appPadding * 2),
-                child: Text("Settings",
-                    style: GoogleFonts.poppins(
-                        color: adminPanelPrimaryColor,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500)),
-              ),
-
-              const SizedBox(
-                height: appPadding * 1.5,
-              ),
-
-              // Account Settings Options
-              accountSettingsOptionsListLayout(),
-
-              const SizedBox(
-                height: appPadding * 2.5,
-              ),
-
-              // Notification Settings Options
-              notificationSettingsOptionsListLayout(),
-
-              const SizedBox(
-                height: appPadding * 2.5,
-              ),
-
-              // Others Settings Options
-              othersSettingsOptionsListLayout()
-            ],
-          ),
-        ),
-      ),
+        child: Scaffold(
+          backgroundColor: primaryColor,
+          body: FutureBuilder<User?>(
+            future: getUserData(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasData && snapshot.data != null) {
+                return settingsWidget(snapshot.data!);
+              } else {
+                return const Center(
+                  child: Text("No User Found"),
+                );
+              }
+            },
+          )
+        )
     );
   }
 }
