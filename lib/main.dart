@@ -6,7 +6,6 @@ import 'package:flick/models/Product.dart';
 import 'package:flick/models/User.dart';
 import 'package:flick/models/order_product.dart';
 import 'package:flick/utils/Constants.dart';
-import 'package:flick/utils/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -32,9 +31,9 @@ void main() async {
 bool isAdmin = false;
 
 void initUserInstance() async {
-  if(Auth().currentUser != null) {
-    User? user = await User.instance;
-    isAdmin = (user != null) ? user.isAdmin : false;
+  User? user = await User.instance;
+  if (user != null) {
+    isAdmin = user.isAdmin;
   } else {
     isAdmin = false;
   }

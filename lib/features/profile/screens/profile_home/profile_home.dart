@@ -1,3 +1,4 @@
+import 'package:flick/components/simple_button.dart';
 import 'package:flick/models/User.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
@@ -18,32 +19,19 @@ class _ProfileHomeState extends State<ProfileHome> {
 
   User? _user;
 
-  @override
-  void initState() {
-    super.initState();
+  /// Next Tasks
+  /// When user is not logged in show login & sing up button in place of
+  /// profile options.
+  /// Look where ever profile photo must be replaced with avatar.
+  /// Fetch Products from the backend.
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await initUser();
-    });
+  Future<bool> _checkUserLoggedIn() async {
+    _user = await User.instance;
+    _user = null;
+    return _user != null; // Assuming null means not logged in
   }
 
-  Future<void> initUser() async {
-    if (Auth().currentUser != null) {
-      User? user = await User.instance;
-      setState(() {
-        // Navigator.pop(context);
-        _user = user;
-      });
-    } else {
-      setState(() {
-        // Navigator.pop(context);
-        _user = null;
-      });
-    }
-
-  }
-
-  profileHeaderWidget() {
+  Widget profileHeaderWidget() {
     return Padding(
       padding: const EdgeInsets.only(top: appPadding, left: appPadding),
 
@@ -118,7 +106,7 @@ class _ProfileHomeState extends State<ProfileHome> {
     );
   }
 
-  profileCenterButtonsLayout() {
+  Widget profileCenterButtonsLayout() {
     return Padding(
         padding: const EdgeInsets.only(top: appPadding, left: appPadding / 2),
 
@@ -170,7 +158,7 @@ class _ProfileHomeState extends State<ProfileHome> {
     );
   }
 
-  profileMenuOptionsListLayout() {
+  Widget profileMenuOptionsListLayout() {
     return Padding(
       padding: const EdgeInsets.only(top: appPadding, left: appPadding / 2),
 
@@ -240,7 +228,7 @@ class _ProfileHomeState extends State<ProfileHome> {
     );
   }
 
-  profileMenuWidget(String title, IconData icon, bool showAssetIcon, String iconAssetPath, Function() onPressed) {
+  Widget profileMenuWidget(String title, IconData icon, bool showAssetIcon, String iconAssetPath, Function() onPressed) {
     return GestureDetector(
       onTap: onPressed,
       child: Padding(
@@ -276,34 +264,107 @@ class _ProfileHomeState extends State<ProfileHome> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    // if (user == null) {
-    //   return const ProgressDialog(message: "Please Wait! Loading Data"); // or some other loading widget
-    // }
+  Widget userProfileWidget() {
     return Scaffold(
       backgroundColor: primaryColor,
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
 
-          child: Column(
-            children: [
+            child: Column(
+                children: [
 
-              profileHeaderWidget(),
+                  profileHeaderWidget(),
 
-              const SizedBox(height: appPadding * 2,),
+                  const SizedBox(height: appPadding * 2,),
 
-              profileCenterButtonsLayout(),
+                  profileCenterButtonsLayout(),
 
-              const SizedBox(height: appPadding,),
+                  const SizedBox(height: appPadding,),
 
-              profileMenuOptionsListLayout(),
+                  profileMenuOptionsListLayout(),
 
-            ]
-          )
+                ]
+            )
         ),
       ),
+    );
+  }
+
+  Widget userNotLoggedInWidget() {
+    return Scaffold(
+      backgroundColor: primaryColor,
+      body: Expanded(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                    padding: const EdgeInsets.all(appPadding),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(150),
+                        border: Border.all(color: Colors.black)
+                    ),
+                    child: Icon(Icons.person, size: 100, color: blackColor)),
+
+                const SizedBox(height: appPadding * 4),
+
+                Text("You are not logged in!",
+                    style: GoogleFonts.lato(
+                        fontSize: 20,
+                        color: adminPanelPrimaryColor
+                    )
+                ),
+
+                const SizedBox(height: appPadding * 2),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: appPadding * 3),
+                  child: SimpleButton(
+                      buttonText: "Have an account? Log in!",
+                      backgroundColor: Colors.black,
+                      textColor: whiteColor,
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/loginScreen");
+                      }
+                  ),
+                ),
+
+                const SizedBox(height: appPadding * 1.5),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: appPadding * 3),
+                  child: SimpleButton(
+                      buttonText: "Create an account! Register",
+                      backgroundColor: Colors.white,
+                      textColor: blackColor,
+                      showBorder: true,
+                      borderColor: blackColor,
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/registerScreen");
+                      }
+                  ),
+                )
+              ],
+            ),
+          )
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<bool>(
+        future: _checkUserLoggedIn(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator()); // Show loading state
+          } else if (snapshot.hasData && snapshot.data == true) {
+            return userProfileWidget(); // User is logged in
+          } else {
+            return userNotLoggedInWidget(); // User is not logged in
+          }
+        },
     );
   }
 }
