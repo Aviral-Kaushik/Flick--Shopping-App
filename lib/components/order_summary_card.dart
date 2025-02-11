@@ -67,6 +67,7 @@ class _OrderSummaryCardState extends State<OrderSummaryCard> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: appPadding / 2),
       child: Stack(
@@ -99,7 +100,7 @@ class _OrderSummaryCardState extends State<OrderSummaryCard> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10),
 
-                      child: Image.asset(widget.orderProduct.productImages[0],
+                      child: Image.network(widget.orderProduct.productImages[0],
                           width: 100, height: 100, fit: BoxFit.cover),
                     ),
 
@@ -109,13 +110,16 @@ class _OrderSummaryCardState extends State<OrderSummaryCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text(widget.orderProduct.productName,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: GoogleFonts.lato(
-                                color: textColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18)),
+                        SizedBox(
+                          width: (width / 2) - 30,
+                          child: Text(widget.orderProduct.productName,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: GoogleFonts.lato(
+                                  color: textColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18)),
+                        ),
 
                         const SizedBox(height: appPadding / 2),
 

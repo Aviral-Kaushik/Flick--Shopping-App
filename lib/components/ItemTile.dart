@@ -56,12 +56,12 @@ class _ProductTileState extends State<ProductTile> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                // Shoe pic
+                // Product pic
                 Padding(
                   padding: const EdgeInsets.only(top: 12.0),
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(12),
-                      child: Image.asset(
+                      child: Image.network(
                         widget.product.productImages[0],
                         width: 150,
                         height: 150,
@@ -94,10 +94,21 @@ class _ProductTileState extends State<ProductTile> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 // Item Name
-                                Text(
-                                  widget.product.productName,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold, fontSize: 20),
+                                SizedBox(
+                                  width: 180,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: appPadding,
+                                        bottom: appPadding),
+                                    child: Text(
+                                      widget.product.productName,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20),
+                                    ),
+                                  ),
                                 ),
 
                                 const SizedBox(
@@ -106,7 +117,9 @@ class _ProductTileState extends State<ProductTile> {
                                 // Price
                                 Text(
                                   "₹ ${widget.product.productPrice}",
-                                  style: TextStyle(color: subTitleTextColor),
+                                  style: TextStyle(
+                                      color: subTitleTextColor,
+                                      fontSize: 16),
                                 )
                               ],
                             ),
@@ -137,7 +150,8 @@ class _ProductTileState extends State<ProductTile> {
                 child: Icon(
                   isProductInCart ? Icons.check : Icons.add,
                   color: whiteColor,
-                )),
+                )
+            ),
           ),
         )
       ]),

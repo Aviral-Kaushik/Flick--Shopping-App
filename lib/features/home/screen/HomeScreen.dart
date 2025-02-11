@@ -22,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _bottomNavSelectedIndex = 0;
 
   final User? user = Auth().currentUser;
+  final PageController _pageController = PageController();
 
   @override
   void initState() {
@@ -49,10 +50,20 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: primaryColor,
       bottomNavigationBar: UserBottomNavigation(
-        onTabChanged: (index) => navigateBottomNavBar(index),
+        onTabChanged: (index) {
+          setState(() {
+            _bottomNavSelectedIndex = index;
+          });
+          _pageController.jumpToPage(index);
+          // navigateBottomNavBar(index);
+        },
         defaultIndex: _bottomNavSelectedIndex,
       ),
-      body: _bottomNavPages[_bottomNavSelectedIndex],
+      body: PageView(
+        controller: _pageController,
+        physics: const NeverScrollableScrollPhysics(),
+        children: _bottomNavPages,
+      ),
       appBar: const UserAppBar(),
       drawer: const UserAppDrawer(),
     );

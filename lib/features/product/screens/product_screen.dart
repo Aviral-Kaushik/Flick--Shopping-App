@@ -428,7 +428,7 @@ class _ProductScreenState extends State<ProductScreen> {
                             borderRadius: BorderRadius.circular(appPadding)
                           ),
 
-                          child:  Image.asset(
+                          child:  Image.network(
                             e,
                             width: MediaQuery.of(context).size.width,
                             height: 300,

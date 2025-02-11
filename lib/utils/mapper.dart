@@ -1,4 +1,6 @@
 import 'package:flick/features/product/models/ui_related_product_ratings.dart';
+import 'package:flick/models/Product.dart';
+import 'package:flick/models/category_wise_products.dart';
 import 'package:flick/models/rating.dart';
 import 'package:flick/models/product_ratings.dart';
 
@@ -30,9 +32,33 @@ UIRelatedProductRatings mapProductRatingsToUIRelatedProductRatings(ProductRating
     }
   });
 
-  print("Number Wise Referral Data: $numberWiseReferralData");
-
   return UIRelatedProductRatings(
       productRatings: productRatings,
       numberWiseReviewData: numberWiseReferralData);
+}
+
+CategoryWiseProducts getCategoryWiseProducts(List<Product> product) {
+  List<Product> wearableProducts = [];
+  List<Product> sportsProducts = [];
+  List<Product> fitnessProducts = [];
+  List<Product> laptopsProducts = [];
+
+  for (var element in product) {
+    if (element.productCategory == "Wearables") {
+      wearableProducts.add(element);
+    } else if (element.productCategory == "Sports") {
+      sportsProducts.add(element);
+    } else if (element.productCategory == "Fitness") {
+      fitnessProducts.add(element);
+    } else if (element.productCategory == "Laptops") {
+      laptopsProducts.add(element);
+    }
+  }
+
+  return CategoryWiseProducts(
+    wearableProducts: wearableProducts,
+    sportsProducts: sportsProducts,
+    fitnessProducts: fitnessProducts,
+    laptopsProducts: laptopsProducts,
+  );
 }

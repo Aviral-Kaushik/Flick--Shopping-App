@@ -120,7 +120,7 @@ class _FavouriteProductCardState extends State<FavouriteProductCard> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(10),
 
-                        child: Image.asset(widget.product.productImages[0],
+                        child: Image.network(widget.product.productImages[0],
                             width: 100, height: 100, fit: BoxFit.cover),
                       ),
 
