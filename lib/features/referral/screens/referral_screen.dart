@@ -4,6 +4,7 @@ import 'package:flick/admin_panel/blocs/referrals/referrals_state.dart';
 import 'package:flick/components/small_profile_photo.dart';
 import 'package:flick/helper/DialogHelper.dart';
 import 'package:flick/locator.dart';
+import 'package:flick/models/User.dart';
 import 'package:flick/utils/Colors.dart';
 import 'package:flick/utils/Constants.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,8 @@ class _ReferralScreenState extends State<ReferralScreen> {
 
   String referralMessage = "";
 
+  User? user;
+
   @override
   initState() {
     super.initState();
@@ -37,16 +40,22 @@ class _ReferralScreenState extends State<ReferralScreen> {
     referralsBloc.add(const FetchReferralMessage());
 
     dialogHelper = DialogHelper(context);
+
+    getUserData();
   }
 
-  referralScreenHeaderWidget() {
+  Future<void> getUserData() async {
+    user = await User.instance;
+  }
+
+  Widget referralScreenHeaderWidget() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
 
-        const SmallProfilePhoto(
-            profilePhotoPath: "assets/images/photo8.jpg"),
+        SmallProfilePhoto(
+            userName: user?.username ?? "A"),
 
         const SizedBox(width: appPadding,),
 
@@ -60,7 +69,7 @@ class _ReferralScreenState extends State<ReferralScreen> {
     );
   }
 
-  referralScreenTitleAndSubTitleWidget() {
+  Widget referralScreenTitleAndSubTitleWidget() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -92,7 +101,7 @@ class _ReferralScreenState extends State<ReferralScreen> {
     );
   }
 
-  referAppsWidget() {
+  Widget referAppsWidget() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -141,7 +150,7 @@ class _ReferralScreenState extends State<ReferralScreen> {
     );
   }
 
-  orDividerWidget() {
+  Widget orDividerWidget() {
     return const Padding(
       padding: EdgeInsets.symmetric(horizontal: appPadding * 2),
 
@@ -169,7 +178,7 @@ class _ReferralScreenState extends State<ReferralScreen> {
     );
   }
 
-  copyLinkWidget() {
+  Widget copyLinkWidget() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -243,7 +252,7 @@ class _ReferralScreenState extends State<ReferralScreen> {
     );
   }
 
-  shareAppIconWidget(String appIconPath, Function() onPressed) {
+  Widget shareAppIconWidget(String appIconPath, Function() onPressed) {
     return GestureDetector(
       onTap: onPressed,
       child: Image.asset(
@@ -288,14 +297,14 @@ class _ReferralScreenState extends State<ReferralScreen> {
     return false;
   }
 
-  showProgressDialog(String message) {
+  void showProgressDialog(String message) {
     isAnyDialogShowing = true;
     dialogHelper.showProgressDialog(message, () {
       isAnyDialogShowing = false;
     });
   }
 
-  showErrorDialog(String message) {
+  void showErrorDialog(String message) {
     isAnyDialogShowing = true;
     dialogHelper.showSuccessfulOrErrorDialog(
         "Oops!",
@@ -307,7 +316,7 @@ class _ReferralScreenState extends State<ReferralScreen> {
     });
   }
 
-  dismissDialog() {
+  void dismissDialog() {
     if (isAnyDialogShowing) {
       Navigator.pop(context);
       isAnyDialogShowing = false;

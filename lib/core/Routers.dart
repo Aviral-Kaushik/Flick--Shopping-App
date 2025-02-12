@@ -100,7 +100,7 @@ class Routers {
         return MaterialPageRoute(builder: (_) => const RegisterScreen());
       case "/addressesScreen":
         final args = settings.arguments as Map<String, dynamic>?;
-        final preOrder = args?['preOrder'] as PreOrder;
+        PreOrder? preOrder = args?['preOrder'] as PreOrder?;
         return MaterialPageRoute(
             builder: (_) => AddressesScreen(
                 showUIForSelectAddressScreen:
