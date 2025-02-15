@@ -71,9 +71,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (!userCreatedSuccessfully) {
       showErrorDialog("Cannot Register at this moment!");
     } else {
-      // TODO Redirect to specific screen
       SnackBarHelper().showSnackBar(context, "Registration Successful");
       fetchAndStoreUserDataInLocalDatabase();
+      dismissAllDialog();
+      Navigator.pushReplacementNamed(context, "/homeScreen");
     }
   }
 

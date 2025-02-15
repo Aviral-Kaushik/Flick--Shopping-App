@@ -76,9 +76,10 @@ class _LoginScreenState extends State<LoginScreen> {
       debugPrint("User Details not fetched from firebase");
       showErrorDialog("Cannot fetch data at this moment");
     } else {
-      // TODO Redirect to specific screen
       debugPrint("User Details fetched from firebase: ${user.toFirestore()}");
       SnackBarHelper().showSnackBar(context, "Login Successful");
+      dismissAllDialog();
+      Navigator.pushReplacementNamed(context, "/homeScreen");
     }
     return user;
   }
@@ -208,67 +209,70 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Scaffold(
           backgroundColor: primaryColor,
 
-          body: Padding(
+          body: SingleChildScrollView(
             padding: const EdgeInsets.all(appPadding * 1.5),
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height - appPadding * 3,
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
 
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+                  backButtonWidget(),
 
-                backButtonWidget(),
+                  const SizedBox(height: appPadding * 2,),
 
-                const SizedBox(height: appPadding * 2,),
-
-                Text(
-                  "Welcome Back! Glad\nto see you, Again!",
-                  style: GoogleFonts.poppins(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
-                    color: blackColor
+                  Text(
+                    "Welcome Back! Glad\nto see you, Again!",
+                    style: GoogleFonts.poppins(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w600,
+                      color: blackColor
+                    ),
                   ),
-                ),
 
-                const SizedBox(height: appPadding * 3,),
+                  const SizedBox(height: appPadding * 3,),
 
-                AuthTextField(
-                    labelText: "Enter your email",
-                    isPasswordField: false,
-                    onTextChanged: (String currentEmail) {
-                      emailController.text = currentEmail;
-                    },
-                    textEditingController: emailController),
+                  AuthTextField(
+                      labelText: "Enter your email",
+                      isPasswordField: false,
+                      onTextChanged: (String currentEmail) {
+                        emailController.text = currentEmail;
+                      },
+                      textEditingController: emailController),
 
-                const SizedBox(height: appPadding * 1.5,),
+                  const SizedBox(height: appPadding * 1.5,),
 
-                AuthTextField(
-                    labelText: "Enter your password",
-                    isPasswordField: true,
-                    onTextChanged: (String currentPassword) {
-                      passwordController.text = currentPassword;
-                    },
-                    textEditingController: passwordController),
+                  AuthTextField(
+                      labelText: "Enter your password",
+                      isPasswordField: true,
+                      onTextChanged: (String currentPassword) {
+                        passwordController.text = currentPassword;
+                      },
+                      textEditingController: passwordController),
 
-                const SizedBox(height: appPadding,),
+                  const SizedBox(height: appPadding,),
 
-                forgotPasswordTextWidget(),
+                  forgotPasswordTextWidget(),
 
-                const SizedBox(height: appPadding * 2,),
+                  const SizedBox(height: appPadding * 2,),
 
-                loginButtonWidget(),
+                  loginButtonWidget(),
 
-                const SizedBox(height: appPadding / 2,),
+                  const SizedBox(height: appPadding / 2,),
 
-                const AuthDividerWidget(showDividerForLoginScreen: true),
+                  const AuthDividerWidget(showDividerForLoginScreen: true),
 
-                const SizedBox(height: appPadding,),
+                  const SizedBox(height: appPadding,),
 
-                GoogleSignInButton(onPressed: () {}, isLoginButton: true),
+                  GoogleSignInButton(onPressed: () {}, isLoginButton: true),
 
-                const Spacer(),
+                  const Spacer(),
 
-                doNotHaveAccountTextWidget(),
-              ],
+                  doNotHaveAccountTextWidget(),
+                ],
+              ),
             ),
           ),
         )
